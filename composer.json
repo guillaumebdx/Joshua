@@ -1,16 +1,28 @@
 {
-    "name": "aurel/simple-mvc",
-    "description": "Simple from scratch PHP MVC",
+    "name": "wcs/joshua",
+    "description": "Capture the flag web application",
     "authors": [
         {
-            "name": "Aurelien",
-            "email": "barbier.aurelien@wildcodeschool.fr"
+            "name": "François Vaillant",
+            "email": "francois-vaillant_student2020@wilder.school"
+        },
+        {
+            "name": "Caroline Fourcade",
+            "email": "caroline-fourcade_student2020@wilder.school"
+        },
+        {
+            "name": "Marien Regnault",
+            "email": "marien-regnault_student2020@wilder.school"
+        },
+        {
+            "name": "Guillaume Erpeldinger",
+            "email": "guillaume-erpeldinger_student2020@wilder.school"
         }
     ],
     "minimum-stability": "stable",
     "require": {
-        "php" : ">=7.2",
-        "ext-pdo" : "*",
+        "php": ">=7.2",
+        "ext-pdo": "*",
         "twig/twig": "^2.4"
     },
     "require-dev": {

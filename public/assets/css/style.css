@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'pixelmix';
+    src: url('../fonts/pixelmix.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    --josh-major-font: 'pixelmix';
+    --josh-text-font: 'arial';
+    --josh-green : #adce86;
+    --josh-grey : #1a1a1a;
+    --josh-yellow : #fec200;
+    --josh-red : #e0013f;
+}
