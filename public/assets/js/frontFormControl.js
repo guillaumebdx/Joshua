@@ -57,7 +57,7 @@ function verif_url(elem) {
 
 function verif_password(elem) {
     console.log(elem.value);
-    let regex = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*]{8,15}$/;
+    let regex = /^(?=.*[0-9])(?=.*[!@#$%^&*/{/}_])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*/{/}_]{8,15}$/;
     if (!regex.test(elem.value)) {
         return false;
     } else {
@@ -90,4 +90,14 @@ function sucessOrError(success, id) {
         target.classList.remove('success');
         target.classList.add('error');
     }
+}
+
+function showPassword(id) {
+    target = document.getElementById(id);
+    target.type='text';
+}
+
+function hidePassword(id) {
+    target = document.getElementById(id);
+    target.type='password';
 }

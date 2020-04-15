@@ -55,7 +55,12 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-password">Password *</span>
                     </div>
-                    <input type="password" class="form-control" id="password" name="password" value=""><br>
+                    <input type="password" class="form-control" id="password" name="password" value="">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary show-pass" onmousedown="showPassword('password')" onmouseup="hidePassword('password')" type="button" id="button-addon2">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </div>
                     <small class="text-white">At least 8 characters whith at least 1 upperCase, 1 lowercase and 1 digit</small>
                 </div>
             </div>
@@ -64,7 +69,12 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-password2">Repeat password *</span>
                     </div>
-                    <input type="password" class="form-control" id="password-copy" name="password-copy" value=""><br>
+                    <input type="password" class="form-control" id="password-copy" name="password-copy" value="">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary show-pass" onmousedown="showPassword('password-copy')" onmouseup="hidePassword('password-copy')" type="button" id="button-addon2">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </div>
                     <small class="text-white">At least 8 characters whith at least 1 upperCase, 1 lowercase and 1 digit</small>
                 </div>
             </div>

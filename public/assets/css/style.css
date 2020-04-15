@@ -39,6 +39,10 @@ h1 {
     color:var(--josh-grey);
 }
 
+.btn.show-pass i {
+    font-size:1.5rem;
+}
+
 
 /* ****************************************** */
 /* *********  BOOTSTRAP SURCHARGE  ********** */
@@ -54,6 +58,7 @@ h1 {
     font-family: var(--josh-major-font);
     font-size:0.7rem;
 }
+
 
 /* ADMIN */
 
