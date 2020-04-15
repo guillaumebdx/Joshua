@@ -1,0 +1,26 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Game Master{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-around">
+            <h1 class="col-12 text-center admin_title">Welcome, Game Master</h1>
+            <div>
+                <a class="admin_button btn btn-danger" href="/admin/createChallenge">CHALLENGES</a>
+            </div>
+            <div>
+                    <a class="admin_button btn btn-danger" href="/admin/createContest">CONTESTS</a>
+            </div>
+            <div>
+                <a class="admin_button btn btn-danger" href="/admin/manageUsers">USERS</a>
+            </div>
+            <div>
+                <a class="admin_button btn btn-danger" href="/admin/addCampus">CAMPUS</a>
+            </div>
+            <div>
+                <a class="admin_button btn btn-danger" href="/admin/manageLanguages">LANGUAGES</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

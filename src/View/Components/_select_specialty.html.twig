@@ -1,8 +1,8 @@
 <div class="input-group-prepend">
-        <label class="input-group-text" for="specialty">Specialty</label>
+    <label class="input-group-text"  id="inputGroup-specialty" for="specialty">Specialty</label>
 </div>
 <select class="custom-select" id="specialty" name="specialty">
-        {% for specialty in specialties %}
-                <option value="{{ specialty.id }}" {% if user.specialty == specialty.id %} selected {% endif %}>{{ specialty.specialty }}</option>
-        {% endfor %}
+    {% for specialty in specialties %}
+        <option value="{{ specialty.id }}" {% if user.specialty == specialty.id %} selected {% endif %}>{{ specialty.specialty }}</option>
+    {% endfor %}
 </select>

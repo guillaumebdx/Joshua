@@ -29,7 +29,15 @@ h1 {
     padding:35px 0;
 }
 
+.error {
+    background-color: var(--josh-red);
+    color:#fff;
+}
 
+.success {
+    background-color: var(--josh-green);
+    color:var(--josh-grey);
+}
 
 
 /* ****************************************** */
@@ -45,4 +53,20 @@ h1 {
 .input-group-text {
     font-family: var(--josh-major-font);
     font-size:0.7rem;
+}
+
+/* ADMIN */
+
+.admin_title {
+    margin: 4rem;
+}
+
+.admin_button {
+    margin-top: 4rem;
+}
+
+/* _Header */
+
+.navbar {
+    background-color: var(--josh-grey);
 }
