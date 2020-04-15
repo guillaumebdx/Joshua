@@ -33,3 +33,9 @@ h1 {
 .admin_button {
     margin-top: 4rem;
 }
+
+/* _Header */
+
+.navbar {
+    background-color: var(--josh-grey);
+}
