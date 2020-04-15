@@ -37,7 +37,7 @@ class UserManager extends AbstractManager
 
         try {
             $statement->execute();
-            //return (int)$this->pdo->lastInsertId();
+            return (int)$this->pdo->lastInsertId();
         } catch (Exception $e) {
             echo 'Impossible d\'ajouter l\'utilisateur : ' . $e->getMessage() ;
         }

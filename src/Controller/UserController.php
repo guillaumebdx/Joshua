@@ -26,9 +26,22 @@ class UserController extends AbstractController
     public function insertUser()
     {
         if (count($_POST) > 0 && isset($_POST['registerUser'])) :
-            $bdd = new UserManager();
+            $newUser = new UserManager();
             $_POST['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
-            $bdd->addUser($_POST);
+            $idUser = $newUser->addUser($_POST);
+
+            header('location:/user/confirmuser/' . $idUser);
+        else :
+            header('location:/home/index');
         endif;
+    }
+
+    public function confirmUser($idUser)
+    {
+        $user = new UserManager();
+        $userCreated = $user -> selectOneById($idUser);
+        return $this->twig->render('User/user_confirm.html.twig', [
+            'user' => $userCreated,
+        ]);
     }
 }
