@@ -13,3 +13,37 @@
     --josh-yellow : #fec200;
     --josh-red : #e0013f;
 }
+
+/* ****************************************** */
+/* ***************  GENERAL  **************** */
+/* ****************************************** */
+
+
+body {
+    background-color: var(--josh-grey);
+}
+
+h1 {
+    font-family: var(--josh-major-font);
+    color: var(--josh-green);
+    font-size:2rem;
+    padding:35px 0;
+}
+
+
+
+
+/* ****************************************** */
+/* *********  BOOTSTRAP SURCHARGE  ********** */
+/* ****************************************** */
+
+.btn {
+    border-radius:0;
+    font-family: var(--josh-major-font);
+    font-size:0.9rem;
+}
+
+.input-group-text {
+    font-family: var(--josh-major-font);
+    font-size:0.7rem;
+}
