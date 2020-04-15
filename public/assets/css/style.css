@@ -13,3 +13,23 @@
     --josh-yellow : #fec200;
     --josh-red : #e0013f;
 }
+
+body {
+    background-color: var(--josh-grey);
+}
+
+h1 {
+    font-family: var(--josh-major-font);
+    color: var(--josh-green);
+    font-size:2rem;
+}
+
+/* ADMIN */
+
+.admin_title {
+    margin: 4rem;
+}
+
+.admin_button {
+    margin-top: 4rem;
+}
