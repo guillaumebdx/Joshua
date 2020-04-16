@@ -211,30 +211,30 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `joshua`;
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Bordeaux', 'France', 'france.svg', 'bdx');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Biarritz', 'France', 'france.svg', 'biarritz');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'La Loupe', 'France', 'france.svg', 'loupe');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Lille', 'France', 'france.svg', 'lille');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Lyon', 'France', 'france.svg', 'lyon');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Marseille', 'France', 'france.svg', 'marseille');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Nantes', 'France', 'france.svg', 'nantes');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Orléans', 'France', 'france.svg', 'orleans');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Paris', 'France', 'france.svg', 'paris');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Reims', 'France', 'france.svg', 'reims');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Strasbourg', 'France', 'france.svg', 'strasbourg');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Toulouse', 'France', 'france.svg', 'toulouse');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Tours', 'France', 'france.svg', 'tours');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Amsterdam', 'Netherlands', 'netherlands.svg', 'amsterdam');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Barcelone', 'Spain', 'spain.svg', 'barcelone');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Berlin', 'Germany', 'germany.svg', 'berlin');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Brussels', 'Belgium', 'belgium.svg', 'brussels');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Bucharest', 'Romania', 'romania.svg', 'bucharest');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Budapest', 'Hungary', 'hungary.svg', 'budapest');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Dublin', 'Ireland', 'ireland.svg', 'dublin');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Lisbon', 'Portugal', 'portugal.svg', 'lisbon');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'London', 'England', 'england.svg', 'london');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Madrid', 'Spain', 'spain.svg', 'madrid');
-INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (DEFAULT, 'Milan', 'Italy', 'italy.svg', 'milan');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Bordeaux', 'France', 'france.svg', 'bdx');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Biarritz', 'France', 'france.svg', 'biarritz');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'La Loupe', 'France', 'france.svg', 'loupe');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Lille', 'France', 'france.svg', 'lille');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Lyon', 'France', 'france.svg', 'lyon');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Marseille', 'France', 'france.svg', 'marseille');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Nantes', 'France', 'france.svg', 'nantes');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Orléans', 'France', 'france.svg', 'orleans');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Paris', 'France', 'france.svg', 'paris');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Reims', 'France', 'france.svg', 'reims');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Strasbourg', 'France', 'france.svg', 'strasbourg');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Toulouse', 'France', 'france.svg', 'toulouse');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Tours', 'France', 'france.svg', 'tours');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Amsterdam', 'Netherlands', 'netherlands.svg', 'amsterdam');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Barcelone', 'Spain', 'spain.svg', 'barcelone');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Berlin', 'Germany', 'germany.svg', 'berlin');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Brussels', 'Belgium', 'belgium.svg', 'brussels');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Bucharest', 'Romania', 'romania.svg', 'bucharest');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Budapest', 'Hungary', 'hungary.svg', 'budapest');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Dublin', 'Ireland', 'ireland.svg', 'dublin');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Lisbon', 'Portugal', 'portugal.svg', 'lisbon');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'London', 'England', 'england.svg', 'london');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Madrid', 'Spain', 'spain.svg', 'madrid');
+INSERT INTO `joshua`.`campus` (`id`, `city`, `country`, `flag`, `identifier`) VALUES (null, 'Milan', 'Italy', 'italy.svg', 'milan');
 
 COMMIT;
 
@@ -244,11 +244,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `joshua`;
-INSERT INTO `joshua`.`difficulty` (`id`, `difficulty`, `level`) VALUES (DEFAULT, 'Easy', '1');
-INSERT INTO `joshua`.`difficulty` (`id`, `difficulty`, `level`) VALUES (DEFAULT, 'Medium', '2');
-INSERT INTO `joshua`.`difficulty` (`id`, `difficulty`, `level`) VALUES (DEFAULT, 'Hard', '3');
-INSERT INTO `joshua`.`difficulty` (`id`, `difficulty`, `level`) VALUES (DEFAULT, 'Pro', '4');
-INSERT INTO `joshua`.`difficulty` (`id`, `difficulty`, `level`) VALUES (DEFAULT, 'Nightmare', '5');
+INSERT INTO `joshua`.`difficulty` (`id`, `difficulty`, `level`) VALUES (null, 'Easy', '1');
+INSERT INTO `joshua`.`difficulty` (`id`, `difficulty`, `level`) VALUES (null, 'Medium', '2');
+INSERT INTO `joshua`.`difficulty` (`id`, `difficulty`, `level`) VALUES (null, 'Hard', '3');
+INSERT INTO `joshua`.`difficulty` (`id`, `difficulty`, `level`) VALUES (null, 'Pro', '4');
+INSERT INTO `joshua`.`difficulty` (`id`, `difficulty`, `level`) VALUES (null, 'Nightmare', '5');
 
 COMMIT;
 
@@ -258,9 +258,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `joshua`;
-INSERT INTO `joshua`.`specialty` (`id`, `specialty`, `identifier`) VALUES (DEFAULT, 'PHP - Symfony', 'php');
-INSERT INTO `joshua`.`specialty` (`id`, `specialty`, `identifier`) VALUES (DEFAULT, 'Java - Angular', 'java');
-INSERT INTO `joshua`.`specialty` (`id`, `specialty`, `identifier`) VALUES (DEFAULT, 'React - Node JS', 'js');
-INSERT INTO `joshua`.`specialty` (`id`, `specialty`, `identifier`) VALUES (DEFAULT, 'Data Analyst', 'data');
+INSERT INTO `joshua`.`specialty` (`id`, `specialty`, `identifier`) VALUES (null, 'PHP - Symfony', 'php');
+INSERT INTO `joshua`.`specialty` (`id`, `specialty`, `identifier`) VALUES (null, 'Java - Angular', 'java');
+INSERT INTO `joshua`.`specialty` (`id`, `specialty`, `identifier`) VALUES (null, 'React - Node JS', 'js');
+INSERT INTO `joshua`.`specialty` (`id`, `specialty`, `identifier`) VALUES (null, 'Data Analyst', 'data');
 
 COMMIT;
