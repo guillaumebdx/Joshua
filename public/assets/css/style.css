@@ -14,6 +14,10 @@
     --josh-red : #e0013f;
 }
 
+/* ****************************************** */
+/* ***************  GENERAL  **************** */
+/* ****************************************** */
+
 body {
     background-color: var(--josh-grey);
 }
@@ -22,6 +26,32 @@ h1 {
     font-family: var(--josh-major-font);
     color: var(--josh-green);
     font-size:2rem;
+    padding:35px 0;
+}
+
+.error {
+    background-color: var(--josh-red);
+    color:#fff;
+}
+
+.success {
+    background-color: var(--josh-green);
+    color:var(--josh-grey);
+}
+
+.btn.show-pass i {
+    font-size:1.5rem;
+}
+
+
+/* ****************************************** */
+/* *********  BOOTSTRAP SURCHARGE  ********** */
+/* ****************************************** */
+
+.btn {
+    border-radius:0;
+    font-family: var(--josh-major-font);
+    font-size:0.9rem;
 }
 
 /* INDEX */
@@ -38,6 +68,13 @@ h1 {
 
 .little-btn {
     max-width: 15px;
+}
+
+/* USER */
+
+.input-group-text {
+    font-family: var(--josh-major-font);
+    font-size:0.7rem;
 }
 
 /* ADMIN */
