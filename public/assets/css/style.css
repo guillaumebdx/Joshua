@@ -54,11 +54,28 @@ h1 {
     font-size:0.9rem;
 }
 
+/* INDEX */
+
+.enter-btn, .little-enter-btn {
+    padding-top: 0;
+    margin-top: -15px;
+    margin-left: 15px;
+}
+
+.enter-btn img {
+    max-width: 70px;
+}
+
+.little-btn {
+    max-width: 15px;
+}
+
+/* USER */
+
 .input-group-text {
     font-family: var(--josh-major-font);
     font-size:0.7rem;
 }
-
 
 /* ADMIN */
 

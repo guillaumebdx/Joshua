@@ -1,5 +1,38 @@
 {% extends 'layout.html.twig' %}
 
+{% block header %}{% endblock %}
+
 {% block content %}
-    <h1>Hello Wilder !</h1>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <img src="/assets/images/logo/logo_joshua_full.svg" alt="" class="img-fluid mr-lg-5">
+    </div>
+    <div class="container ml-lg-5">
+        <form class="mt-5">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-2">
+                    <div class="form-group row">
+                        <label for="email" class="col-lg-6 col-form-label text-white text-nowrap">Joshua@User › Login :</label>
+                        <input type="text" class="form-control col-lg-6" id="email" placeholder="email@example.com">
+                    </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-lg-6 col-form-label text-white text-nowrap">Joshua@User › Password :</label>
+                        <input type="password" class="form-control col-lg-6" id="password" placeholder="Password">
+                    </div>
+                </div>
+                <button class="btn col-lg-1 enter-btn"><img src="assets/images/button/enter-btn.svg" alt="" class="img-fluid"></button>
+            </div>
+        </form>
+        <div class="container offset-lg-2 mt-5 pl-lg-4">
+            <div class="row">
+                <p class="text-white">Joshua@User › <span class="text-nowrap">Create an account ?</span></p>
+                <a href="/user/register/" class="ml-2"><img src="assets/images/button/little-enter-btn.svg" alt="" class="img-fluid little-btn"></a>
+            </div>
+            <div class="row">
+                <p class="text-white">Joshua@User › <span class="text-nowrap">Forgot your password ?</span></p>
+                <a href="" class="ml-2"><img src="assets/images/button/little-enter-btn.svg" alt="" class="img-fluid little-btn"></a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
