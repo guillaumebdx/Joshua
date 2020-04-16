@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `joshua`.`user` (
   `github` VARCHAR(45) NULL,
   `email` VARCHAR(80) NOT NULL,
   `email_confirm` TINYINT NOT NULL DEFAULT 0,
-  `password` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
   `specialty_id` INT NOT NULL,
   `campus_id` INT NOT NULL,
   `created_on` DATETIME NOT NULL DEFAULT NOW(),
