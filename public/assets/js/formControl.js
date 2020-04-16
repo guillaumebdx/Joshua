@@ -89,7 +89,7 @@ class formControl {
     }
 
     verif_pseudo() {
-        let regex = /^([0-9a-zA-Z]+[^\s @\-_'"/])$/;
+        let regex = /^([a-zA-Z0-9-_]{2,36})$/;
         if (this.allowEmpty === true && this.elem.value === '') {
             this.sucessOrError(1);
             return;
