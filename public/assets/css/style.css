@@ -24,6 +24,22 @@ h1 {
     font-size:2rem;
 }
 
+/* INDEX */
+
+.enter-btn, .little-enter-btn {
+    padding-top: 0;
+    margin-top: -15px;
+    margin-left: 15px;
+}
+
+.enter-btn img {
+    max-width: 70px;
+}
+
+.little-btn {
+    max-width: 15px;
+}
+
 /* ADMIN */
 
 .admin_title {
