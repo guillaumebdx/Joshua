@@ -19,7 +19,7 @@
                     <div class="input-group-prepend ">
                         <span class="input-group-text" id="inputGroup-firstname">Firstname *</span>
                     </div>
-                    <input type="text" placeholder="Only letters please." class="form-control" id="firstname" name="firstname" value="{{ user.firstname }}" placeholder="{{ errors.firstname }}">
+                    <input type="text" maxlength="45" placeholder="Only letters please." class="form-control" id="firstname" name="firstname" value="{{ user.firstname }}">
                 </div>
             </div>
             <div class="col-xs-12 col-md-6">
@@ -116,6 +116,7 @@
 {% endblock %}
 
 {%  block javascript %}
-    <script src="/assets/js/frontFormControl.js"></script>
-    <script src="/assets/js/user_form.js"></script>
+<script src="/assets/js/frontFormControl.js"></script>
+<script src="/assets/js/FormControl.js"></script>
+<script src="/assets/js/user_form.js"></script>
 {% endblock %}
