@@ -40,19 +40,13 @@ class UserController extends AbstractController
     {
         $user = new UserManager();
         $userCreated = $user -> selectOneById($idUser);
-        $this->openSession($idUser);
+        $this->openConnection($idUser);
         return $this->twig->render('User/user_confirm.html.twig', [
             'user' => $userCreated,
         ]);
     }
 
-    public function logOut()
-    {
-        session_destroy();
-        header('location:/');
-    }
-
-    public function openSession($idUser)
+    public function openConnection($idUser)
     {
         $user = new UserManager();
         session_start();
@@ -68,5 +62,11 @@ class UserController extends AbstractController
         $_SESSION['specialty'] = $userSpecialty['title'];
         $_SESSION['campus'] = $userConnected['campus_id'];
         $this->twig->addGlobal('session', $_SESSION);
+    }
+    public function logOut()
+    {
+        session_start();
+        session_destroy();
+        header('location:/');
     }
 }
