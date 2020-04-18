@@ -191,7 +191,7 @@ abstract class AbstractFormControl
          * Check if the number of characters in the input is greater than 45.
          * Check if the input is composed only of letter, number, common accent and whitespace.
          */
-        $regex = '/^(?=.*[0-9])(?=.*[!@#$%^&*\{\}_])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*\{\}_]$/';
+        $regex = '/^(?=.*[0-9])(?=.*[!@#$%^&*{}_])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*{}_]{8,15}$/';
         if (empty($value)) {
             $this->errors['error_password'] = 'Please enter a  password, thank you.';
         } elseif (strlen($value) < 8) {
