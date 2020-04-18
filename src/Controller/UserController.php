@@ -14,7 +14,7 @@ class UserController extends AbstractController
         $campuses = new CampusManager('campus');
         $campusesList = $campuses->selectAll();
 
-        $specialties = new SpecialtyManager('specialty');
+        $specialties = new SpecialtyManager();
         $specialtiesList = $specialties->selectAll();
 
         return $this->twig->render('User/register.html.twig', [
@@ -40,6 +40,7 @@ class UserController extends AbstractController
     {
         $user = new UserManager();
         $userCreated = $user -> selectOneById($idUser);
+        $this->openSession($idUser);
         return $this->twig->render('User/user_confirm.html.twig', [
             'user' => $userCreated,
         ]);
@@ -49,5 +50,23 @@ class UserController extends AbstractController
     {
         session_destroy();
         header('location:/');
+    }
+
+    public function openSession($idUser)
+    {
+        $user = new UserManager();
+        session_start();
+        $userConnected = $user -> selectOneById($idUser);
+        $specialties = new SpecialtyManager();
+        $userSpecialty = $specialties->selectOneById($userConnected['specialty_id']);
+        $_SESSION['user_id'] = $idUser;
+        $_SESSION['lastname'] = $userConnected['lastname'];
+        $_SESSION['firstname'] = $userConnected['firstname'];
+        $_SESSION['pseudo'] = $userConnected['pseudo'];
+        $_SESSION['github'] = $userConnected['github'];
+        $_SESSION['is_admin'] = $userConnected['is_admin'];
+        $_SESSION['specialty'] = $userSpecialty['title'];
+        $_SESSION['campus'] = $userConnected['campus_id'];
+        $this->twig->addGlobal('session', $_SESSION);
     }
 }
