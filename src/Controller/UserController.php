@@ -44,4 +44,10 @@ class UserController extends AbstractController
             'user' => $userCreated,
         ]);
     }
+
+    public function logOut()
+    {
+        session_destroy();
+        header('location:/');
+    }
 }
