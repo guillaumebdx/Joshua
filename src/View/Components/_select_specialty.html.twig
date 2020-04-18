@@ -3,6 +3,6 @@
 </div>
 <select class="custom-select" id="specialty" name="specialty">
     {% for specialty in specialties %}
-        <option value="{{ specialty.id }}" {% if user.specialty == specialty.id %} selected {% endif %}>{{ specialty.specialty }}</option>
+        <option value="{{ specialty.id }}" {% if user.specialty == specialty.id %} selected {% endif %}>{{ specialty.title }}</option>
     {% endfor %}
 </select>
