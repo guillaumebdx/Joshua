@@ -21,31 +21,15 @@
                 <p class="text-white">We need to verify your e-mail. Please check your mail give us the code you received</p>
             </div>
             <div class="col-12 text-center">
-                <p class="text-white"><span class="bold text-red">Your pseudo is :</span> {{ user.pseudo }} </p>
+                <p class="text-white"><span class="bold text-red">You are connected as </span> {{ user.pseudo }} </p>
             </div>
         </div>
-        <form method="POST">
-            <div class="row mt-3">
-                <div class="col-xs-12 col-md-6 offset-md-3">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-password">Type your password : </span>
-                        </div>
-                        <input type="password" class="form-control" id="password" name="password" value="">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary show-pass" onmousedown="showPassword('password')" onmouseup="hidePassword('password')" type="button" id="button-addon2">
-                                <i class="fa fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+
+        <div class="row text-center">
+            <div class="col-12 text-center">
+                <button class="btn btn-dark text-white" type="submit">Let's go to capture the flags<i class="fa fa-key"></i></button>
             </div>
-            <div class="row text-center">
-                <div class="col-12 text-center">
-                    <button class="btn btn-dark text-white" type="submit">login <i class="fa fa-key"></i></button>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 
 {% endblock %}
