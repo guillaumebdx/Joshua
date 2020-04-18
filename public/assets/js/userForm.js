@@ -16,21 +16,7 @@ pseudo.addEventListener('change', function() {
     }
 });
 
-/**
- *
- * @param id
- * Show or hide password on click on the eye;
- * these functions is implemented in html with onmousedown and onmouseup events
- */
 
-function showPassword(id) {
-    let target = document.getElementById(id);
-    target.type='text';
-}
-function hidePassword(id) {
-    let target = document.getElementById(id);
-    target.type='password';
-}
 
 /**
 
@@ -58,13 +44,12 @@ document.addEventListener("DOMContentLoaded", () => {
      * On loaded DOM content, prepare the fields of the form to check
      * refers to FormControl Class
      */
-
-
     let controlName = new formControl('lastname', 'name', 'inputGroup-lastname');
     let controlFirstName = new formControl('firstname', 'name', 'inputGroup-firstname');
     let mail = new formControl('email', 'email', 'inputGroup-email');
-    let pseudo = new formControl('joshua-pseudo', 'pseudo', 'inputGroup-pseudo');
+    let pseudo = new formControl('joshuapseudo', 'pseudo', 'inputGroup-pseudo');
     let github = new formControl('github', 'pseudo', 'inputGroup-github','', '', true);
-    let pass1 = new formControl('password', 'password', 'inputGroup-password', 'password-copy', 'inputGroup-password2');
-    let pass2 = new formControl('password-copy', 'password', 'inputGroup-password2', 'password', 'inputGroup-password');
+    let pass1 = new formControl('password', 'password', 'inputGroup-password', 'passwordcopy', 'inputGroup-password2');
+    let pass2 = new formControl('passwordcopy', 'password-copy', 'inputGroup-password2', 'password', 'inputGroup-password');
+
 });

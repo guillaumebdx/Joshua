@@ -27,7 +27,7 @@ class UserManager extends AbstractManager
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':lastname', $datas['lastname'], \PDO::PARAM_STR);
         $statement->bindValue(':firstname', $datas['firstname'], \PDO::PARAM_STR);
-        $statement->bindValue(':pseudo', $datas['joshua-pseudo'], \PDO::PARAM_STR);
+        $statement->bindValue(':pseudo', $datas['joshuapseudo'], \PDO::PARAM_STR);
         $statement->bindValue(':github', $datas['github'], \PDO::PARAM_STR);
         $statement->bindValue(':email', $datas['email'], \PDO::PARAM_STR);
         $statement->bindValue(':email_confirm', 1, \PDO::PARAM_INT);
