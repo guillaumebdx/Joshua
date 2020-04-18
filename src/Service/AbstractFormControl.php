@@ -38,7 +38,7 @@ abstract class AbstractFormControl
     }
 
     /**
-     * Verify last name, first name, pseudo, pseudo github, city, country, type, contest name, challenge name.
+     * Verify last name, first name, city, country.
      *
      * $value is a string retrieved from $data['key']
      * @param string $value
@@ -69,6 +69,76 @@ abstract class AbstractFormControl
             $this->errors['error_' . $key] = 'Special characters are prohibited.';
         }
 
+        return $this;
+    }
+
+    /**
+     * Verify pseudo, pseudo github.
+     *
+     * $value is a string retrieved from $data['key']
+     * @param string $value
+     * $propertyName is the name of the property of type 'pseudo' created in the child class.
+     * @param string $propertyName
+     * $key is the complement of the error key if it is multiple words used a _ . example : city, contest_name.
+     * Also used to complete the error message for empty values, _ replaced with whitespace.
+     * @param string $key
+     *
+     * @return AbstractFormControl
+     */
+    public function verifyPseudo(string $value, string $propertyName, string $key): AbstractFormControl
+    {
+        // Set the property in object.
+        $this->$propertyName = $value;
+        // Replace underscore by whitespace.
+        $word = str_replace('_', ' ', $key);
+        /**
+         * Check if the input value is empty.
+         * Check if the number of characters in the input is greater than 26.
+         * Check if the input is composed only of letter, number, common accent and whitespace.
+         */
+        if (empty($value)) {
+            $this->errors['error_' . $key] = 'Please enter a ' . $word . ', thank you.';
+        } elseif (strlen($value) > 26) {
+            $this->errors['error_' . $key] = 'Must be a maximum of 26 characters. Current : ' . strlen($value);
+        } elseif (preg_match('/[^-_A-Za-z0-9àâïçéèêôÀÂÏÇÉÈÔ]/', $value)) {
+            $this->errors['error_' . $key] = 'Special characters are prohibited.';
+        }
+
+        return $this;
+    }
+
+    /**
+     * Verify type, contest name, challenge name.
+     *
+     * $value is a string retrieved from $data['key']
+     * @param string $value
+     * $propertyName is the name of the property of type 'pseudo' created in the child class.
+     * @param string $propertyName
+     * $key is the complement of the error key if it is multiple words used a _ . example : city, contest_name.
+     * Also used to complete the error message for empty values, _ replaced with whitespace.
+     * @param string $key
+     *
+     * @return AbstractFormControl
+     */
+    public function verifyOtherName(string $value, string $propertyName, string $key): AbstractFormControl
+    {
+        // Set the property in object.
+        $this->$propertyName = $value;
+        // Replace underscore by whitespace.
+        $word = str_replace('_', ' ', $key);
+        /**
+         * Check if the input value is empty.
+         * Check if the number of characters in the input is greater than 26.
+         * Check if the input is composed only of letter, number, common accent and whitespace.
+         */
+        if (empty($value)) {
+            $this->errors['error_' . $key] = 'Please enter a ' . $word . ', thank you.';
+        } elseif (strlen($value) > 26) {
+            $this->errors['error_' . $key] = 'Must be a maximum of 26 characters. Current : ' . strlen($value);
+        } elseif (preg_match('/[^-_A-Za-z0-9àâïçéèêôÀÂÏÇÉÈÔ\s]/', $value)) {
+
+            $this->errors['error_' . $key] = 'Special characters are prohibited.';
+        }
         return $this;
     }
 
@@ -143,11 +213,12 @@ abstract class AbstractFormControl
      *
      * $value is a string retrieved from $data['key']
      * @param string $value
-     * $propertyName is the name of the property created in the child class.
+     * $propertyName is the name of the property of type 'password' created in the child class. Default : password.
      * @param string $propertyName
      *
      * @return AbstractFormControl
      */
+
 
     public function verifyPassword(string $value, string $propertyName) : AbstractFormControl
     {
@@ -159,19 +230,19 @@ abstract class AbstractFormControl
          * Check if the number of characters in the input is greater than 45.
          * Check if the input is composed only of letter, number, common accent and whitespace.
          */
-
+  
         if (empty($value)) {
             $this->errors['error_password'] = 'Please enter a  password, thank you.';
         } elseif (strlen($value) < 8) {
             $this->errors['error_password'] = 'Must be a minimum of 8 characters. Current : ' . strlen($value);
         } elseif (!preg_match($regex, $value)) {
-            $this->errors['error_password'] = 'Your password must match with at least 1 uppercase' .
-                '1 number and 1 special character) ';
+
+            $errorMessage = 'Your password must match with at least 1 uppercase, 1 number and 1 special character';
+            $this->errors['error_password'] = $errorMessage;
         }
 
         return $this;
     }
-
 
     /**
      * Verify Description.
