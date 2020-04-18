@@ -20,7 +20,7 @@ class formControl {
         if (this.elem.getAttribute('maxlength')) {
             this.maxLength = this.elem.getAttribute('maxlength');
         }
-        if (this.type === 'password') {
+        if (this.type === 'password-copy') {
             this.passCopy   = document.getElementById(compareId);
             this.targetCopy = document.getElementById(targetCompareId);
         }
@@ -45,6 +45,9 @@ class formControl {
                 form.verif_url();
             }
             if (form.type === 'password') {
+                form.verif_password_simple();
+            }
+            if (form.type === 'password-copy') {
                 form.comparePasswords();
             }
         });
@@ -55,47 +58,47 @@ class formControl {
         console.log('action');
         let regex = /^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ'_\s-]+$/;
         if (this.elem.value === '' || !regex.test(this.elem.value) || this.elem.value.length>this.maxLength) {
-            this.sucessOrError(0);
+            this.sucessOrError(false);
         } else {
-            this.sucessOrError(1);
+            this.sucessOrError(true);
         }
     }
 
     verif_text() {
         let regex = /^[a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ.'_\s-]+$/;
         if (this.elem.value === '' || !regex.test(this.elem.value) || this.elem.value.length>this.maxLength) {
-            this.sucessOrError(0);
+            this.sucessOrError(false);
         } else {
-            this.sucessOrError(1);
+            this.sucessOrError(true);
         }
     }
 
     verif_tel() {
         let regex=/^[0-9]{10}$/;
         if (this.elem.value === '' || !regex.test(this.elem.value)) {
-            this.sucessOrError(0);
+            this.sucessOrError(false);
         } else {
-            this.sucessOrError(1);
+            this.sucessOrError(true);
         }
     }
 
     verif_email() {
         let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (this.elem.value === '' || !regex.test(this.elem.value)) {
-            this.sucessOrError(0);
+            this.sucessOrError(false);
         } else {
-            this.sucessOrError(1);
+            this.sucessOrError(true);
         }
     }
 
     verif_pseudo() {
         let regex = /^([a-zA-Z0-9-_]{2,36})$/;
         if (this.allowEmpty === true && this.elem.value === '') {
-            this.sucessOrError(1);
+            this.sucessOrError(true);
             return;
         } else {
             if (this.elem.value === '' || !regex.test(this.elem.value)) {
-                this.sucessOrError(0);
+                this.sucessOrError(false);
             } else {
                 this.sucessOrError(1);
             }
@@ -105,9 +108,9 @@ class formControl {
     verif_url() {
         let regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
         if (!regex.test(this.elem.value) || this.elem.value === '') {
-            this.sucessOrError(0);
+            this.sucessOrError(false);
         } else {
-            this.sucessOrError(1);
+            this.sucessOrError(true);
         }
     }
 
@@ -117,6 +120,15 @@ class formControl {
             return true;
         } else {
             return false;
+        }
+    }
+
+    verif_password_simple() {
+        let regex = /^(?=.*[0-9])(?=.*[!@#$%^&*/{/}_])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*/{/}_]{8,15}$/;
+        if (regex.test(this.elem.value)) {
+            this.sucessOrError(true);
+        } else {
+            this.sucessOrError(false);
         }
     }
 
@@ -142,7 +154,7 @@ class formControl {
      * This function add success class or error class to the target element
      */
     sucessOrError(success) {
-        if (success === 1) {
+        if (success) {
             this.target.classList.remove(this.error_class);
             this.target.classList.add(this.success_class);
         } else {

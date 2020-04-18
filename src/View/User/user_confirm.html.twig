@@ -1,42 +1,55 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-<div class="container">
-    <div class="row mt-5">
-        <div class="col-12 align-self-center text-center">
-            <img src="https://avatars.githubusercontent.com/{{ user.github }}" alt="avatar github" id="avatar" class="img-thumbnail rounded-circle" width="85">
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-12 text-center">
-            <h1>Hello {{user.firstname}} {{ user.lastname }}</h1>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-12 align-self-center text-center">
+                <img src="https://avatars.githubusercontent.com/{{ user.github }}" alt="avatar github" id="avatar" class="img-thumbnail rounded-circle" width="85">
+            </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-12 text-center">
-            <h2 class="text-white">You're account has been created</h2>
-            <p class="text-white">We need to verify your e-mail. Please check your mail give us the code you received</p>
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1>Hello {{user.firstname}} {{ user.lastname }}</h1>
+            </div>
         </div>
-    </div>
-    <form method="POST">
-        <div class="row mt-3">
-            <div class="col-xs-12 col-md-6 offset-md-3">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroup-sizing-default">Enter the code : </span>
+
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white">You're account has been created</h2>
+                <p class="text-white">We need to verify your e-mail. Please check your mail give us the code you received</p>
+            </div>
+            <div class="col-12 text-center">
+                <p class="text-white"><span class="bold text-red">Your pseudo is :</span> {{ user.pseudo }} </p>
+            </div>
+        </div>
+        <form method="POST">
+            <div class="row mt-3">
+                <div class="col-xs-12 col-md-6 offset-md-3">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-password">Type your password : </span>
+                        </div>
+                        <input type="password" class="form-control" id="password" name="password" value="">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary show-pass" onmousedown="showPassword('password')" onmouseup="hidePassword('password')" type="button" id="button-addon2">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
-                    <input type="text" class="form-control" id="code" name="code" value="">
                 </div>
             </div>
-        </div>
-        <div class="row text-center">
-            <div class="col-12 text-center">
-                <button class="btn btn-dark text-white" type="submit">send <i class="fa fa-save"></i></button>
+            <div class="row text-center">
+                <div class="col-12 text-center">
+                    <button class="btn btn-dark text-white" type="submit">login <i class="fa fa-key"></i></button>
+                </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 
+{% endblock %}
+{%  block javascript %}
+<script src="/assets/js/formControl.js"></script>
+    <script src="/assets/js/userForm.js"></script>
 {% endblock %}

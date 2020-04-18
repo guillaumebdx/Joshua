@@ -52,12 +52,9 @@ class UserController extends AbstractController
         }
     }
 
-    public function confirmUser($idUser)
+    public function logOut()
     {
-        $user = new UserManager();
-        $userCreated = $user -> selectOneById($idUser);
-        return $this->twig->render('User/user_confirm.html.twig', [
-            'user' => $userCreated,
-        ]);
+        session_destroy();
+        header('location:/');
     }
 }

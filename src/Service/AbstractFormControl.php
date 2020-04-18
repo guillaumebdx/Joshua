@@ -153,17 +153,20 @@ abstract class AbstractFormControl
     {
         // Set the property in object.
         $this->$propertyName = $value;
+        $regex = '/^(?=.*[0-9])(?=.*[!@#$%^&*\{\}_])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*\{\}_]{8,15}$/';
         /**
          * Check if the input value is empty.
          * Check if the number of characters in the input is greater than 45.
          * Check if the input is composed only of letter, number, common accent and whitespace.
          */
+
         if (empty($value)) {
             $this->errors['error_password'] = 'Please enter a  password, thank you.';
         } elseif (strlen($value) < 8) {
             $this->errors['error_password'] = 'Must be a minimum of 8 characters. Current : ' . strlen($value);
-        } elseif (!preg_match('/^(?=.*[0-9])(?=.*[!@#$%^&*\{\}_])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*\{\}_]{8,15}$/', $value)) {
-            $this->errors['error_password'] = 'Your password must match with at least 1 uppercase, 1 number and 1 special character) ';
+        } elseif (!preg_match($regex, $value)) {
+            $this->errors['error_password'] = 'Your password must match with at least 1 uppercase' .
+                '1 number and 1 special character) ';
         }
 
         return $this;
