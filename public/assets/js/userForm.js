@@ -51,5 +51,4 @@ document.addEventListener("DOMContentLoaded", () => {
     let github = new formControl('github', 'pseudo', 'inputGroup-github','', '', true);
     let pass1 = new formControl('password', 'password', 'inputGroup-password', 'passwordcopy', 'inputGroup-password2');
     let pass2 = new formControl('passwordcopy', 'password-copy', 'inputGroup-password2', 'password', 'inputGroup-password');
-
 });
