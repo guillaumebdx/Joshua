@@ -14,7 +14,7 @@ class UserController extends AbstractController
     {
         $campuses = new CampusManager('campus');
         $campusesList = $campuses->selectAll();
-        $specialties = new SpecialtyManager('specialty');
+        $specialties = new SpecialtyManager();
         $specialtiesList = $specialties->selectAll();
 
         return $this->twig->render('User/register.html.twig', [
@@ -33,11 +33,12 @@ class UserController extends AbstractController
                 $newUser = new UserManager();
                 $_POST['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
                 $idUser = $newUser->addUser($_POST);
+                $this->openConnection($idUser);
                 header('location:/user/confirmuser/' . $idUser);
             } else {
                 $campuses = new CampusManager('campus');
                 $campusesList = $campuses->selectAll();
-                $specialties = new SpecialtyManager('specialty');
+                $specialties = new SpecialtyManager();
                 $specialtiesList = $specialties->selectAll();
 
                 return $this->twig->render('User/register.html.twig', [
@@ -59,6 +60,23 @@ class UserController extends AbstractController
         return $this->twig->render('User/user_confirm.html.twig', [
             'user' => $userCreated,
         ]);
+    }
+
+    public function openConnection($idUser)
+    {
+        $user = new UserManager();
+        $userConnected = $user -> selectOneById($idUser);
+        $specialties = new SpecialtyManager();
+        $userSpecialty = $specialties->selectOneById($userConnected['specialty_id']);
+        $_SESSION['user_id'] = $idUser;
+        $_SESSION['lastname'] = $userConnected['lastname'];
+        $_SESSION['firstname'] = $userConnected['firstname'];
+        $_SESSION['pseudo'] = $userConnected['pseudo'];
+        $_SESSION['github'] = $userConnected['github'];
+        $_SESSION['is_admin'] = $userConnected['is_admin'];
+        $_SESSION['specialty'] = $userSpecialty['title'];
+        $_SESSION['campus'] = $userConnected['campus_id'];
+        $this->twig->addGlobal('session', $_SESSION);
     }
 
     public function logOut()

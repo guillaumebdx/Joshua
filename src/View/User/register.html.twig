@@ -9,7 +9,7 @@
         <form method="POST" action="/User/insertUser">
             <div class="row">
                 <div class="col-12 align-self-center text-center">
-                    <img src="https://avatars.githubusercontent.com/github" alt="avatar github" id="avatar" class="img-thumbnail rounded-circle" width="85">
+                    <img src="https://avatars.githubusercontent.com/{% if (user.github) %}{{user.github}}{% else %}github{% endif %}" alt="avatar github" id="avatar" class="img-thumbnail rounded-circle" width="85">
                 </div>
             </div>
             <div class="row mt-3">

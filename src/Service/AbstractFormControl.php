@@ -100,7 +100,7 @@ abstract class AbstractFormControl
             $this->errors['error_' . $key] = 'Please enter a ' . $word . ', thank you.';
         } elseif (strlen($value) > 26) {
             $this->errors['error_' . $key] = 'Must be a maximum of 26 characters. Current : ' . strlen($value);
-        } elseif (preg_match('/[^-_A-Za-z0-9àâïçéèêôÀÂÏÇÉÈÔ]/', $value)) {
+        } elseif (!preg_match('/^([a-zA-Z0-9-_]{2,36})$/', $value)) {
             $this->errors['error_' . $key] = 'Special characters are prohibited.';
         }
 
@@ -186,11 +186,13 @@ abstract class AbstractFormControl
     {
         // Set the property in object.
         $this->$propertyName = $value;
+
         /**
          * Check if the input value is empty.
          * Check if the number of characters in the input is greater than 45.
          * Check if the input is composed only of letter, number, common accent and whitespace.
          */
+
         $regex = '/^(?=.*[0-9])(?=.*[!@#$%^&*{}_])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*{}_]{8,}$/';
         if (empty($value)) {
             $this->errors['error_password'] = 'Please enter a  password, thank you.';
