@@ -1,6 +1,4 @@
 <header>
-    {{ dump(session) }}
-
     <nav class="navbar navbar-expand-lg navbar-dark d-flex">
         <a class="navbar-brand" href="/">Joshua</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -13,7 +11,11 @@
                     <a class="nav-link" href="">Admin</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/user/register">register</a>
+                    {% if (session.user_id) %}
+                        <a class="nav-link" href="/user/logout">logout</a>
+                    {% else %}
+                        <a class="nav-link" href="/user/register">register</a>
+                    {% endif %}
                 </li>
             </ul>
         </div>

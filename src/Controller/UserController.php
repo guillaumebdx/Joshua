@@ -49,7 +49,6 @@ class UserController extends AbstractController
     public function openConnection($idUser)
     {
         $user = new UserManager();
-        session_start();
         $userConnected = $user -> selectOneById($idUser);
         $specialties = new SpecialtyManager();
         $userSpecialty = $specialties->selectOneById($userConnected['specialty_id']);
@@ -63,9 +62,9 @@ class UserController extends AbstractController
         $_SESSION['campus'] = $userConnected['campus_id'];
         $this->twig->addGlobal('session', $_SESSION);
     }
+
     public function logOut()
     {
-        session_start();
         session_destroy();
         header('location:/');
     }
