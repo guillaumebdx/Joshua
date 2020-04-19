@@ -3,8 +3,6 @@
 
 namespace App\Model;
 
-use \Exception;
-
 class UserManager extends AbstractManager
 {
     /**
