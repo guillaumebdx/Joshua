@@ -50,8 +50,23 @@ h1 {
     color:var(--josh-red);
 }
 
+.text-grey {
+    color:var(--josh-grey);
+}
+
+.text-green {
+    color:var(--josh-green);
+}
+
 .navbar-brand {
     font-size:1.8rem;
+}
+
+.bg-none {
+    background:none;
+}
+.list-group-item {
+    border-color: #adce86;
 }
 /* ****************************************** */
 /* *********  BOOTSTRAP SURCHARGE  ********** */
@@ -64,7 +79,30 @@ h1 {
 }
 
 /* USER */
+#profil-user {
+    width:100%;
+}
+#profil-user td {
+    height:40px;
+}
+#profil-user tr td:first-child {
+    width:40%;
+    color:var(--josh-green);
+}
 
+.header-palmares {
+    background-color: #111111;
+}
+
+.title-collapse {
+    color:var(--josh-red);
+}
+.title-collapse.collapsed {
+    color:#ccc;
+}
+.title-collapse:hover {
+    color:var(--josh-red);
+}
 
 /* INDEX */
 

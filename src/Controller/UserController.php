@@ -53,30 +53,78 @@ class UserController extends AbstractController
         }
     }
 
-    public function confirmUser($idUser)
+    public function confirmUser(int $idUser)
     {
+        if (isset($_SESSION['user_id']) && $_SESSION['user_id'] === $idUser) {
+            $user = new UserManager();
+            $userCreated = $user -> selectOneById($idUser);
+            return $this->twig->render('User/user_confirm.html.twig', [
+                'user' => $userCreated,
+            ]);
+        } else {
+            header('location:/');
+        }
+    }
+
+    public function profile()
+    {
+        /**
+         * POUR TEST UNIQUEMENT - A RETIRER UNE FOIS LA CONNEXION USER ETABLIE
+         */
+        if (!isset($_SESSION['user_id'])) {
+            $this->openConnection(5);
+        }
+        /**
+         * END ****************************************************************
+         */
         $user = new UserManager();
-        $userCreated = $user -> selectOneById($idUser);
-        return $this->twig->render('User/user_confirm.html.twig', [
+        $userCreated = $user -> selectOneById($_SESSION['user_id']);
+        return $this->twig->render('User/user_profile.html.twig', [
             'user' => $userCreated,
         ]);
+    }
+
+    public function edit()
+    {
+        if (isset($_SESSION['user_id'])) {
+            $user = new UserManager();
+            $userInfos = $user->selectOneById($_SESSION['user_id']);
+            $campuses = new CampusManager('campus');
+            $campusesList = $campuses->selectAll();
+            $specialties = new SpecialtyManager();
+            $specialtiesList = $specialties->selectAll();
+
+            return $this->twig->render('User/user_edit.html.twig', [
+                'user' => $userInfos,
+                'campuses' => $campusesList,
+                'specialties' => $specialtiesList,
+            ]);
+        } else {
+            header('location:/');
+        }
     }
 
     public function openConnection($idUser)
     {
         $user = new UserManager();
+
         $userConnected = $user -> selectOneById($idUser);
         $specialties = new SpecialtyManager();
         $userSpecialty = $specialties->selectOneById($userConnected['specialty_id']);
+        $campuses = new CampusManager('campus');
+        $userCampus = $campuses-> selectOneById($userConnected['campus_id']);
+
         $_SESSION['user_id'] = $idUser;
         $_SESSION['lastname'] = $userConnected['lastname'];
         $_SESSION['firstname'] = $userConnected['firstname'];
+        $_SESSION['email'] = $userConnected['email'];
         $_SESSION['pseudo'] = $userConnected['pseudo'];
         $_SESSION['github'] = $userConnected['github'];
         $_SESSION['is_admin'] = $userConnected['is_admin'];
         $_SESSION['specialty'] = $userSpecialty['title'];
-        $_SESSION['campus'] = $userConnected['campus_id'];
-        $this->twig->addGlobal('session', $_SESSION);
+        $_SESSION['specialty_id'] = $userConnected['specialty_id'];
+        $_SESSION['campus_id'] = $userConnected['campus_id'];
+        $_SESSION['campus'] = $userCampus['city'];
     }
 
     public function logOut()
