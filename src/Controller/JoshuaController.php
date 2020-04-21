@@ -1,6 +1,10 @@
 <?php
 
+//TODO Mettre en place la connexion utilisateur
+
 namespace App\Controller;
+
+use App\Service\IndexFormControl;
 
 class JoshuaController extends AbstractController
 {
@@ -12,6 +16,15 @@ class JoshuaController extends AbstractController
      */
     public function index()
     {
-        return $this->twig->render('Home/index.html.twig');
+        $login  = null;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $user = new IndexFormControl($_POST);
+            $login = $user->getProperty('email');
+        }
+
+        return $this->twig->render('Home/index.html.twig', [
+            'login'  => $login,
+        ]);
     }
 }
