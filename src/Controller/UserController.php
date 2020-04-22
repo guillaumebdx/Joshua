@@ -7,6 +7,7 @@ use App\Model\CampusManager;
 use App\Model\SpecialtyManager;
 use App\Model\UserManager;
 use App\Service\UserFormControl;
+use App\Model\ContestManager;
 
 class UserController extends AbstractController
 {
@@ -55,19 +56,16 @@ class UserController extends AbstractController
 
     public function confirmUser(int $idUser)
     {
-        if (isset($_SESSION['user_id']) && $_SESSION['user_id'] === $idUser) {
             $user = new UserManager();
-            $userCreated = $user -> selectOneById($idUser);
+            $userCreated = $user->selectOneById($idUser);
             return $this->twig->render('User/user_confirm.html.twig', [
                 'user' => $userCreated,
             ]);
-        } else {
-            header('location:/');
-        }
     }
 
     public function profile()
     {
+        //TODO Retirer la session de test dans UserController Methode profile
         /**
          * POUR TEST UNIQUEMENT - A RETIRER UNE FOIS LA CONNEXION USER ETABLIE
          */
@@ -77,10 +75,27 @@ class UserController extends AbstractController
         /**
          * END ****************************************************************
          */
+        $contests = new ContestManager();
+        $userContests = $contests->getContestsPlayedByUser($_SESSION['user_id'], 5);
+        $userId = $_SESSION['user_id'];
+        $limit = count($userContests);
+        for ($i = 0; $i < $limit; $i++) {
+            $contestId = $userContests[$i]['id'];
+            $userContests[$i]['resume'] = [
+                    'started_on'           => $contests->getUserContestStartTime($userId, $contestId),
+                    'challenges_played'    => $contests->getNumberFlagsPlayedByUserInContest($userId, $contestId),
+                    'number_of_challenges' => $contests->getNumberOfChallengesInContest($contestId),
+            ];
+        }
+
         $user = new UserManager();
-        $userCreated = $user -> selectOneById($_SESSION['user_id']);
+        $userCreated = $user->selectOneById($_SESSION['user_id']);
+
+
         return $this->twig->render('User/user_profile.html.twig', [
-            'user' => $userCreated,
+            'user'     => $userCreated,
+            'contests' => $userContests,
+
         ]);
     }
 
@@ -108,11 +123,11 @@ class UserController extends AbstractController
     {
         $user = new UserManager();
 
-        $userConnected = $user -> selectOneById($idUser);
+        $userConnected = $user->selectOneById($idUser);
         $specialties = new SpecialtyManager();
         $userSpecialty = $specialties->selectOneById($userConnected['specialty_id']);
         $campuses = new CampusManager('campus');
-        $userCampus = $campuses-> selectOneById($userConnected['campus_id']);
+        $userCampus = $campuses->selectOneById($userConnected['campus_id']);
 
         $_SESSION['user_id'] = $idUser;
         $_SESSION['lastname'] = $userConnected['lastname'];
@@ -129,6 +144,7 @@ class UserController extends AbstractController
 
     public function logOut()
     {
+
         session_destroy();
         header('location:/');
     }

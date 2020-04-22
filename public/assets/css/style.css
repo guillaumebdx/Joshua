@@ -7,7 +7,7 @@
 
 * {
     --josh-major-font: 'pixelmix';
-    --josh-text-font: 'arial';
+    --josh-text-font: 'Overpass Mono', monospace;
     --josh-green : #adce86;
     --josh-grey : #1a1a1a;
     --josh-yellow : #fec200;
@@ -20,6 +20,7 @@
 
 body {
     background-color: var(--josh-grey);
+    font-family: var(--josh-text-font);
 }
 
 h1 {

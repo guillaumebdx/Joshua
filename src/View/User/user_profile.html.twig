@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-s-12">
-                <h1>Your profile & victories</h1>
+                <h1>Profile & victories</h1>
             </div>
         </div>
         <div class="row d-flex flex-row">
@@ -76,67 +76,29 @@
             </div>
 
             <div class="col-xs-12 col-md-6 align-self-start text-white">
-                <h2>The last challenges you played</h2>
+                <h2>Last played contest{% if contests|length > 1 %}s{% endif %}</h2>
                 <div class="accordion" id="accordionExample">
+                    {% for contest in contests %}
+
                     <div class="card">
                         <div class="card-header header-palmares" id="headingOne">
                             <h2 class="mb-0">
                                 <button class="btn btn-link title-collapse collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Capture the flags and drop the database
+                                    {{ contest.name }}
                                 </button>
                             </h2>
                         </div>
 
                         <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                             <div class="card-body text-grey">
-                                this challenge was on January, 13th<br>
-                                You started it à 14:07<br>
-                                You earned 10 flags out of 13<bR>
+                                You started it à {{ contest.resume.started_on }}<br>
+                                You earned  {{ contest.resume.challenges_played }} flags out of {{ contest.resume.number_of_challenges }}<bR>
                                 You were ranked 7th
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-header header-palmares" id="headingTwo">
-                            <h2 class="mb-0">
-                                <button class="btn btn-link collapsed title-collapse" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    The Wild challenge
-                                </button>
-                            </h2>
-                        </div>
-                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                            <div class="card-body row">
-                                <div class="card-body col-10 text-grey">
-                                    this challenge was on January, 13th<br>
-                                    You started it à 14:07<br>
-                                    You earned 12 flags out of 12 in 1hour and 23 minutes<bR>
-                                    You were ranked 2nd
-                                </div>
-                                <div class="col-2 text-grey"> Silver Medal</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header header-palmares" id="headingThree">
-                            <h2 class="mb-0">
-                                <button class="btn btn-link collapsed title-collapse" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    The Bordeaux's flag festival
-                                </button>
-                            </h2>
-                        </div>
-                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                            <div class="card-body">
-                                <div class="card-body text-grey">
-                                    this challenge was on January, 13th<br>
-                                    You started it à 14:07<br>
-                                    You earned 10 flags out of 13<bR>
-                                    You were ranked 7th
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
-
             </div>
         </div>
     </div>

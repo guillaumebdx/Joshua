@@ -19,8 +19,7 @@ class UserManager extends AbstractManager
     {
         $query  = 'INSERT INTO ' . self::TABLE;
         $query .= ' (lastname, firstname, pseudo, github, email, email_confirm, password, specialty_id, campus_id) ';
-        $query .= ' VALUES (:lastname, :firstname, :pseudo, :github, :email, ';
-        $query .= ':email_confirm, :password, :specialty, :campus)';
+        $query .= ' VALUES (:lastname, :firstname, :pseudo, :github, :email, :password, :specialty, :campus)';
 
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':lastname', $data['lastname'], \PDO::PARAM_STR);
@@ -28,7 +27,6 @@ class UserManager extends AbstractManager
         $statement->bindValue(':pseudo', $data['joshuapseudo'], \PDO::PARAM_STR);
         $statement->bindValue(':github', $data['github'], \PDO::PARAM_STR);
         $statement->bindValue(':email', $data['email'], \PDO::PARAM_STR);
-        $statement->bindValue(':email_confirm', 1, \PDO::PARAM_INT);
         $statement->bindValue(':password', $data['password'], \PDO::PARAM_STR);
         $statement->bindValue(':specialty', $data['specialty'], \PDO::PARAM_INT);
         $statement->bindValue(':campus', $data['campus'], \PDO::PARAM_INT);
