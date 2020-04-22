@@ -58,7 +58,7 @@ class AdminController extends AbstractController
     // LANGUAGES
     public function addSpecialty()
     {
-        $specialtyManager = new SpecialtyManager('specialty');
+        $specialtyManager = new SpecialtyManager();
         $errors           = [];
         $specialty        = null;
 
