@@ -78,5 +78,4 @@ class AdminController extends AbstractController
         ];
         return $this->twig->render('Admin/specialty.html.twig', $result);
     }
-
 }
