@@ -32,7 +32,6 @@ CREATE TABLE campus
     PRIMARY KEY (id),
     UNIQUE KEY identifier_UNIQUE (identifier)
 ) ENGINE = INNODB
-  AUTO_INCREMENT = 25
   DEFAULT CHARSET = UTF8MB4
   COLLATE = UTF8MB4_GENERAL_CI;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -203,7 +202,6 @@ CREATE TABLE difficulty
     UNIQUE KEY difficulty_UNIQUE (title),
     UNIQUE KEY level_UNIQUE (level)
 ) ENGINE = INNODB
-  AUTO_INCREMENT = 6
   DEFAULT CHARSET = UTF8MB4
   COLLATE = UTF8MB4_GENERAL_CI;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -271,7 +269,6 @@ CREATE TABLE specialty
     PRIMARY KEY (id),
     UNIQUE KEY identifier_UNIQUE (identifier)
 ) ENGINE = INNODB
-  AUTO_INCREMENT = 5
   DEFAULT CHARSET = UTF8MB4
   COLLATE = UTF8MB4_GENERAL_CI;
 /*!40101 SET character_set_client = @saved_cs_client */;
