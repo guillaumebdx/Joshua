@@ -56,7 +56,7 @@ class UserController extends AbstractController
     public function confirmUser($idUser)
     {
         $user = new UserManager();
-        $userCreated = $user -> selectOneById($idUser);
+        $userCreated = $user->selectOneById($idUser);
         return $this->twig->render('User/user_confirm.html.twig', [
             'user' => $userCreated,
         ]);
@@ -65,23 +65,25 @@ class UserController extends AbstractController
     public function openConnection($idUser)
     {
         $user = new UserManager();
-        $userConnected = $user -> selectOneById($idUser);
+        $userConnected = $user->selectOneById($idUser);
         $specialties = new SpecialtyManager();
         $userSpecialty = $specialties->selectOneById($userConnected['specialty_id']);
         $_SESSION['user_id'] = $idUser;
+        $_SESSION['is_admin'] = $userConnected['is_admin'];
         $_SESSION['lastname'] = $userConnected['lastname'];
         $_SESSION['firstname'] = $userConnected['firstname'];
         $_SESSION['pseudo'] = $userConnected['pseudo'];
         $_SESSION['github'] = $userConnected['github'];
-        $_SESSION['is_admin'] = $userConnected['is_admin'];
+        $_SESSION['email'] = $userConnected['email'];
         $_SESSION['specialty'] = $userSpecialty['title'];
         $_SESSION['campus'] = $userConnected['campus_id'];
-        $this->twig->addGlobal('session', $_SESSION);
     }
 
     public function logOut()
     {
+        $_SESSION = array();
         session_destroy();
+        unset($_SESSION);
         header('location:/');
     }
 }

@@ -1,12 +1,11 @@
 <?php
 session_start();
-
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 11/10/17
- * Time: 14:01
- */
+if ($_SERVER['PHP_SELF'] != '/index.php' && empty($_SESSION['email'])) {
+    header('Location: /');
+} elseif ($_SERVER['PHP_SELF'] === '/index.php' && isset($_SESSION['email'])) {
+    // todo change redirection
+    header('Location: /admin/index');
+}
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
