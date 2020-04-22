@@ -103,7 +103,8 @@ class ContestManager extends AbstractManager
      */
     public function getNumberOfChallengesInContest(int $contest) : ?int
     {
-        $query = 'SELECT count(challenge_id) as total_challenges from contest_has_challenge where contest_id=:contest';
+        $query   =  'SELECT count(challenge_id) as total_challenges ' .
+                    ' from contest_has_challenge where contest_id=:contest';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':contest', $contest, \PDO::PARAM_INT);
         if ($statement->execute()) {
@@ -112,5 +113,35 @@ class ContestManager extends AbstractManager
         } else {
             throw new Exception('Impossible to get the number of challenges in this contest');
         }
+    }
+
+    /**
+     * the contest ID
+     * @param int $contest
+     * The palmares of the contest.
+     * Returns user_id
+     * and total_time (the total time used to get the flags)
+     * and flags_number, total of flags resolved
+     * @return array|null
+     * @throws Exception
+     */
+    public function getContestPalmares(int $contest) : ?array
+    {
+        $query = 'SELECT user_id, SUM(TIMEDIFF(ended_on, started_on)) AS total_time, ' .
+            ' COUNT(challenge_id) AS flags_succeed ' .
+            ' FROM user_has_contest WHERE contest_id = :contest and ended_on IS NOT NULL ' .
+            ' GROUP BY user_id ORDER BY flags_succeed DESC, total_time ASC ';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':contest', $contest, \PDO::PARAM_INT);
+        $statement->execute();
+        $results = $statement->fetchAll();
+        $palmares = [];
+        foreach ($results as $user) {
+            $palmares[$user['user_id']] = [
+                'total_time' => $user['total_time'],
+                'flags_succeed' => $user['flags_succeed'],
+            ];
+        }
+            return $palmares;
     }
 }

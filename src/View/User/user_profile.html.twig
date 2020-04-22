@@ -79,24 +79,28 @@
                 <h2>Last played contest{% if contests|length > 1 %}s{% endif %}</h2>
                 <div class="accordion" id="accordionExample">
                     {% for contest in contests %}
+                        <div class="card">
+                            <div class="card-header header-palmares" id="c{{ contest.id }}">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link title-collapse collapsed" type="button" data-toggle="collapse" data-target="#z{{ contest.id }}" aria-expanded="true" aria-controls="collapseOne">
+                                        {{ contest.name }}
+                                    </button>
+                                </h2>
+                            </div>
 
-                    <div class="card">
-                        <div class="card-header header-palmares" id="headingOne">
-                            <h2 class="mb-0">
-                                <button class="btn btn-link title-collapse collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    {{ contest.name }}
-                                </button>
-                            </h2>
-                        </div>
-
-                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                            <div class="card-body text-grey">
-                                You started it à {{ contest.resume.started_on }}<br>
-                                You earned  {{ contest.resume.challenges_played }} flags out of {{ contest.resume.number_of_challenges }}<bR>
-                                You were ranked 7th
+                            <div id="z{{ contest.id }}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <div class="row">
+                                    <div class="card-body text-grey col-10">
+                                        You started it à {{ contest.resume.started_on }}<br>
+                                        You earned  {{ contest.resume.challenges_played }} flags out of {{ contest.resume.number_of_challenges }}<bR>
+                                        <b>You were ranked {{contest.resume.user_rank}} * {{contest.resume.medal}}</b>
+                                    </div>
+                                    <div class="col-2">
+                                        <img src="/assets/images/medals/{{contest.resume.medal}}-medal.svg">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     {% endfor %}
                 </div>
             </div>
