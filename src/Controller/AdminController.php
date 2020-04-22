@@ -61,19 +61,22 @@ class AdminController extends AbstractController
         $specialtyManager = new SpecialtyManager('specialty');
         $errors           = [];
         $specialty        = null;
+        $specialties      = $specialtyManager->selectAll();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $specialty = new SpecialtyFormControl($_POST);
             $errors    = $specialty->getErrors();
             if (count($errors) === 0) {
                 $specialtyManager->insertSpecialty($specialty);
-                header('Location: /admin/index');
+                header('Location: /admin/addSpecialty');
             }
         }
         $result=[
             'errors'=>$errors,
             'specialty'=>$specialty,
+            'specialties'=>$specialties,
         ];
         return $this->twig->render('Admin/specialty.html.twig', $result);
     }
+
 }
