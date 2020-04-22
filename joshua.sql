@@ -22,15 +22,18 @@
 DROP TABLE IF EXISTS campus;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE campus (
-    id INT NOT NULL AUTO_INCREMENT,
-    city VARCHAR(45) NOT NULL,
-    country VARCHAR(45) NOT NULL,
-    flag TEXT NOT NULL,
+CREATE TABLE campus
+(
+    id         INT         NOT NULL AUTO_INCREMENT,
+    city       VARCHAR(45) NOT NULL,
+    country    VARCHAR(45) NOT NULL,
+    flag       TEXT        NOT NULL,
     identifier VARCHAR(45) DEFAULT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY identifier_UNIQUE (identifier)
-)  ENGINE=INNODB AUTO_INCREMENT=25 DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_GENERAL_CI;
+) ENGINE = INNODB
+  DEFAULT CHARSET = UTF8MB4
+  COLLATE = UTF8MB4_GENERAL_CI;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,30 +44,30 @@ LOCK TABLES campus WRITE;
 /*!40000 ALTER TABLE campus
     DISABLE KEYS */;
 INSERT INTO campus
-VALUES (1, 'Bordeaux', 'France', 'france.svg', 'bdx'),
-       (2, 'Biarritz', 'France', 'france.svg', 'biarritz'),
-       (3, 'La Loupe', 'France', 'france.svg', 'loupe'),
-       (4, 'Lille', 'France', 'france.svg', 'lille'),
-       (5, 'Lyon', 'France', 'france.svg', 'lyon'),
-       (6, 'Marseille', 'France', 'france.svg', 'marseille'),
-       (7, 'Nantes', 'France', 'france.svg', 'nantes'),
-       (8, 'Orléans', 'France', 'france.svg', 'orleans'),
-       (9, 'Paris', 'France', 'france.svg', 'paris'),
-       (10, 'Reims', 'France', 'france.svg', 'reims'),
-       (11, 'Strasbourg', 'France', 'france.svg', 'strasbourg'),
-       (12, 'Toulouse', 'France', 'france.svg', 'toulouse'),
-       (13, 'Tours', 'France', 'france.svg', 'tours'),
-       (14, 'Amsterdam', 'Netherlands', 'netherlands.svg', 'amsterdam'),
-       (15, 'Barcelona', 'Spain', 'spain.svg', 'barcelona'),
-       (16, 'Berlin', 'Germany', 'germany.svg', 'berlin'),
-       (17, 'Brussels', 'Belgium', 'belgium.svg', 'brussels'),
-       (18, 'Bucharest', 'Romania', 'romania.svg', 'bucharest'),
-       (19, 'Budapest', 'Hungary', 'hungary.svg', 'budapest'),
-       (20, 'Dublin', 'Ireland', 'ireland.svg', 'dublin'),
-       (21, 'Lisbon', 'Portugal', 'portugal.svg', 'lisbon'),
-       (22, 'London', 'England', 'england.svg', 'london'),
-       (23, 'Madrid', 'Spain', 'spain.svg', 'madrid'),
-       (24, 'Milan', 'Italy', 'italy.svg', 'milan');
+VALUES (null, 'Bordeaux', 'France', 'france.svg', 'bdx'),
+       (null, 'Biarritz', 'France', 'france.svg', 'biarritz'),
+       (null, 'La Loupe', 'France', 'france.svg', 'loupe'),
+       (null, 'Lille', 'France', 'france.svg', 'lille'),
+       (null, 'Lyon', 'France', 'france.svg', 'lyon'),
+       (null, 'Marseille', 'France', 'france.svg', 'marseille'),
+       (null, 'Nantes', 'France', 'france.svg', 'nantes'),
+       (null, 'Orléans', 'France', 'france.svg', 'orleans'),
+       (null, 'Paris', 'France', 'france.svg', 'paris'),
+       (null, 'Reims', 'France', 'france.svg', 'reims'),
+       (null, 'Strasbourg', 'France', 'france.svg', 'strasbourg'),
+       (null, 'Toulouse', 'France', 'france.svg', 'toulouse'),
+       (null, 'Tours', 'France', 'france.svg', 'tours'),
+       (null, 'Amsterdam', 'Netherlands', 'netherlands.svg', 'amsterdam'),
+       (null, 'Barcelona', 'Spain', 'spain.svg', 'barcelona'),
+       (null, 'Berlin', 'Germany', 'germany.svg', 'berlin'),
+       (null, 'Brussels', 'Belgium', 'belgium.svg', 'brussels'),
+       (null, 'Bucharest', 'Romania', 'romania.svg', 'bucharest'),
+       (null, 'Budapest', 'Hungary', 'hungary.svg', 'budapest'),
+       (null, 'Dublin', 'Ireland', 'ireland.svg', 'dublin'),
+       (null, 'Lisbon', 'Portugal', 'portugal.svg', 'lisbon'),
+       (null, 'London', 'England', 'england.svg', 'london'),
+       (null, 'Madrid', 'Spain', 'spain.svg', 'madrid'),
+       (null, 'Milan', 'Italy', 'italy.svg', 'milan');
 /*!40000 ALTER TABLE campus
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -76,17 +79,18 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS challenge;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE challenge (
-    id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(45) NOT NULL,
-    description TEXT NOT NULL,
-    difficulty_id INT NOT NULL,
-    type_id INT NOT NULL,
-    url TEXT NOT NULL,
-    flag TEXT NOT NULL,
-    created_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_on DATETIME DEFAULT NULL,
-    PRIMARY KEY (id , type_id , difficulty_id),
+CREATE TABLE challenge
+(
+    id            INT         NOT NULL AUTO_INCREMENT,
+    name          VARCHAR(45) NOT NULL,
+    description   TEXT        NOT NULL,
+    difficulty_id INT         NOT NULL,
+    type_id       INT         NOT NULL,
+    url           TEXT        NOT NULL,
+    flag          TEXT        NOT NULL,
+    created_on    DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_on    DATETIME             DEFAULT NULL,
+    PRIMARY KEY (id, type_id, difficulty_id),
     KEY fk_challenge_difficulty_idx (difficulty_id),
     KEY fk_challenge_type_idx (type_id),
     CONSTRAINT fk_challenge_difficulty FOREIGN KEY (difficulty_id)
@@ -95,7 +99,9 @@ CREATE TABLE challenge (
     CONSTRAINT fk_challenge_type FOREIGN KEY (type_id)
         REFERENCES type (id)
         ON DELETE RESTRICT ON UPDATE CASCADE
-)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_GENERAL_CI;
+) ENGINE = INNODB
+  DEFAULT CHARSET = UTF8MB4
+  COLLATE = UTF8MB4_GENERAL_CI;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -116,17 +122,20 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS contest;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE contest (
-    id INT NOT NULL AUTO_INCREMENT,
-    is_visible TINYINT NOT NULL DEFAULT 0,
-    is_actif TINYINT NOT NULL DEFAULT 0,
-    name VARCHAR(45) NOT NULL,
-    description TEXT NOT NULL,
-    duration VARCHAR(45) NOT NULL,
-    created_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_on DATETIME DEFAULT NULL,
+CREATE TABLE contest
+(
+    id          INT         NOT NULL AUTO_INCREMENT,
+    is_visible  TINYINT     NOT NULL DEFAULT 0,
+    is_actif    TINYINT     NOT NULL DEFAULT 0,
+    name        VARCHAR(45) NOT NULL,
+    description TEXT        NOT NULL,
+    duration    VARCHAR(45) NOT NULL,
+    created_on  DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_on  DATETIME             DEFAULT NULL,
     PRIMARY KEY (id)
-)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_GENERAL_CI;
+) ENGINE = INNODB
+  DEFAULT CHARSET = UTF8MB4
+  COLLATE = UTF8MB4_GENERAL_CI;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,11 +156,12 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS contest_has_challenge;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE contest_has_challenge (
-    contest_id INT NOT NULL,
+CREATE TABLE contest_has_challenge
+(
+    contest_id      INT NOT NULL,
     order_challenge INT NOT NULL,
-    challenge_id INT NOT NULL,
-    PRIMARY KEY (contest_id , challenge_id),
+    challenge_id    INT NOT NULL,
+    PRIMARY KEY (contest_id, challenge_id),
     KEY fk_contest_has_challenge_challenge_idx (challenge_id),
     KEY fk_contest_has_challenge_contest_idx (contest_id),
     CONSTRAINT fk_contest_has_challenge_challenge FOREIGN KEY (challenge_id)
@@ -160,7 +170,9 @@ CREATE TABLE contest_has_challenge (
     CONSTRAINT fk_contest_has_challenge_contest FOREIGN KEY (contest_id)
         REFERENCES contest (id)
         ON DELETE RESTRICT ON UPDATE CASCADE
-)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_GENERAL_CI;
+) ENGINE = INNODB
+  DEFAULT CHARSET = UTF8MB4
+  COLLATE = UTF8MB4_GENERAL_CI;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,14 +193,17 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS difficulty;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE difficulty (
-    id INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE difficulty
+(
+    id    INT         NOT NULL AUTO_INCREMENT,
     title VARCHAR(45) NOT NULL,
     level VARCHAR(45) NOT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY difficulty_UNIQUE (title),
     UNIQUE KEY level_UNIQUE (level)
-)  ENGINE=INNODB AUTO_INCREMENT=6 DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_GENERAL_CI;
+) ENGINE = INNODB
+  DEFAULT CHARSET = UTF8MB4
+  COLLATE = UTF8MB4_GENERAL_CI;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -199,12 +214,43 @@ LOCK TABLES difficulty WRITE;
 /*!40000 ALTER TABLE difficulty
     DISABLE KEYS */;
 INSERT INTO difficulty
-VALUES (1, 'Easy', '1'),
-       (2, 'Medium', '2'),
-       (3, 'Hard', '3'),
-       (4, 'Pro', '4'),
-       (5, 'Nightmare', '5');
+VALUES (null, 'Easy', '1'),
+       (null, 'Medium', '2'),
+       (null, 'Hard', '3'),
+       (null, 'Pro', '4'),
+       (null, 'Nightmare', '5');
 /*!40000 ALTER TABLE difficulty
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table history_contest
+--
+
+DROP TABLE IF EXISTS history_contest;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE history_contest
+(
+    contest_id int      NOT NULL,
+    started_on datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ended_on   datetime          DEFAULT NULL,
+    PRIMARY KEY (contest_id),
+    KEY fk_history_contest_contest_idx (contest_id),
+    CONSTRAINT fk_history_contest_contest FOREIGN KEY (contest_id) REFERENCES contest (id) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = UTF8MB4_GENERAL_CI;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table history_contest
+--
+
+LOCK TABLES history_contest WRITE;
+/*!40000 ALTER TABLE history_contest
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE history_contest
     ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,13 +261,16 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS specialty;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE specialty (
-    id INT NOT NULL AUTO_INCREMENT,
-    title VARCHAR(45) NOT NULL,
+CREATE TABLE specialty
+(
+    id         INT         NOT NULL AUTO_INCREMENT,
+    title      VARCHAR(45) NOT NULL,
     identifier VARCHAR(45) DEFAULT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY identifier_UNIQUE (identifier)
-)  ENGINE=INNODB AUTO_INCREMENT=5 DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_GENERAL_CI;
+) ENGINE = INNODB
+  DEFAULT CHARSET = UTF8MB4
+  COLLATE = UTF8MB4_GENERAL_CI;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -232,10 +281,10 @@ LOCK TABLES specialty WRITE;
 /*!40000 ALTER TABLE specialty
     DISABLE KEYS */;
 INSERT INTO specialty
-VALUES (1, 'PHP - Symfony', 'php'),
-       (2, 'Java - Angular', 'java'),
-       (3, 'React - Node JS', 'js'),
-       (4, 'Data Analyst', 'data');
+VALUES (null, 'PHP - Symfony', 'php'),
+       (null, 'Java - Angular', 'java'),
+       (null, 'React - Node JS', 'js'),
+       (null, 'Data Analyst', 'data');
 /*!40000 ALTER TABLE specialty
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -247,13 +296,16 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS type;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE type (
-    id INT NOT NULL AUTO_INCREMENT,
-    title VARCHAR(45) NOT NULL,
+CREATE TABLE type
+(
+    id         INT         NOT NULL AUTO_INCREMENT,
+    title      VARCHAR(45) NOT NULL,
     identifier VARCHAR(45) DEFAULT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY identifier_UNIQUE (identifier)
-)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_GENERAL_CI;
+) ENGINE = INNODB
+  DEFAULT CHARSET = UTF8MB4
+  COLLATE = UTF8MB4_GENERAL_CI;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -274,21 +326,22 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS user;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE user (
-    id INT NOT NULL AUTO_INCREMENT,
-    is_admin TINYINT NOT NULL DEFAULT 0,
-    is_actif TINYINT NOT NULL DEFAULT 1,
-    lastname VARCHAR(45) NOT NULL,
-    firstname VARCHAR(45) NOT NULL,
-    pseudo VARCHAR(45) NOT NULL,
-    github VARCHAR(45) DEFAULT NULL,
-    email VARCHAR(80) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    specialty_id INT NOT NULL,
-    campus_id INT NOT NULL,
-    created_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_on DATETIME DEFAULT NULL,
-    PRIMARY KEY (id , specialty_id , campus_id),
+CREATE TABLE user
+(
+    id           INT          NOT NULL AUTO_INCREMENT,
+    is_admin     TINYINT      NOT NULL DEFAULT 0,
+    is_actif     TINYINT      NOT NULL DEFAULT 1,
+    lastname     VARCHAR(45)  NOT NULL,
+    firstname    VARCHAR(45)  NOT NULL,
+    pseudo       VARCHAR(45)  NOT NULL,
+    github       VARCHAR(45)           DEFAULT NULL,
+    email        VARCHAR(80)  NOT NULL,
+    password     VARCHAR(255) NOT NULL,
+    specialty_id INT          NOT NULL,
+    campus_id    INT          NOT NULL,
+    created_on   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_on   DATETIME              DEFAULT NULL,
+    PRIMARY KEY (id, specialty_id, campus_id),
     UNIQUE KEY email_UNIQUE (email),
     KEY fk_user_campus_idx (campus_id),
     KEY fk_user_specialty_idx (specialty_id),
@@ -298,7 +351,9 @@ CREATE TABLE user (
     CONSTRAINT fk_user_specialty FOREIGN KEY (specialty_id)
         REFERENCES specialty (id)
         ON DELETE RESTRICT ON UPDATE CASCADE
-)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_GENERAL_CI;
+) ENGINE = INNODB
+  DEFAULT CHARSET = UTF8MB4
+  COLLATE = UTF8MB4_GENERAL_CI;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -319,13 +374,14 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS user_has_contest;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE user_has_contest (
-    user_id INT NOT NULL,
-    contest_id INT NOT NULL,
-    challenge_id INT NOT NULL,
-    started_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    ended_on DATETIME DEFAULT NULL,
-    PRIMARY KEY (user_id , contest_id , challenge_id),
+CREATE TABLE user_has_contest
+(
+    user_id      INT      NOT NULL,
+    contest_id   INT      NOT NULL,
+    challenge_id INT      NOT NULL,
+    started_on   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ended_on     DATETIME          DEFAULT NULL,
+    PRIMARY KEY (user_id, contest_id, challenge_id),
     KEY fk_user_has_contest_contest_idx (contest_id),
     KEY fk_user_has_contest_user_idx (user_id),
     KEY fk_user_has_contest_challenge_idx (challenge_id),
@@ -338,7 +394,9 @@ CREATE TABLE user_has_contest (
     CONSTRAINT fk_user_has_contest_user FOREIGN KEY (user_id)
         REFERENCES user (id)
         ON DELETE RESTRICT ON UPDATE CASCADE
-)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE = UTF8MB4_GENERAL_CI;
+) ENGINE = INNODB
+  DEFAULT CHARSET = UTF8MB4
+  COLLATE = UTF8MB4_GENERAL_CI;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
