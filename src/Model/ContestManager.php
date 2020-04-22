@@ -34,7 +34,6 @@ class ContestManager extends AbstractManager
         if ($statement->execute()) {
             return (int)$this->pdo->lastInsertId();
         }
-
     }
   
   /**
@@ -51,7 +50,6 @@ class ContestManager extends AbstractManager
                     ' JOIN user_has_contest uhc ON ' .
                     ' uhc.contest_id = c.id ' .
                     ' WHERE uhc.user_id = :user ' .
-                    ' GROUP BY c.id ' .
                     ' ORDER BY c.name ';
         if ($limit != 0) {
             $query .= ' LIMIT ' . $limit;
