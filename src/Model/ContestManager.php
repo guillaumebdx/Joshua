@@ -16,4 +16,9 @@ class ContestManager extends AbstractManager
     {
         parent::__construct(self::TABLE);
     }
+
+    public function addContest()
+    {
+        return 'Hello world';
+    }
 }

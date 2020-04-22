@@ -29,6 +29,12 @@ h1 {
     padding:35px 0;
 }
 
+h2 {
+    font-family: var(--josh-major-font);
+    color: var(--josh-green);
+    font-size: 1.2rem;
+}
+
 .error {
     background-color: var(--josh-red);
     color:#fff;
@@ -43,7 +49,16 @@ h1 {
     font-size:1.5rem;
 }
 
+.bold {
+    font-weight: bold;
+}
+.text-red {
+    color:var(--josh-red);
+}
 
+.navbar-brand {
+    font-size:1.8rem;
+}
 /* ****************************************** */
 /* *********  BOOTSTRAP SURCHARGE  ********** */
 /* ****************************************** */
@@ -54,20 +69,37 @@ h1 {
     font-size:0.9rem;
 }
 
+/* USER */
+
+
 /* INDEX */
 
-.enter-btn, .little-enter-btn {
+.input-pass-index {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.enter-btn {
     padding-top: 0;
     margin-top: -15px;
     margin-left: 15px;
 }
 
-.enter-btn img {
+.enter-btn .d-lg-block {
     max-width: 70px;
 }
 
-.little-btn {
-    max-width: 15px;
+.enter-btn .d-lg-none {
+    max-height: 35px;
+    margin-top: 20px;
+}
+
+.index-link {
+    color: white;
+}
+
+.index-link:hover {
+    color: var(--josh-green);
 }
 
 /* USER */
@@ -85,6 +117,11 @@ h1 {
 
 .admin_button {
     margin-top: 4rem;
+}
+
+.existing_challenge {
+    font-family: var(--josh-major-font);
+    font-size: 0.8rem;
 }
 
 /* _Header */

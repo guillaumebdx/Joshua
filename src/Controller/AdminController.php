@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Model\ContestManager;
 use App\Model\CampusManager;
 use App\Service\CampusFormControl;
+use App\Model\SpecialtyManager;
 
 class AdminController extends AbstractController
 {
@@ -19,7 +20,17 @@ class AdminController extends AbstractController
 
     public function createContest()
     {
-        return $this->twig->render('Admin/contest.html.twig');
+        $campuses     = new CampusManager('campus');
+        $campusesList = $campuses->selectAll();
+
+        return $this->twig->render('Admin/contest.html.twig', [
+            'campuses'    => $campusesList,
+        ]);
+    }
+
+    public function insertContest()
+    {
+        return 'Hello world';
     }
 
     // USERS
