@@ -128,7 +128,9 @@ CREATE TABLE contest
     is_visible  TINYINT     NOT NULL DEFAULT 0,
     is_actif    TINYINT     NOT NULL DEFAULT 0,
     name        VARCHAR(45) NOT NULL,
+    image       TEXT        NOT NULL,
     description TEXT        NOT NULL,
+    campus      INT                  DEFAULT NULL,
     duration    VARCHAR(45) NOT NULL,
     created_on  DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_on  DATETIME             DEFAULT NULL,
@@ -342,6 +344,7 @@ CREATE TABLE user
     created_on   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_on   DATETIME              DEFAULT NULL,
     PRIMARY KEY (id, specialty_id, campus_id),
+    UNIQUE KEY pseudo_UNIQUE (pseudo),
     UNIQUE KEY email_UNIQUE (email),
     KEY fk_user_campus_idx (campus_id),
     KEY fk_user_specialty_idx (specialty_id),
@@ -363,6 +366,12 @@ CREATE TABLE user
 LOCK TABLES user WRITE;
 /*!40000 ALTER TABLE user
     DISABLE KEYS */;
+INSERT INTO user
+VALUES (null, '1', '1', 'Erpeldinger', 'Guillaume', 'Nighter', 'Nighter33', 'erpeldinger.g@free.fr', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '1', '1', now(), null),
+       (null, '1', '1', 'Vaillant', 'François', 'Frvaillant', 'Frvaillant', 'frvaillant@gmail.com', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '1', '1', now(), null),
+       (null, '1', '1', 'Regnault', 'Marien', 'Green-onions', 'Green-onions', 'regnault.marien@gmail.com', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '1', '1', now(), null),
+       (null, '1', '1', 'Fourcade', 'Caroline', 'Caro', 'Carolinefourcade', 'carolinefourcade@yahoo.fr', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '1', '1', now(), null),
+       (null, '1', '1', 'Harari', 'Guillaume', 'Guillaumebdx', 'Guillaumebdx', 'guillaumeharari@hotmail.com', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '1', '1', now(), null);
 /*!40000 ALTER TABLE user
     ENABLE KEYS */;
 UNLOCK TABLES;
