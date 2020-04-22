@@ -96,7 +96,6 @@ class UserController extends AbstractController
         $user = new UserManager();
         $userCreated = $user->selectOneById($_SESSION['user_id']);
 
-
         return $this->twig->render('User/user_profile.html.twig', [
             'user'     => $userCreated,
             'contests' => $userContests,
@@ -172,11 +171,14 @@ class UserController extends AbstractController
         $_SESSION['specialty_id']   = $userConnected['specialty_id'];
         $_SESSION['campus_id']      = $userConnected['campus_id'];
         $_SESSION['campus']         = $userCampus['city'];
+
     }
 
     public function logOut()
     {
+        $_SESSION = array();
         session_destroy();
+        unset($_SESSION);
         header('location:/');
     }
 }

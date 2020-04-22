@@ -107,18 +107,32 @@ h1 {
 
 /* INDEX */
 
-.enter-btn, .little-enter-btn {
+.input-pass-index {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.enter-btn {
     padding-top: 0;
     margin-top: -15px;
     margin-left: 15px;
 }
 
-.enter-btn img {
+.enter-btn .d-lg-block {
     max-width: 70px;
 }
 
-.little-btn {
-    max-width: 15px;
+.enter-btn .d-lg-none {
+    max-height: 35px;
+    margin-top: 20px;
+}
+
+.index-link {
+    color: white;
+}
+
+.index-link:hover {
+    color: var(--josh-green);
 }
 
 /* USER */
