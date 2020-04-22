@@ -7,7 +7,7 @@
 
 * {
     --josh-major-font: 'pixelmix';
-    --josh-text-font: 'arial';
+    --josh-text-font: 'Overpass Mono', monospace;
     --josh-green : #adce86;
     --josh-grey : #1a1a1a;
     --josh-yellow : #fec200;
@@ -20,6 +20,7 @@
 
 body {
     background-color: var(--josh-grey);
+    font-family: var(--josh-text-font);
 }
 
 h1 {
@@ -56,8 +57,23 @@ h2 {
     color:var(--josh-red);
 }
 
+.text-grey {
+    color:var(--josh-grey);
+}
+
+.text-green {
+    color:var(--josh-green);
+}
+
 .navbar-brand {
     font-size:1.8rem;
+}
+
+.bg-none {
+    background:none;
+}
+.list-group-item {
+    border-color: #adce86;
 }
 /* ****************************************** */
 /* *********  BOOTSTRAP SURCHARGE  ********** */
@@ -70,7 +86,30 @@ h2 {
 }
 
 /* USER */
+#profil-user {
+    width:100%;
+}
+#profil-user td {
+    height:40px;
+}
+#profil-user tr td:first-child {
+    width:40%;
+    color:var(--josh-green);
+}
 
+.header-palmares {
+    background-color: #111111;
+}
+
+.title-collapse {
+    color:var(--josh-red);
+}
+.title-collapse.collapsed {
+    color:#ccc;
+}
+.title-collapse:hover {
+    color:var(--josh-red);
+}
 
 /* INDEX */
 

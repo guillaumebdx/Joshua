@@ -3,7 +3,7 @@
 
 namespace App\Service;
 
-class UserFormControl extends AbstractFormControl
+class UserEditFormControl extends AbstractFormControl
 {
     /**
      * UserFormControl data from $_POST.
@@ -20,14 +20,17 @@ class UserFormControl extends AbstractFormControl
             ->verifyEmail($data['email'], 'email')
             ->verifyPseudo($data['joshuapseudo'], 'joshuapseudo', 'joshuapseudo')
             ->verifyPseudo($github, 'github', 'github')
-            ->verifyPassword($data['password'], 'password')
             ->verifySelected($data['campus'], 'campus')
             ->verifySelected($data['specialty'], 'specialty');
+        if ($data['password'] != '') {
+            $this->verifyPassword($data['password'], 'password');
+        }
     }
-
 
     public function getData() : array
     {
+        $allData = $this->data;
+
         $data = [];
         $data['errors'] = $this->getErrors();
         $data['user']= [
@@ -35,11 +38,15 @@ class UserFormControl extends AbstractFormControl
             'lastname' => $this->getProperty('lastname'),
             'email' => $this->getProperty('email'),
             'joshuapseudo' => $this->getProperty('joshuapseudo'),
-            'password' => $this->getProperty('password'),
             'github' => $this->getProperty('github'),
             'campus_id' => $this->getProperty('campus'),
-            'specialty_id' => $this->getProperty('specialty'),
-        ];
+            'specialty_id' => $this->getProperty('specialty')
+            ];
+
+        if ($allData['password'] != '') {
+            $data['user']['password'] = $this->getProperty('password');
+        }
+
         return $data;
     }
 }
