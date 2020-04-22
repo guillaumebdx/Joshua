@@ -26,11 +26,11 @@ class UserFormControl extends AbstractFormControl
     }
 
 
-    public function getDatas() : array
+    public function getData() : array
     {
-        $datas = [];
-        $datas['errors'] = $this->getErrors();
-        $datas['user']= [
+        $data = [];
+        $data['errors'] = $this->getErrors();
+        $data['user']= [
             'firstname' => $this->getProperty('firstname'),
             'lastname' => $this->getProperty('lastname'),
             'email' => $this->getProperty('email'),
@@ -40,6 +40,6 @@ class UserFormControl extends AbstractFormControl
             'campus_id' => $this->getProperty('campus'),
             'specialty_id' => $this->getProperty('specialty'),
         ];
-        return $datas;
+        return $data;
     }
 }
