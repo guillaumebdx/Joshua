@@ -20,5 +20,11 @@ class SpecialtyManager extends AbstractManager
         if ($statement->execute()) {
             return (int)$this->pdo->lastInsertId();
         }
+
+    const TABLE = 'specialty';
+    public function __construct()
+    {
+        parent::__construct(self::TABLE);
+
     }
 }
