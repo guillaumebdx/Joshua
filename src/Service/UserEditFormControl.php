@@ -27,13 +27,13 @@ class UserEditFormControl extends AbstractFormControl
         }
     }
 
-    public function getDatas() : array
+    public function getData() : array
     {
         $allData = $this->data;
 
-        $datas = [];
-        $datas['errors'] = $this->getErrors();
-        $datas['user']= [
+        $data = [];
+        $data['errors'] = $this->getErrors();
+        $data['user']= [
             'firstname' => $this->getProperty('firstname'),
             'lastname' => $this->getProperty('lastname'),
             'email' => $this->getProperty('email'),
@@ -44,9 +44,9 @@ class UserEditFormControl extends AbstractFormControl
             ];
 
         if ($allData['password'] != '') {
-            $datas['user']['password'] = $this->getProperty('password');
+            $data['user']['password'] = $this->getProperty('password');
         }
 
-        return $datas;
+        return $data;
     }
 }
