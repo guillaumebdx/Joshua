@@ -30,6 +30,12 @@ h1 {
     padding:35px 0;
 }
 
+h2 {
+    font-family: var(--josh-major-font);
+    color: var(--josh-green);
+    font-size: 1.2rem;
+}
+
 .error {
     background-color: var(--josh-red);
     color:#fff;
@@ -150,6 +156,15 @@ h1 {
 
 .admin_button {
     margin-top: 4rem;
+}
+
+.existing_challenge {
+    font-family: var(--josh-major-font);
+    font-size: 0.8rem;
+}
+
+.list-container {
+    height: 24rem;
 }
 
 /* _Header */
