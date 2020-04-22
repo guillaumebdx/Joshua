@@ -1,18 +1,25 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark d-flex">
-        <a class="navbar-brand" href="/">Joshua</a>
+        <a class="navbar-brand" href="/"><img src="/assets/images/logo/picto.svg">Joshua</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/index">Admin</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/user/register">register</a>
-                </li>
+                {% if session.email %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/profile">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/logout">Logout</a>
+                    </li>
+                {% endif %}
+                {% if session.is_admin == 1 %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/index">ADMIN</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </nav>

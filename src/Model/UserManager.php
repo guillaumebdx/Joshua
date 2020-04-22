@@ -3,8 +3,6 @@
 
 namespace App\Model;
 
-use \Exception;
-
 class UserManager extends AbstractManager
 {
     /**
@@ -17,29 +15,35 @@ class UserManager extends AbstractManager
         parent::__construct(self::TABLE);
     }
 
-    public function addUser($datas)
+    public function addUser($data)
     {
         $query  = 'INSERT INTO ' . self::TABLE;
-        $query .= ' (lastname, firstname, pseudo, github, email, email_confirm, password, specialty_id, campus_id) ';
-        $query .= ' VALUES (:lastname, :firstname, :pseudo, :github, :email, ';
-        $query .= ':email_confirm, :password, :specialty, :campus)';
+        $query .= ' (lastname, firstname, pseudo, github, email, password, specialty_id, campus_id)';
+        $query .= ' VALUES (:lastname, :firstname, :pseudo, :github, :email, :password, :specialty, :campus)';
 
         $statement = $this->pdo->prepare($query);
-        $statement->bindValue(':lastname', $datas['lastname'], \PDO::PARAM_STR);
-        $statement->bindValue(':firstname', $datas['firstname'], \PDO::PARAM_STR);
-        $statement->bindValue(':pseudo', $datas['joshua-pseudo'], \PDO::PARAM_STR);
-        $statement->bindValue(':github', $datas['github'], \PDO::PARAM_STR);
-        $statement->bindValue(':email', $datas['email'], \PDO::PARAM_STR);
-        $statement->bindValue(':email_confirm', 1, \PDO::PARAM_INT);
-        $statement->bindValue(':password', $datas['password'], \PDO::PARAM_STR);
-        $statement->bindValue(':specialty', $datas['specialty'], \PDO::PARAM_INT);
-        $statement->bindValue(':campus', $datas['campus'], \PDO::PARAM_INT);
+        $statement->bindValue(':lastname', $data['lastname'], \PDO::PARAM_STR);
+        $statement->bindValue(':firstname', $data['firstname'], \PDO::PARAM_STR);
+        $statement->bindValue(':pseudo', $data['joshuapseudo'], \PDO::PARAM_STR);
+        $statement->bindValue(':github', $data['github'], \PDO::PARAM_STR);
+        $statement->bindValue(':email', $data['email'], \PDO::PARAM_STR);
+        $statement->bindValue(':password', $data['password'], \PDO::PARAM_STR);
+        $statement->bindValue(':specialty', $data['specialty'], \PDO::PARAM_INT);
+        $statement->bindValue(':campus', $data['campus'], \PDO::PARAM_INT);
 
-        try {
-            $statement->execute();
+        if ($statement->execute()) {
             return (int)$this->pdo->lastInsertId();
-        } catch (Exception $e) {
-            echo 'Impossible d\'ajouter l\'utilisateur : ' . $e->getMessage() ;
+        } else {
+            return 'Impossible d\'ajouter l\'utilisateur : ';
         }
+    }
+
+    public function selectOneByEmail(string $email)
+    {
+        $statement = $this->pdo->prepare('SELECT * FROM ' . self::TABLE . ' WHERE email=:email');
+        $statement->bindValue(':email', $email, \PDO::PARAM_STR);
+        $statement->execute();
+
+        return $statement->fetch();
     }
 }

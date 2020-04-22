@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Model\CampusManager;
 use App\Model\SpecialtyManager;
 use App\Model\UserManager;
+use App\Service\UserFormControl;
 
 class UserController extends AbstractController
 {
@@ -13,8 +14,7 @@ class UserController extends AbstractController
     {
         $campuses = new CampusManager('campus');
         $campusesList = $campuses->selectAll();
-
-        $specialties = new SpecialtyManager('specialty');
+        $specialties = new SpecialtyManager();
         $specialtiesList = $specialties->selectAll();
 
         return $this->twig->render('User/register.html.twig', [
@@ -25,23 +25,65 @@ class UserController extends AbstractController
 
     public function insertUser()
     {
-        if (count($_POST) > 0 && isset($_POST['registerUser'])) :
-            $newUser = new UserManager();
-            $_POST['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
-            $idUser = $newUser->addUser($_POST);
+        if (count($_POST) > 0 && isset($_POST['registerUser'])) {
+            $check = new UserFormControl($_POST);
+            $formDatas = $check->getDatas();
 
-            header('location:/user/confirmuser/' . $idUser);
-        else :
-            header('location:/home/index');
-        endif;
+            if (count($formDatas['errors']) === 0) {
+                $newUser = new UserManager();
+                $_POST['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+                $idUser = $newUser->addUser($_POST);
+                $this->openConnection($idUser);
+                header('location:/user/confirmuser/' . $idUser);
+            } else {
+                $campuses = new CampusManager('campus');
+                $campusesList = $campuses->selectAll();
+                $specialties = new SpecialtyManager();
+                $specialtiesList = $specialties->selectAll();
+
+                return $this->twig->render('User/register.html.twig', [
+                    'errors' => $formDatas['errors'],
+                    'user' => $formDatas['user'],
+                    'campuses' => $campusesList,
+                    'specialties' => $specialtiesList,
+                ]);
+            }
+        } else {
+            header('location:/');
+        }
     }
 
     public function confirmUser($idUser)
     {
         $user = new UserManager();
-        $userCreated = $user -> selectOneById($idUser);
+        $userCreated = $user->selectOneById($idUser);
         return $this->twig->render('User/user_confirm.html.twig', [
             'user' => $userCreated,
         ]);
+    }
+
+    public function openConnection($idUser)
+    {
+        $user = new UserManager();
+        $userConnected = $user->selectOneById($idUser);
+        $specialties = new SpecialtyManager();
+        $userSpecialty = $specialties->selectOneById($userConnected['specialty_id']);
+        $_SESSION['user_id'] = $idUser;
+        $_SESSION['is_admin'] = $userConnected['is_admin'];
+        $_SESSION['lastname'] = $userConnected['lastname'];
+        $_SESSION['firstname'] = $userConnected['firstname'];
+        $_SESSION['pseudo'] = $userConnected['pseudo'];
+        $_SESSION['github'] = $userConnected['github'];
+        $_SESSION['email'] = $userConnected['email'];
+        $_SESSION['specialty'] = $userSpecialty['title'];
+        $_SESSION['campus'] = $userConnected['campus_id'];
+    }
+
+    public function logOut()
+    {
+        $_SESSION = array();
+        session_destroy();
+        unset($_SESSION);
+        header('location:/');
     }
 }
