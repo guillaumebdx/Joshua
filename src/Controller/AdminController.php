@@ -5,32 +5,47 @@ namespace App\Controller;
 use App\Model\ContestManager;
 use App\Model\CampusManager;
 use App\Service\CampusFormControl;
+use App\Service\ContestFormControl;
 use App\Model\SpecialtyManager;
 
 class AdminController extends AbstractController
 {
     public function index()
     {
-        return $this->twig->render('Admin/admin.html.twig');
+        return $this->twig->render('admin/admin.html.twig');
     }
 
     // CHALLENGE
 
     // CONTEST
 
-    public function createContest()
+    public function manageContest()
     {
         $campuses     = new CampusManager('campus');
         $campusesList = $campuses->selectAll();
 
-        return $this->twig->render('Admin/contest.html.twig', [
-            'campuses'    => $campusesList,
+        $contests     = new ContestManager();
+        $contestsList = $contests->selectAll();
+
+        return $this->twig->render('admin/contest.html.twig', [
+            'campuses' => $campusesList,
+            'contests' => $contestsList,
         ]);
     }
 
     public function insertContest()
     {
-        return 'Hello world';
+        $contestManager = new ContestManager();
+        $contest        = null;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $contest = new ContestFormControl($_POST);
+            $errors = $contest->getErrors();
+            if (count($errors) === 0) {
+                $contestManager->addContest($contest);
+                header('Location: /admin/managecontest');
+            }
+        }
     }
 
     // USERS
@@ -61,7 +76,7 @@ class AdminController extends AbstractController
             'errors'=>$errors,
             'campus'=>$campus,
         ];
-        return $this->twig->render('Admin/campus.html.twig', $result);
+        return $this->twig->render('admin/campus.html.twig', $result);
     }
 
     // LANGUAGES
