@@ -6,7 +6,7 @@ use App\Model\ContestManager;
 use App\Model\CampusManager;
 use App\Model\SpecialtyManager;
 use App\Model\UserManager;
-
+use App\Service\SpecialtyFormControl;
 use App\Service\CampusFormControl;
 use App\Service\ContestFormControl;
 
@@ -131,4 +131,24 @@ class AdminController extends AbstractController
     }
 
     // LANGUAGES
+    public function addSpecialty()
+    {
+        $specialtyManager = new SpecialtyManager();
+        $errors           = [];
+        $specialty        = null;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $specialty = new SpecialtyFormControl($_POST);
+            $errors    = $specialty->getErrors();
+            if (count($errors) === 0) {
+                $specialtyManager->insertSpecialty($specialty);
+                header('Location: /admin/index');
+            }
+        }
+        $result=[
+            'errors'=>$errors,
+            'specialty'=>$specialty,
+        ];
+        return $this->twig->render('Admin/specialty.html.twig', $result);
+    }
 }
