@@ -133,7 +133,7 @@ class AdminController extends AbstractController
     // LANGUAGES
     public function addSpecialty()
     {
-        $specialtyManager = new SpecialtyManager('');
+        $specialtyManager = new SpecialtyManager();
         $errors           = [];
         $specialty        = null;
         $specialties      = $specialtyManager->selectAll();
