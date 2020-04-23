@@ -21,23 +21,23 @@ class UserController extends AbstractController
         $specialtiesList = $specialties->selectAll();
 
         return $this->twig->render('User/register.html.twig', [
-            'campuses'      => $campusesList,
-            'specialties'   => $specialtiesList,
+            'campuses'    => $campusesList,
+            'specialties' => $specialtiesList,
         ]);
     }
 
     public function insertUser()
     {
         if (count($_POST) > 0 && isset($_POST['registerUser'])) {
-            $check      = new UserFormControl($_POST);
-            $formData  = $check->getData();
+            $check    = new UserFormControl($_POST);
+            $formData = $check->getData();
 
             if (count($formData['errors']) === 0) {
-                $newUser            = new UserManager();
-                $_POST['password']  = password_hash($_POST['password'], PASSWORD_BCRYPT);
-                $idUser             = $newUser->addUser($_POST);
+                $newUser           = new UserManager();
+                $_POST['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+                $idUser            = $newUser->addUser($_POST);
                 $this->openConnection($idUser);
-                header('location:/user/confirmuser/' . $idUser);
+                header('location: /user/confirmuser/' . $idUser);
             } else {
                 $campuses        = new CampusManager('campus');
                 $campusesList    = $campuses->selectAll();
@@ -45,10 +45,10 @@ class UserController extends AbstractController
                 $specialtiesList = $specialties->selectAll();
 
                 return $this->twig->render('User/register.html.twig', [
-                    'errors'        => $formData['errors'],
-                    'user'          => $formData['user'],
-                    'campuses'      => $campusesList,
-                    'specialties'   => $specialtiesList,
+                    'errors'      => $formData['errors'],
+                    'user'        => $formData['user'],
+                    'campuses'    => $campusesList,
+                    'specialties' => $specialtiesList,
                 ]);
             }
         } else {
@@ -58,12 +58,12 @@ class UserController extends AbstractController
 
     public function confirmUser(int $idUser)
     {
-            $user        = new UserManager();
-            $userCreated = $user->selectOneById($idUser);
+        $user        = new UserManager();
+        $userCreated = $user->selectOneById($idUser);
 
-             $this->twig->render('user/user_confirm.html.twig', [
-                'user' => $userCreated,
-             ]);
+        return $this->twig->render('user/user_confirm.html.twig', [
+            'user' => $userCreated,
+        ]);
     }
 
     public function profile()
@@ -77,19 +77,19 @@ class UserController extends AbstractController
         for ($i = 0; $i < $limit; $i++) {
             $contestId = $userContests[$i]['id'];
 
-            $palmares  = $contestManager->getContestPalmares($contestId);
+            $palmares = $contestManager->getContestPalmares($contestId);
 
             $userRank = array_search($userId, array_keys($palmares)) + 1;
-            $suffix = ['', 'st', 'nd', 'rd'];
-            $medals = ['', 'gold', 'silver', 'bronze'];
-            $rank = ($userRank<=3) ? $userRank . $suffix[$userRank] : $userRank . 'th';
+            $suffix   = ['', 'st', 'nd', 'rd'];
+            $medals   = ['', 'gold', 'silver', 'bronze'];
+            $rank     = ($userRank <= 3) ? $userRank . $suffix[$userRank] : $userRank . 'th';
 
             $userContests[$i]['resume'] = [
-                    'started_on'           => $contestManager->getUserContestStartTime($userId, $contestId),
-                    'challenges_played'    => $palmares[$_SESSION['user_id']]['flags_succeed'],
-                    'number_of_challenges' => $contestManager->getNumberOfChallengesInContest($contestId),
-                    'user_rank'            => $rank,
-                    'medal'                => $medals[$userRank],
+                'started_on'           => $contestManager->getUserContestStartTime($userId, $contestId),
+                'challenges_played'    => $palmares[$_SESSION['user_id']]['flags_succeed'],
+                'number_of_challenges' => $contestManager->getNumberOfChallengesInContest($contestId),
+                'user_rank'            => $rank,
+                'medal'                => $medals[$userRank],
             ];
         }
 
@@ -105,24 +105,24 @@ class UserController extends AbstractController
 
     public function edit()
     {
-            $user            = new UserManager();
-            $userInfos       = $user->selectOneById($_SESSION['user_id']);
-            $campuses        = new CampusManager('campus');
-            $campusesList    = $campuses->selectAll();
-            $specialties     = new SpecialtyManager();
-            $specialtiesList = $specialties->selectAll();
+        $user            = new UserManager();
+        $userInfos       = $user->selectOneById($_SESSION['user_id']);
+        $campuses        = new CampusManager('campus');
+        $campusesList    = $campuses->selectAll();
+        $specialties     = new SpecialtyManager();
+        $specialtiesList = $specialties->selectAll();
 
-            return $this->twig->render('User/user_edit.html.twig', [
-                'user'        => $userInfos,
-                'campuses'    => $campusesList,
-                'specialties' => $specialtiesList,
-            ]);
+        return $this->twig->render('User/user_edit.html.twig', [
+            'user'        => $userInfos,
+            'campuses'    => $campusesList,
+            'specialties' => $specialtiesList,
+        ]);
     }
 
     public function editUser()
     {
         if (count($_POST) > 0 && isset($_POST['updateUser'])) {
-            $check = new UserEditFormControl($_POST);
+            $check    = new UserEditFormControl($_POST);
             $formData = $check->getData();
 
             if (count($formData['errors']) === 0) {
@@ -160,17 +160,17 @@ class UserController extends AbstractController
         $campuses      = new CampusManager('campus');
         $userCampus    = $campuses->selectOneById($userConnected['campus_id']);
 
-        $_SESSION['user_id']        = $idUser;
-        $_SESSION['lastname']       = $userConnected['lastname'];
-        $_SESSION['firstname']      = $userConnected['firstname'];
-        $_SESSION['email']          = $userConnected['email'];
-        $_SESSION['pseudo']         = $userConnected['pseudo'];
-        $_SESSION['github']         = $userConnected['github'];
-        $_SESSION['is_admin']       = $userConnected['is_admin'];
-        $_SESSION['specialty']      = $userSpecialty['title'];
-        $_SESSION['specialty_id']   = $userConnected['specialty_id'];
-        $_SESSION['campus_id']      = $userConnected['campus_id'];
-        $_SESSION['campus']         = $userCampus['city'];
+        $_SESSION['user_id']      = $idUser;
+        $_SESSION['lastname']     = $userConnected['lastname'];
+        $_SESSION['firstname']    = $userConnected['firstname'];
+        $_SESSION['email']        = $userConnected['email'];
+        $_SESSION['pseudo']       = $userConnected['pseudo'];
+        $_SESSION['github']       = $userConnected['github'];
+        $_SESSION['is_admin']     = $userConnected['is_admin'];
+        $_SESSION['specialty']    = $userSpecialty['title'];
+        $_SESSION['specialty_id'] = $userConnected['specialty_id'];
+        $_SESSION['campus_id']    = $userConnected['campus_id'];
+        $_SESSION['campus']       = $userCampus['city'];
     }
 
     public function logOut()
