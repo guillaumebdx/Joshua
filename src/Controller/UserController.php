@@ -64,7 +64,6 @@ class UserController extends AbstractController
         return $this->twig->render('user/user_confirm.html.twig', [
             'user' => $userCreated,
         ]);
-
     }
 
     public function profile()
@@ -100,7 +99,6 @@ class UserController extends AbstractController
         return $this->twig->render('User/user_profile.html.twig', [
             'user'     => $userCreated,
             'contests' => $userContests,
-
         ]);
     }
 
