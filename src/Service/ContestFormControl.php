@@ -14,8 +14,8 @@ class ContestFormControl extends AbstractFormControl
         $this->verifyOtherName($data['name'], 'name', 'name')
              ->verifyDescription($data['description'], 'description')
              ->verifyUrl($data['image']);
-        $this->verifyInteger($data['duration'], 'duration');
-        $this->verifyIfCampusIs0($data['campus']);
+        $this->verifyInteger($data['duration'], 'duration')
+             ->verifyIfCampusIs0($data['campus']);
     }
 
     /**
@@ -37,7 +37,7 @@ class ContestFormControl extends AbstractFormControl
     public function verifyIfCampusIs0(int $value, string $propertyName = 'campus')
     {
         if ($value === 0) {
-            $this->$propertyName = null;
+            $this->$propertyName = 0;
         } else {
             $this->verifySelected($value, $propertyName);
         }

@@ -56,7 +56,8 @@
                                 <label class="input-group-text" for="campus" id="inputGroup-campus">Campus</label>
                             </div>
                             <select class="custom-select" id="campus" name="campus" required>
-                                <option value="100" {% if contest.campus == 100 %}selected{% endif %}>All campus</option>
+                                <option value="0">All campus</option>
+                                {{ dump(campuses) }}
                                 {% for campus in campuses %}
                                     <option value="{{ campus.id }}" {% if contest.campus == campus.id %}selected{% endif %}>{{ campus.city }}</option>
                                 {% endfor %}

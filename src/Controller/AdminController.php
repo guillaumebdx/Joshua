@@ -36,6 +36,7 @@ class AdminController extends AbstractController
                 $contestManager = new ContestManager();
                 $contestManager->addContest($contest);
                 header('Location: /admin/managecontest');
+                exit;
             }
         }
 
