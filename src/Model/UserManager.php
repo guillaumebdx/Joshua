@@ -46,7 +46,7 @@ class UserManager extends AbstractManager
         $query .= ' set lastname = :lastname, firstname = :firstname, pseudo = :pseudo, github = :github, ';
         $query .= ' email = :email, ';
         if ($data['password']!='') {
-            $query.= ' password = :password';
+            $query.= ' password = :password, ';
         }
         $query.=' specialty_id = :specialty, campus_id = :campus ';
         $query.=' WHERE id = '.$_SESSION['user_id'];
@@ -67,7 +67,6 @@ class UserManager extends AbstractManager
             return;
         } else {
             throw new Exception('Unable to update user');
-
         }
     }
 
