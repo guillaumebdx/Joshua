@@ -155,7 +155,7 @@ h2 {
 }
 
 .border-success {
-    border-color: var(--josh-green) !important;
+    border-color: var(--josh-green);
 }
 
 .card-footer {
@@ -169,6 +169,11 @@ h2 {
 .border-success img {
     height: 225px;
     width: auto;
+}
+
+.margin-duration {
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 /* ADMIN */
@@ -216,6 +221,17 @@ table.adminusers tr td {
     background-color: var(--josh-grey);
 }
 
+nav .nav-link:hover {
+    color: var(--josh-green) !important;
+    font-size: 1.2rem;
+    transition: 0.4s;
+}
+
+nav .nav-link {
+    font-size: 1.1rem;
+    font-variant-caps: small-caps;
+}
+
 /* Specialty */
 
 .list-specialty{
@@ -242,5 +258,4 @@ table.adminusers tr td {
     border-radius: 1px;
     border-color: grey;
     margin-left: 14rem;
-
 }

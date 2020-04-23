@@ -5,6 +5,8 @@ namespace App\Model;
 
 class CampusManager extends AbstractManager
 {
+    const TABLE = 'campus';
+
     /**
      * @param object $campus
      * @return int

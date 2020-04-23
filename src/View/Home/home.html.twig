@@ -1,0 +1,24 @@
+{% extends 'layout.html.twig' %}
+{% block content %}
+    <div class="container">
+        <div class="row row-cols-1 row-cols-lg-3 justify-content-center">
+            {% for contest in contests %}
+                <div class="col mb-4">
+                    <div class="card h-100 mx-auto bg-dark text-white border-success">
+                        <img src="{% if contest.image is null %}/assets/images/default_contest.jpg{% else %}{{ contest.image }}{% endif %}" class="card-img-top" alt="image contest">
+                        <div class="card-body">
+                            <p>{% if contest.campus is null %}ALL CAMPUS{% else %}{{ contest.campus }}{% endif %}</p>
+                            <h5 class="card-title">{{ contest.name }}</h5>
+                            <p class="card-text">{{ contest.description }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <p class="float-left margin-duration">Duration : {{ contest.duration }}H</p>
+                            <button class="btn btn-dark float-right">Let's Go !</button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+

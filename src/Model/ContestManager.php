@@ -26,7 +26,7 @@ class ContestManager extends AbstractManager
     public function addContest(object $contest)
     {
         $query     = 'INSERT INTO ' . self::TABLE;
-        $query    .= ' (name, campus, description, duration, image)';
+        $query    .= ' (name, campus_id, description, duration, image)';
         $query    .= ' VALUES (:name, :campus, :description, :duration, :image)';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':name', $contest->getProperty('name'), \PDO::PARAM_STR);
@@ -38,6 +38,16 @@ class ContestManager extends AbstractManager
         if ($statement->execute()) {
             return (int)$this->pdo->lastInsertId();
         }
+    }
+
+    public function getVisibleContests()
+    {
+        $query = 'SELECT c.id, c.is_actif AS actif, c.name, c.image, c.description, ca.city AS campus , c.duration
+                  FROM ' . self::TABLE . ' c 
+                  LEFT JOIN ' . CampusManager::TABLE . ' ca ON ca.id = c.campus_id 
+                  WHERE c.is_visible = 1';
+
+        return $this->pdo->query($query)->fetchAll();
     }
 
     /**
