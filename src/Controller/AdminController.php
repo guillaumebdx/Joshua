@@ -147,9 +147,9 @@ class AdminController extends AbstractController
             }
         }
         $result=[
-            'errors'     => $errors,
-            'specialty'  => $specialty,
-            'specialties'=> $specialties,
+            'errors'      => $errors,
+            'specialty'   => $specialty,
+            'specialties' => $specialties,
 
         ];
         return $this->twig->render('Admin/specialty.html.twig', $result);
