@@ -3,13 +3,13 @@
     <div class="container">
         <div class="row">
             <div class="col-12 text-center">
-                <h1>Hey Wilder, you want to become a flag catcher ?</h1>
+                <h1>You're about to edit your profile</h1>
             </div>
         </div>
-        <form method="POST" action="/user/insertuser">
+        <form method="POST" action="/user/edituser">
             <div class="row">
                 <div class="col-12 align-self-center text-center">
-                    <img src="https://avatars.githubusercontent.com/{% if (user.github) %}{{user.github}}{% else %}github{% endif %}" alt="avatar github" id="avatar" class="img-thumbnail rounded-circle" width="85">
+                    <img src="https://avatars.githubusercontent.com/{{session.github}}" alt="avatar github" id="avatar" class="img-thumbnail rounded-circle" width="85">
                 </div>
             </div>
             <div class="row mt-3">
@@ -44,7 +44,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-pseudo">Pseudo *</span>
                         </div>
-                        <input type="text"  placeholder="Only letters or numbers without space." class="form-control" id="joshuapseudo" name="joshuapseudo" value="{{ user.joshuapseudo }}">
+                        <input type="text"  placeholder="Only letters or numbers without space." class="form-control" id="joshuapseudo" name="joshuapseudo" value="{{ user.pseudo }}">
                     </div>
                 </div>
             </div>
@@ -61,6 +61,7 @@
                             </button>
                         </div>
                         <small class="text-white">At least 8 characters whith at least 1 upperCase, 1 lowercase and 1 digit</small>
+                        <span class="text-green">Let empty if you don't want to change your password</span>
                     </div>
                 </div>
                 <div class="col-xs-12 col-md-6">
@@ -107,7 +108,7 @@
                 </div>
                 <div class="col-xs-12 col-md-6 align-self-center">
                     <div class="form-group ">
-                        <button type="submit" name="registerUser" class="align-self-center btn btn-dark text-white">Register <i class="fa fa-save"></i></button>
+                        <button type="submit" name="updateUser" class="align-self-center btn btn-dark text-white">Save <i class="fa fa-save"></i></button>
                     </div>
                 </div>
             </div>
