@@ -50,13 +50,24 @@ class AdminController extends AbstractController
     }
 
     // USERS
-    public function manageUsers()
+
+    /**
+     * Take an integer as input to manage pagination
+     * @param int $page Default 1
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function manageUsers(int $page = 1)
     {
         $usersManager     = new UserManager();
-        $users = $usersManager->selectAllOrderBy('lastname', 'ASC');
+        $users = $usersManager->selectAllOrderBy('lastname', 'ASC', $page);
 
         return $this->twig->render('admin/users.html.twig', [
-            'users' => $users,
+            'users'        => $users,
+            'number_pages' => $usersManager->numberOfPages(),
+            'is_page'      => $page
         ]);
     }
 

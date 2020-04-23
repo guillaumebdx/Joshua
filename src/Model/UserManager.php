@@ -11,6 +11,7 @@ class UserManager extends AbstractManager
      * @const table name
      */
     const TABLE = 'user';
+    const LIMIT_LIST_USERS = 5;
 
     public function __construct()
     {
@@ -80,6 +81,25 @@ class UserManager extends AbstractManager
     }
 
     /**
+     * Total number of users
+     * @return int
+     */
+    public function getTotalUsers() : int
+    {
+        $statement = $this->pdo->prepare(
+            'SELECT count(id) AS total FROM ' . self::TABLE
+        );
+        $statement->execute();
+        $results = $statement->fetch();
+        return $results['total'];
+    }
+
+    public function numberOfPages() : int
+    {
+        return ceil($this->getTotalUsers()) / self::LIMIT_LIST_USERS;
+    }
+
+    /**
      * Field to sort on
      * @param string $orderBy
      * Sort order : ASC or DESC
@@ -87,11 +107,15 @@ class UserManager extends AbstractManager
      * @return array
      */
 
-    public function selectAllOrderBy(string $orderBy, string $sortOrder): array
+    public function selectAllOrderBy(string $orderBy, string $sortOrder, int $page = 1): array
     {
+
+        $offset = ($page-1) * self::LIMIT_LIST_USERS;
+
         $statement = $this->pdo->prepare(
             'SELECT * FROM ' . self::TABLE .
-                      ' ORDER BY ' . $orderBy . ' ' . $sortOrder
+                      ' ORDER BY ' . $orderBy . ' ' . $sortOrder .
+                      ' LIMIT ' . self::LIMIT_LIST_USERS . ' OFFSET ' . $offset
         );
         $statement->execute();
 

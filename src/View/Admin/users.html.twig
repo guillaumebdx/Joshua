@@ -48,6 +48,15 @@
                     {%  endfor %}
                     </tbody>
                 </table>
+                <div class="row d-flex justify-content-start pagination">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            {% for i in range(1, number_pages+1 ) %}
+                            <li class="page-item {% if is_page == i %} active {% endif %}"><a class="page-link" href="/admin/manageusers/{{i}}">{{ i }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </div>

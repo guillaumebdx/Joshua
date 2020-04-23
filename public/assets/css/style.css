@@ -189,6 +189,19 @@ table.adminusers tr td {
     border-color: var(--josh-red);
     background-color:  var(--josh-red);
 }
+.pagination {
+    margin-top:20px;
+    padding-left:35px;
+}
+.page-item .page-link {
+    color:var(--josh-grey);
+    font-family: var(--josh-text-font);
+}
+.page-item.active .page-link {
+    background-color: var(--josh-red);
+    border-color: var(--josh-red);
+    color:white;
+}
 
 /* //////////// FIN ADMIN USERS */
 
