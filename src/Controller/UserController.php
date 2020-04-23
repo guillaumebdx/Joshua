@@ -30,9 +30,9 @@ class UserController extends AbstractController
     {
         if (count($_POST) > 0 && isset($_POST['registerUser'])) {
             $check      = new UserFormControl($_POST);
-            $formDatas  = $check->getDatas();
+            $formData  = $check->getData();
 
-            if (count($formDatas['errors']) === 0) {
+            if (count($formData['errors']) === 0) {
                 $newUser            = new UserManager();
                 $_POST['password']  = password_hash($_POST['password'], PASSWORD_BCRYPT);
                 $idUser             = $newUser->addUser($_POST);
@@ -45,8 +45,8 @@ class UserController extends AbstractController
                 $specialtiesList = $specialties->selectAll();
 
                 return $this->twig->render('User/register.html.twig', [
-                    'errors'        => $formDatas['errors'],
-                    'user'          => $formDatas['user'],
+                    'errors'        => $formData['errors'],
+                    'user'          => $formData['user'],
                     'campuses'      => $campusesList,
                     'specialties'   => $specialtiesList,
                 ]);
@@ -61,7 +61,7 @@ class UserController extends AbstractController
             $user        = new UserManager();
             $userCreated = $user->selectOneById($idUser);
 
-             $this->twig->render('User/user_confirm.html.twig', [
+             $this->twig->render('user/user_confirm.html.twig', [
                 'user' => $userCreated,
              ]);
     }
@@ -123,9 +123,9 @@ class UserController extends AbstractController
     {
         if (count($_POST) > 0 && isset($_POST['updateUser'])) {
             $check = new UserEditFormControl($_POST);
-            $formDatas = $check->getDatas();
+            $formData = $check->getData();
 
-            if (count($formDatas['errors']) === 0) {
+            if (count($formData['errors']) === 0) {
                 $userManager = new UserManager();
                 if ($_POST['password'] != '') {
                     $_POST['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
@@ -140,7 +140,7 @@ class UserController extends AbstractController
                 $specialtiesList = $specialties->selectAll();
 
                 return $this->twig->render('User/user_edit.html.twig', [
-                    'errors'      => $formDatas['errors'],
+                    'errors'      => $formData['errors'],
                     'campuses'    => $campusesList,
                     'specialties' => $specialtiesList,
                 ]);
@@ -171,7 +171,6 @@ class UserController extends AbstractController
         $_SESSION['specialty_id']   = $userConnected['specialty_id'];
         $_SESSION['campus_id']      = $userConnected['campus_id'];
         $_SESSION['campus']         = $userCampus['city'];
-
     }
 
     public function logOut()
