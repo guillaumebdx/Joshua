@@ -40,6 +40,16 @@ class ContestManager extends AbstractManager
         }
     }
 
+    public function getVisibleContests()
+    {
+        $query = 'SELECT c.id, c.is_actif AS actif, c.name, c.image, c.description, ca.city AS campus , c.duration
+                  FROM ' . self::TABLE . ' c 
+                  LEFT JOIN ' . CampusManager::TABLE . ' ca ON ca.id = c.campus_id 
+                  WHERE c.is_visible = 1';
+
+        return $this->pdo->query($query)->fetchAll();
+    }
+
     /**
      * The User ID
      * @var int $limit

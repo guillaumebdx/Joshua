@@ -111,6 +111,12 @@ CREATE TABLE challenge
 LOCK TABLES challenge WRITE;
 /*!40000 ALTER TABLE challenge
     DISABLE KEYS */;
+INSERT INTO challenge
+VALUES (null, 'flag #1', 'Le premier drapeau de la quete', 1, 1, 'http://frvaillant.com/', 'dfghj765434§', now(), null),
+       (null, 'Flag #2', 'Mon second flag', 4, 2, 'http://frvaillant.com/', 'djkhaled', now(), null),
+       (null, 'Flag #3', 'Mon 3 flag', 3, 1, 'http://frvaillant.com/', 'eminem', now(), null),
+       (null, 'Flag #4', 'Mon 4 flag', 2, 2, 'http://frvaillant.com/', 'sophie41', now(), null),
+       (null, 'Flag #5', 'Mon 5 flag', 5, 1, 'http://frvaillant.com/', 'http://google.fr', now(), null);
 /*!40000 ALTER TABLE challenge
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -128,13 +134,17 @@ CREATE TABLE contest
     is_visible  TINYINT     NOT NULL DEFAULT 0,
     is_actif    TINYINT     NOT NULL DEFAULT 0,
     name        VARCHAR(45) NOT NULL,
-    image       TEXT        NOT NULL,
+    image       TEXT                 DEFAULT NULL,
     description TEXT        NOT NULL,
-    campus      INT                  DEFAULT NULL,
-    duration    VARCHAR(45) NOT NULL,
+    campus_id   INT         NOT NULL DEFAULT 0,
+    duration    INT         NOT NULL,
     created_on  DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_on  DATETIME             DEFAULT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id, campus_id),
+    KEY fk_contest_campus_idx (campus_id),
+    CONSTRAINT fk_contest_campus FOREIGN KEY (campus_id)
+        REFERENCES campus (id)
+        ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE = INNODB
   DEFAULT CHARSET = UTF8MB4
   COLLATE = UTF8MB4_GENERAL_CI;
@@ -147,6 +157,10 @@ CREATE TABLE contest
 LOCK TABLES contest WRITE;
 /*!40000 ALTER TABLE contest
     DISABLE KEYS */;
+INSERT INTO contest
+VALUES (null,1,0,'Lord of the flag','https://i2.wp.com/gusandco.net/wp-content/uploads/2019/02/herr-der-ringe-knechten-lord-of-ring-1228268.jpg?fit=3840%2C2160&ssl=1','Will you be able to take all the flags? Would you manage to crush all your competitors and become the lord of the flags?',0,3,now(),null),
+       (null,1,0,'Flag wars','https://cdn.pocket-lint.com/r/s/1200x/assets/images/147767-tv-feature-what-order-should-you-watch-all-the-star-wars-films-image1-1wdfjceytb.jpg','Get on your spaceship and go hunting for flags, may the force be with you!',1,2,now(),null),
+       (null,1,0,'Wild contest',null,'Cause when you look like that, i\'ve never ever wanted to be so bad, oh it drives me wild',3,8,now(),null);
 /*!40000 ALTER TABLE contest
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -184,6 +198,10 @@ CREATE TABLE contest_has_challenge
 LOCK TABLES contest_has_challenge WRITE;
 /*!40000 ALTER TABLE contest_has_challenge
     DISABLE KEYS */;
+INSERT INTO contest_has_challenge
+VALUES (1, 1, 1),
+       (1, 2, 2),
+       (2, 1, 2);
 /*!40000 ALTER TABLE contest_has_challenge
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -317,6 +335,9 @@ CREATE TABLE type
 LOCK TABLES type WRITE;
 /*!40000 ALTER TABLE type
     DISABLE KEYS */;
+INSERT INTO type
+VALUES (1, 'sql', 'sql'),
+       (2, 'pass', 'pass');
 /*!40000 ALTER TABLE type
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -415,6 +436,10 @@ CREATE TABLE user_has_contest
 LOCK TABLES user_has_contest WRITE;
 /*!40000 ALTER TABLE user_has_contest
     DISABLE KEYS */;
+INSERT INTO user_has_contest
+VALUES (1, 1, 1, '2020-04-20 17:46:29', '2020-04-20 17:56:29'),
+       (1, 1, 2, '2020-04-20 17:57:29', '2020-04-20 18:16:29'),
+       (1, 2, 2, '2020-04-21 18:19:24', '2020-04-21 19:19:24');
 /*!40000 ALTER TABLE user_has_contest
     ENABLE KEYS */;
 UNLOCK TABLES;
