@@ -9,13 +9,14 @@
         <div class="row d-flex flex-row">
             <div class="col-xs-12 col-md-6 text-white d-flex flex-row">
                 <div class="col-xs-12 col-lg-3">
-                    <img src="https://avatars.githubusercontent.com/{{session.github}}" alt="avatar github" id="avatar" class="img-thumbnail rounded-circle" width="85">
+                    <img src="https://avatars.githubusercontent.com/{{ session.github }}" alt="avatar github"
+                         id="avatar" class="img-thumbnail rounded-circle" width="85">
                 </div>
                 <div class="col-xs-12 col-lg-9">
                     <table id="profil-user">
                         <tr>
                             <td>
-                               <b>#NAME</b>
+                                <b>#NAME</b>
                             </td>
                             <td>
                                 {{ session.lastname }}
@@ -69,7 +70,10 @@
                                 {{ session.github }}
                             </td>
                         </tr>
-                        <tr><td></td><td></td></tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </table>
                     <a class="btn btn-dark" href="/user/edit">EDIT YOUR PROFILE <i class="fa fa-edit"></i></a>
                 </div>
@@ -82,21 +86,24 @@
                         <div class="card">
                             <div class="card-header header-palmares" id="c{{ contest.id }}">
                                 <h2 class="mb-0">
-                                    <button class="btn btn-link title-collapse collapsed" type="button" data-toggle="collapse" data-target="#z{{ contest.id }}" aria-expanded="true" aria-controls="collapseOne">
+                                    <button class="btn btn-link title-collapse collapsed" type="button"
+                                            data-toggle="collapse" data-target="#z{{ contest.id }}" aria-expanded="true"
+                                            aria-controls="collapseOne">
                                         {{ contest.name }}
                                     </button>
                                 </h2>
                             </div>
 
-                            <div id="z{{ contest.id }}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div id="z{{ contest.id }}" class="collapse" aria-labelledby="headingOne"
+                                 data-parent="#accordionExample">
                                 <div class="row">
                                     <div class="card-body text-grey col-10">
                                         You started it à {{ contest.resume.started_on }}<br>
-                                        You earned  {{ contest.resume.challenges_played }} flags out of {{ contest.resume.number_of_challenges }}<bR>
-                                        <b>You were ranked {{contest.resume.user_rank}} * {{contest.resume.medal}}</b>
+                                        You earned {{ contest.resume.challenges_played }} flags out of {{ contest.resume.number_of_challenges }}<br>
+                                        <b>You were ranked {{ contest.resume.user_rank }} * {{ contest.resume.medal }}</b>
                                     </div>
                                     <div class="col-2">
-                                        <img src="/assets/images/medals/{{contest.resume.medal}}-medal.svg">
+                                        <img src="/assets/images/medals/{{ contest.resume.medal }}-medal.svg">
                                     </div>
                                 </div>
                             </div>
