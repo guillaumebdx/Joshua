@@ -12,10 +12,10 @@ class ContestFormControl extends AbstractFormControl
     public function __construct(array $data)
     {
         $this->verifyOtherName($data['name'], 'name', 'name')
-             ->verifyDescription($data['description'], 'description')
-             ->verifyUrl($data['image']);
+             ->verifyDescription($data['description'], 'description');
         $this->verifyInteger($data['duration'], 'duration')
-             ->verifyIfCampusIs0($data['campus']);
+             ->verifyIfCampusIs0($data['campus'])
+             ->verifyIfEmptyUrl($data['image']);
     }
 
     /**
@@ -41,5 +41,16 @@ class ContestFormControl extends AbstractFormControl
         } else {
             $this->verifySelected($value, $propertyName);
         }
+        return $this;
+    }
+
+    public function verifyIfEmptyUrl(string $value, string $propertyName = 'image')
+    {
+        if (empty($value)) {
+            $this->$propertyName = null;
+        } else {
+            $this->verifyUrl($value, $propertyName);
+        }
+        return $this;
     }
 }
