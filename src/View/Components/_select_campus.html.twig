@@ -1,8 +1,9 @@
 <div class="input-group-prepend">
-        <label class="input-group-text {% if errors.campus %} error {% endif %}" for="campus" id="inputGroup-campus">Campus</label>
+    <label class="input-group-text {% if errors.campus %} error {% endif %}" for="campus"
+           id="inputGroup-campus">Campus</label>
 </div>
 <select class="custom-select" id="campus" name="campus">
-        {% for campus in campuses %}
-                <option value="{{ campus.id }}" {% if user.campus_id == campus.id %} selected {% endif %}> {{ campus.city }}</option>
-        {% endfor %}
+    {% for campus in campuses %}
+        <option value="{{ campus.id }}" {% if user.campus_id == campus.id %} selected {% endif %}> {{ campus.city }}</option>
+    {% endfor %}
 </select>
