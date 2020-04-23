@@ -173,6 +173,26 @@ h2 {
 
 /* ADMIN */
 
+/* //////////// ADMIN USERS */
+
+table.adminusers {
+    width:100%;
+}
+table.adminusers tr:not(:last-child) {
+    border-bottom : 1px solid #ccc;
+}
+table.adminusers tr td {
+    padding: 10px 0 ;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    border-color: var(--josh-red);
+    background-color:  var(--josh-red);
+}
+
+/* //////////// FIN ADMIN USERS */
+
+
 .admin_title {
     margin: 4rem;
 }

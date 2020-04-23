@@ -78,4 +78,47 @@ class UserManager extends AbstractManager
 
         return $statement->fetch();
     }
+
+    /**
+     * Field to sort on
+     * @param string $orderBy
+     * Sort order : ASC or DESC
+     * @param string $sortOrder
+     * @return array
+     */
+
+    public function selectAllOrderBy(string $orderBy, string $sortOrder): array
+    {
+        $statement = $this->pdo->prepare(
+            'SELECT * FROM ' . self::TABLE .
+                      ' ORDER BY ' . $orderBy . ' ' . $sortOrder
+        );
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
+
+    /**
+     * Status of user : Admin = 1 / no-admin = 0
+     * @param int $status
+     * The user ID
+     * @param int $user
+     */
+    public function userSetAdmin(int $status, int $user) : void
+    {
+        $query = 'UPDATE user SET is_admin = :status WHERE id = :user';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':status', $status, \PDO::PARAM_INT);
+        $statement->bindValue(':user', $user, \PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    public function userSetActive(int $status, int $user) : void
+    {
+        $query = 'UPDATE user SET is_actif = :status WHERE id = :user';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':status', $status, \PDO::PARAM_INT);
+        $statement->bindValue(':user', $user, \PDO::PARAM_INT);
+        $statement->execute();
+    }
 }
