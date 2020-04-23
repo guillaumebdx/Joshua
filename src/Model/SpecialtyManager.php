@@ -13,7 +13,6 @@ class SpecialtyManager extends AbstractManager
     public function __construct()
     {
         parent::__construct(self::TABLE);
-
     }
 
     public function insertSpecialty(object $specialty)
