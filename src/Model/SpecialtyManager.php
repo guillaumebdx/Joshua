@@ -24,6 +24,5 @@ class SpecialtyManager extends AbstractManager
         if ($statement->execute()) {
             return (int)$this->pdo->lastInsertId();
         }
-
-
+    }
 }
