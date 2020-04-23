@@ -138,7 +138,6 @@ class AdminController extends AbstractController
         $specialty        = null;
         $specialties      = $specialtyManager->selectAll();
 
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $specialty = new SpecialtyFormControl($_POST);
             $errors    = $specialty->getErrors();
