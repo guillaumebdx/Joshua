@@ -173,6 +173,15 @@ h2 {
 
 /* ADMIN */
 
+/* //////////// ADMIN USERS */
+
+table.adminusers {
+    width:100%;
+}
+
+/* //////////// FIN ADMIN USERS */
+
+
 .admin_title {
     margin: 4rem;
 }

@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Model\ContestManager;
 use App\Model\CampusManager;
+use App\Model\SpecialtyManager;
+use App\Model\UserManager;
+
 use App\Service\CampusFormControl;
 use App\Service\ContestFormControl;
-use App\Model\SpecialtyManager;
 
 class AdminController extends AbstractController
 {
@@ -49,6 +51,36 @@ class AdminController extends AbstractController
     }
 
     // USERS
+    public function manageUsers()
+    {
+        $usersManager     = new UserManager();
+        $users = $usersManager->selectAllOrderBy('lastname', 'ASC');
+
+        return $this->twig->render('admin/users.html.twig', [
+            'users' => $users,
+        ]);
+    }
+
+
+    public function setUserAdmin()
+    {
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        $usersManager     = new UserManager();
+        $status = ($data['is_admin']) ? 1 : 0;
+
+        if ($data['is_admin']) {
+            $texte = $data['username'] . ' est désormais administrateur';
+            $usersManager->userSetAdmin($status, $data['user_id']);
+        } else {
+            $texte = $data['username'] . ' n\'est plus administrateur';
+            $usersManager->userSetAdmin($status, $data['user_id']);
+        }
+
+        return $this->twig->render('/ajaxviews/toast_admin_user.html.twig', [
+            'data' => $texte,
+        ]);
+    }
 
     // CAMPUS
 

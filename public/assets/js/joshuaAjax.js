@@ -24,9 +24,9 @@ class joshuaAjax {
      * @return void
      */
 
-    joshuaAjaxEvent (url, actionnerId, targetId, event) {
-        let target = document.getElementById(targetId);;
-        document.getElementById(actionnerId).addEventListener(event, function() {
+    joshuaAjaxEvent (url, actionnerId, targetId, even) {
+        let target = document.getElementById(targetId);
+        document.getElementById(actionnerId).addEventListener(even, (e) => {
             fetch(url, {
                 method: "POST",
                 mode: "same-origin",
@@ -41,6 +41,37 @@ class joshuaAjax {
         });
     }
 
+    joshuaAjaxSwitchAction (url, actionnerId, targetId, even) {
+        let target = document.getElementById(targetId);
+        document.getElementById(actionnerId).addEventListener(even, (e) => {
+            let user = e.target.dataset.user;
+            let username = e.target.dataset.username;
+            console.log(user);
+            let data = {
+                'user_id' : user,
+                'username' : username,
+                'is_admin' : e.target.checked
+            };
+
+            const request = new Request(url, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                mode:"cors"
+            });
+            fetch(request).then(function (response) {
+                return response.text();
+            }).then(function (html) {
+                var parser = new DOMParser();
+                var result = parser.parseFromString(html, "text/html");
+                target.innerHTML = result.body.innerHTML;
+                $('#user-toast').toast('show');
+            });
+        });
+    }
+
     /**
      * @param string url
      * @param string targetId
@@ -50,7 +81,7 @@ class joshuaAjax {
 
     joshuaAjaxTimer (url, targetId, time) {
         let target = document.getElementById(targetId);
-        this.interval = setInterval(function() {
+        this.interval = setInterval(() => {
             fetch(url, {
                 method: "POST",
                 mode: "same-origin",
