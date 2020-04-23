@@ -50,7 +50,7 @@ class ContestManager extends AbstractManager
      */
     public function getContestsPlayedByUser(int $user, int $limit = 0): array
     {
-        $query = 'SELECT * FROM contest c ' .
+        $query = 'SELECT distinct c.id, c.name  FROM contest c ' .
             ' JOIN user_has_contest uhc ON ' .
             ' uhc.contest_id = c.id ' .
             ' WHERE uhc.user_id = :user ' .
