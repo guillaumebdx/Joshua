@@ -33,7 +33,7 @@ class AdminController extends AbstractController
 
         if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['createBlankContest'])) {
             $contest = new ContestFormControl($_POST);
-            $errors = $contest->getErrors();
+            $errors  = $contest->getErrors();
             if (count($errors) === 0) {
                 $contestManager = new ContestManager();
                 $contestManager->addContest($contest);
@@ -63,10 +63,10 @@ class AdminController extends AbstractController
 
     public function setUserAdmin()
     {
-        $json = file_get_contents('php://input');
-        $data = json_decode($json, true);
-        $usersManager     = new UserManager();
-        $status = ($data['is_admin']) ? 1 : 0;
+        $json         = file_get_contents('php://input');
+        $data         = json_decode($json, true);
+        $usersManager = new UserManager();
+        $status       = ($data['is_admin']) ? 1 : 0;
 
         if ($data['is_admin']) {
             $texte = $data['username'] . ' est désormais administrateur';
@@ -83,10 +83,10 @@ class AdminController extends AbstractController
 
     public function setUserActif()
     {
-        $json = file_get_contents('php://input');
-        $data = json_decode($json, true);
-        $usersManager     = new UserManager();
-        $status = ($data['is_admin']) ? 1 : 0;
+        $json         = file_get_contents('php://input');
+        $data         = json_decode($json, true);
+        $usersManager = new UserManager();
+        $status       = ($data['is_admin']) ? 1 : 0;
 
         if ($data['is_admin']) {
             $texte = $data['username'] . ' est désormais actif';
@@ -124,8 +124,8 @@ class AdminController extends AbstractController
             }
         }
         $result=[
-            'errors'=>$errors,
-            'campus'=>$campus,
+            'errors' => $errors,
+            'campus' => $campus,
         ];
         return $this->twig->render('admin/campus.html.twig', $result);
     }
@@ -136,18 +136,21 @@ class AdminController extends AbstractController
         $specialtyManager = new SpecialtyManager();
         $errors           = [];
         $specialty        = null;
+        $specialties      = $specialtyManager->selectAll();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $specialty = new SpecialtyFormControl($_POST);
             $errors    = $specialty->getErrors();
             if (count($errors) === 0) {
                 $specialtyManager->insertSpecialty($specialty);
-                header('Location: /admin/index');
+                header('Location: /admin/addSpecialty');
             }
         }
         $result=[
-            'errors'=>$errors,
-            'specialty'=>$specialty,
+            'errors'      => $errors,
+            'specialty'   => $specialty,
+            'specialties' => $specialties,
+
         ];
         return $this->twig->render('Admin/specialty.html.twig', $result);
     }

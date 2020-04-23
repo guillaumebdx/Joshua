@@ -215,3 +215,32 @@ table.adminusers tr td {
 .navbar {
     background-color: var(--josh-grey);
 }
+
+/* Specialty */
+
+.list-specialty{
+    height: 300px;
+    width:42%;
+    line-height: normal;
+}
+.container-specialties{
+    justify-content: center;
+    align-items: center;
+    margin-left: 11rem;
+}
+.input-group.specialty{
+    padding: 0;
+}
+.row-specialty{
+    margin-top: 4rem;
+}
+.specialty-font{
+    margin-top: 3rem;
+    font-family: var(--josh-major-font);
+}
+.btn.specialty{
+    border-radius: 1px;
+    border-color: grey;
+    margin-left: 14rem;
+
+}

@@ -1,26 +1,39 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="text-center">CREATE SPECIALTY</h1>
-        </div>
-        <div class="col-12">
-            <h2 class="text-white text-center">Please fill this field</h2>
-        </div>
-    </div>
-    <form method="post">
-        <div class="row">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1">Language</span>
-                </div>
-                <input value="{{ specialty.title }}" type="text" class="form-control" name="specialty" aria-label="Specialty" aria-describedby="basic-addon1">
-            </div>
-            <p class="text-white">{{ errors.error_title }}</p>
-        </div>
-        <button class="background-grey "type="submit" class="btn btn-primary">Add Language</button>
-    </form>
+  <div class="container">
+      <div class="row">
+          <div class="col-12">
+              <h1 class="text-center">CREATE SPECIALTY</h1>
+          </div>
+          <div class="col-12">
+              <h2 class="text-white text-center">Please fill this field</h2>
+          </div>
+      </div>
+      <div class="container-specialties">
+          <form class="container container-specialties" method="post">
+              <div class="row-specialty">
+                  <div class="input-group specialty mb-3 col-5">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon1">Language</span>
+                      </div>
+                      <input value="{{ specialty.title }}" type="text" class="form-control" name="specialty"
+                             aria-label="Specialty" aria-describedby="basic-addon1">
+                  </div>
+                  <p class="text-white">{{ errors.error_title }}</p>
+              </div>
+              <button class="btn specialty text-white " type="submit" class="btn btn-primary">Add Language</button>
+          </form>
 
-    {% endblock %}
+          <div class="container container-specialties">
+              <div class="form-group">
+                  <label class="text-white specialty-font"> All Specialties</label>
+                  <select multiple class="form-control list-specialty" id="exampleFormControlSelect2">
+                      {% for specialty in specialties %}
+                      <option>{{ specialty.title }}</option>
+                      {% endfor %}
+                  </select>
+              </div>
+          </div>
+      </div>
+      {% endblock %}
