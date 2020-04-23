@@ -27,25 +27,24 @@ class AdminController extends AbstractController
         $contests     = new ContestManager();
         $contestsList = $contests->selectAll();
 
-        return $this->twig->render('admin/contest.html.twig', [
-            'campuses' => $campusesList,
-            'contests' => $contestsList,
-        ]);
-    }
+        $contest      = null;
 
-    public function insertContest()
-    {
-        $contestManager = new ContestManager();
-        $contest        = null;
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['createBlankContest'])) {
             $contest = new ContestFormControl($_POST);
             $errors = $contest->getErrors();
             if (count($errors) === 0) {
+                $contestManager = new ContestManager();
                 $contestManager->addContest($contest);
                 header('Location: /admin/managecontest');
+                exit;
             }
         }
+
+        return $this->twig->render('admin/contest.html.twig', [
+            'campuses' => $campusesList,
+            'contests' => $contestsList,
+            'contest'  => $contest
+        ]);
     }
 
     // USERS

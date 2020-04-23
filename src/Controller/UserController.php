@@ -99,7 +99,6 @@ class UserController extends AbstractController
         return $this->twig->render('User/user_profile.html.twig', [
             'user'     => $userCreated,
             'contests' => $userContests,
-
         ]);
     }
 

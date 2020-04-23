@@ -11,11 +11,11 @@ class ContestFormControl extends AbstractFormControl
      */
     public function __construct(array $data)
     {
-        $this->verifyName($data['name'], 'name', 'name')
-             ->verifySelected($data['campus'], 'campus')
+        $this->verifyOtherName($data['name'], 'name', 'name')
              ->verifyDescription($data['description'], 'description')
              ->verifyUrl($data['image']);
-        $this->verifyInteger($data['duration'], 'duration');
+        $this->verifyInteger($data['duration'], 'duration')
+             ->verifyIfCampusIs0($data['campus']);
     }
 
     /**
@@ -32,5 +32,14 @@ class ContestFormControl extends AbstractFormControl
             $this->errors['error_' . $propertyName] = 'Please indicate a valid duration.';
         }
         return $this;
+    }
+
+    public function verifyIfCampusIs0(int $value, string $propertyName = 'campus')
+    {
+        if ($value === 0) {
+            $this->$propertyName = 0;
+        } else {
+            $this->verifySelected($value, $propertyName);
+        }
     }
 }
