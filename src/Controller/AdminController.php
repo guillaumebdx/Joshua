@@ -82,6 +82,26 @@ class AdminController extends AbstractController
         ]);
     }
 
+    public function setUserActif()
+    {
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        $usersManager     = new UserManager();
+        $status = ($data['is_admin']) ? 1 : 0;
+
+        if ($data['is_admin']) {
+            $texte = $data['username'] . ' est désormais actif';
+            $usersManager->userSetActive($status, $data['user_id']);
+        } else {
+            $texte = $data['username'] . ' est désormais inactif';
+            $usersManager->userSetActive($status, $data['user_id']);
+        }
+
+        return $this->twig->render('/ajaxviews/toast_admin_user.html.twig', [
+            'data' => $texte,
+        ]);
+    }
+
     // CAMPUS
 
     /**

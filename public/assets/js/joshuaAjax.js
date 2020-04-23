@@ -67,7 +67,7 @@ class joshuaAjax {
                 var parser = new DOMParser();
                 var result = parser.parseFromString(html, "text/html");
                 target.innerHTML = result.body.innerHTML;
-                $('#user-toast').toast('show');
+                $('#user-toast-'+user).toast('show');
             });
         });
     }
