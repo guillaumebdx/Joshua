@@ -41,7 +41,7 @@ class UserEditFormControl extends AbstractFormControl
             'github' => $this->getProperty('github'),
             'campus_id' => $this->getProperty('campus'),
             'specialty_id' => $this->getProperty('specialty')
-            ];
+        ];
 
         if ($allData['password'] != '') {
             $data['user']['password'] = $this->getProperty('password');

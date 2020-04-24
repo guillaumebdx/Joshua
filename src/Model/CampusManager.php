@@ -7,6 +7,11 @@ class CampusManager extends AbstractManager
 {
     const TABLE = 'campus';
 
+    public function __construct()
+    {
+        parent::__construct(self::TABLE);
+    }
+
     /**
      * @param object $campus
      * @return int
@@ -14,7 +19,7 @@ class CampusManager extends AbstractManager
     public function insertCampus(object $campus)
     {
         // prepared request
-        $query = 'INSERT INTO ' . $this->table . ' (city, country, flag) VALUES (:city, :country, :flag)';
+        $query = 'INSERT INTO ' . self::TABLE . ' (city, country, flag) VALUES (:city, :country, :flag)';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':country', $campus->getProperty('country'), \PDO::PARAM_STR);
         $statement->bindValue(':city', $campus->getProperty('city'), \PDO::PARAM_STR);
