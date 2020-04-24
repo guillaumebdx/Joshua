@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (stristr($_SERVER['REQUEST_URI'], 'admin') != false && $_SESSION['is_admin'] != '1') {
+if (stristr($_SERVER['REQUEST_URI'], 'admin') != false && (bool)$_SESSION['is_admin'] === false) {
     header('Location: /');
     exit;
 }
@@ -10,16 +10,15 @@ if (empty($_SESSION['email']) && !in_array($_SERVER['REQUEST_URI'], $allowedUrl)
     exit;
 }
 
-if (isset($_SESSION['email'])) {
-    $test  = stristr($_SERVER['REQUEST_URI'], '/joshua/index');
-    $test2 = stristr($_SERVER['REQUEST_URI'], '/user/register');
-    $test3 = $_SERVER['REQUEST_URI'] === '/';
-    if ($test || $test2 || $test3) {
-        header('Location: /joshua/home');
-        exit;
-    }
+$test  = stristr($_SERVER['REQUEST_URI'], '/joshua/index');
+$test2 = stristr($_SERVER['REQUEST_URI'], '/user/register');
+$test3 = $_SERVER['REQUEST_URI'] === '/';
+$test4 = isset($_SESSION['email']);
+if (($test || $test2 || $test3) && $test4) {
+    header('Location: /joshua/home');
+    exit;
 }
-
+var_dump((bool)$_SESSION['is_admin']);
 require_once __DIR__ . '/../vendor/autoload.php';
 
 if (getenv('ENV') === false) {

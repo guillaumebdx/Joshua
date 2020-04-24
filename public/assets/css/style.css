@@ -155,7 +155,7 @@ h2 {
 }
 
 .border-success {
-    border-color: var(--josh-green);
+    border-color: var(--josh-green) !important;
 }
 
 .card-footer {
