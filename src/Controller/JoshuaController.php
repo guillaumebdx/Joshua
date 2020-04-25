@@ -8,6 +8,7 @@ use App\Service\IndexFormControl;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
+use App\Service\UserConnection;
 
 class JoshuaController extends AbstractController
 {
@@ -33,7 +34,7 @@ class JoshuaController extends AbstractController
                     if ($login === $user['email']) {
                         if (password_verify($password, $user['password'])) {
                             $userController = new UserController();
-                            $userController->openConnection($user['id']);
+                            UserConnection::openConnection($user['id']);
                             header('Location: joshua/home');
                         } else {
                             $error = 'Invalid password !';
