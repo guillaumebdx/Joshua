@@ -26,9 +26,8 @@
                             <div class="input-group col-lg-6 input-pass-index">
                                 <input type="password" class="form-control" name="password" id="password">
                                 <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary show-pass"
-                                            onmousedown="showPassword('password')" onmouseup="hidePassword('password')"
-                                            type="button" id="button-addon2">
+                                    <button class="btn btn-outline-secondary show-pass show-hide-pass"  data-target="password"
+                                            type="button" id="button-password">
                                         <i class="fa fa-eye"></i>
                                     </button>
                                 </div>
@@ -55,6 +54,5 @@
 {% endblock %}
 
 {%  block javascript %}
-<script src="/assets/js/formControl.js"></script>
 <script src="/assets/js/userForm.js"></script>
 {% endblock %}
