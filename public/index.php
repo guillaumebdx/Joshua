@@ -18,7 +18,6 @@ if (($test || $test2 || $test3) && $test4) {
     header('Location: /joshua/home');
     exit;
 }
-var_dump((bool)$_SESSION['is_admin']);
 require_once __DIR__ . '/../vendor/autoload.php';
 
 if (getenv('ENV') === false) {
