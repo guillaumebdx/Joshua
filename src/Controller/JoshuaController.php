@@ -33,7 +33,6 @@ class JoshuaController extends AbstractController
                 if ($user) {
                     if ($login === $user['email']) {
                         if (password_verify($password, $user['password'])) {
-                            $userController = new UserController();
                             UserConnection::openConnection($user['id']);
                             header('Location: joshua/home');
                         } else {
@@ -64,5 +63,16 @@ class JoshuaController extends AbstractController
         $visibleContests = $contestManager->getVisibleContests();
 
         return $this->twig->render('home/home.html.twig', ['contests' => $visibleContests]);
+    }
+
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function page404()
+    {
+        return $this->twig->render('404.html.twig', []);
     }
 }
