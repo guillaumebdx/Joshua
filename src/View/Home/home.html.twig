@@ -5,10 +5,10 @@
             {% for contest in contests %}
                 <div class="col mb-4">
                     <div class="card h-100 mx-auto bg-dark text-white border-success">
+                        <p class="badge badge-success">{% if contest.campus is null %}ALL CAMPUS{% else %}{{ contest.campus|upper }}{% endif %}</p>
                         <img src="{% if contest.image is null %}/assets/images/default_contest.jpg{% else %}{{ contest.image }}{% endif %}" class="card-img-top" alt="image contest">
                         <div class="card-body">
-                            <p>{% if contest.campus is null %}ALL CAMPUS{% else %}{{ contest.campus|upper }}{% endif %}</p>
-                            <h5 class="card-title">{{ contest.name }}</h5>
+                            <h5 class="card-title title-color">{{ contest.name }}</h5>
                             <p class="card-text">{{ contest.description }}</p>
                         </div>
                         <div class="card-footer">

@@ -176,6 +176,18 @@ h2 {
     margin-bottom: 8px;
 }
 
+.badge-success {
+    background-color: var(--josh-green);
+    color: var(--josh-grey);
+    margin-bottom: 0;
+    border-radius: unset;
+    padding: .4em;
+}
+
+.title-color {
+    text-transform: uppercase;
+}
+
 /* ADMIN */
 
 /* //////////// ADMIN USERS */
