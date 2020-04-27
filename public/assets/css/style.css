@@ -75,6 +75,13 @@ h2 {
 .list-group-item {
     border-color: #adce86;
 }
+
+.timer {
+    padding:6px 7px;
+    border:1px solid #fff;
+    color:#fff;
+}
+
 /* ****************************************** */
 /* *********  BOOTSTRAP SURCHARGE  ********** */
 /* ****************************************** */
