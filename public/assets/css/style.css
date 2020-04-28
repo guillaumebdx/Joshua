@@ -7,7 +7,7 @@
 
 * {
     --josh-major-font: 'pixelmix';
-    --josh-text-font: 'arial';
+    --josh-text-font: 'Overpass Mono', monospace;
     --josh-green : #adce86;
     --josh-grey : #1a1a1a;
     --josh-yellow : #fec200;
@@ -20,6 +20,7 @@
 
 body {
     background-color: var(--josh-grey);
+    font-family: var(--josh-text-font);
 }
 
 h1 {
@@ -27,6 +28,12 @@ h1 {
     color: var(--josh-green);
     font-size:2rem;
     padding:35px 0;
+}
+
+h2 {
+    font-family: var(--josh-major-font);
+    color: var(--josh-green);
+    font-size: 1.2rem;
 }
 
 .error {
@@ -50,9 +57,32 @@ h1 {
     color:var(--josh-red);
 }
 
+.text-grey {
+    color:var(--josh-grey);
+}
+
+.text-green {
+    color:var(--josh-green);
+}
+
 .navbar-brand {
     font-size:1.8rem;
 }
+
+.bg-none {
+    background:none;
+}
+.list-group-item {
+    border-color: #adce86;
+}
+
+.timer {
+    padding:6px 12px;
+    border:1px solid #fff;
+    color:#fff;
+    text-shadow: 0px 0px 6px rgba(255,255,255, 0.9);
+}
+
 /* ****************************************** */
 /* *********  BOOTSTRAP SURCHARGE  ********** */
 /* ****************************************** */
@@ -65,6 +95,35 @@ h1 {
 
 /* USER */
 
+#profil-user {
+    width:100%;
+}
+#profil-user td {
+    height:40px;
+}
+#profil-user tr td:first-child {
+    width:40%;
+    color:var(--josh-green);
+}
+
+.header-palmares {
+    background-color: #111111;
+}
+
+.title-collapse {
+    color:var(--josh-red);
+}
+.title-collapse.collapsed {
+    color:#ccc;
+}
+.title-collapse:hover {
+    color:var(--josh-red);
+}
+
+.input-group-text {
+    font-family: var(--josh-major-font);
+    font-size:0.7rem;
+}
 
 /* INDEX */
 
@@ -96,14 +155,69 @@ h1 {
     color: var(--josh-green);
 }
 
-/* USER */
+/* HOME */
 
-.input-group-text {
-    font-family: var(--josh-major-font);
-    font-size:0.7rem;
+.card-deck {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.border-success {
+    border-color: var(--josh-green) !important;
+}
+
+.card-footer {
+    border-top: 1px solid var(--josh-green);
+}
+
+.bg-dark {
+    background-color: var(--josh-grey) !important;
+}
+
+.border-success img {
+    height: 225px;
+    width: auto;
+}
+
+.margin-duration {
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 /* ADMIN */
+
+/* //////////// ADMIN USERS */
+
+table.adminusers {
+    width:100%;
+}
+table.adminusers tr:not(:last-child) {
+    border-bottom : 1px solid #ccc;
+}
+table.adminusers tr td {
+    padding: 10px 0 ;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    border-color: var(--josh-red);
+    background-color:  var(--josh-red);
+}
+.pagination {
+    margin-top:20px;
+    padding-left:35px;
+}
+.page-item .page-link {
+    color:var(--josh-grey);
+    font-family: var(--josh-text-font);
+}
+.page-item.active .page-link {
+    background-color: var(--josh-red);
+    border-color: var(--josh-red);
+    color:white;
+}
+
+/* //////////// FIN ADMIN USERS */
+
 
 .admin_title {
     margin: 4rem;
@@ -113,13 +227,34 @@ h1 {
     margin-top: 4rem;
 }
 
+.existing_challenge {
+    font-family: var(--josh-major-font);
+    font-size: 0.8rem;
+}
+
+.list-container {
+    height: 24rem;
+}
+
 /* _Header */
 
 .navbar {
     background-color: var(--josh-grey);
 }
 
+nav .nav-link:hover {
+    color: var(--josh-green) !important;
+    font-size: 1.2rem;
+    transition: 0.4s;
+}
+
+nav .nav-link {
+    font-size: 1.1rem;
+    font-variant-caps: small-caps;
+}
+
 /* Specialty */
+
 .list-specialty{
     height: 300px;
     width:42%;
@@ -144,5 +279,4 @@ h1 {
     border-radius: 1px;
     border-color: grey;
     margin-left: 14rem;
-
 }
