@@ -40,7 +40,7 @@
                             </td>
                             <td>
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" {% if user.is_actif == 1 %} checked {% endif %} data-user="{{ user.id }}" data-username="{{ user.firstname }} {{ user.lastname }}" class="custom-control-input is-actif-manager" id="swactif{{ user.id }}">
+                                    <input type="checkbox" {% if user.is_active == 1 %} checked {% endif %} data-user="{{ user.id }}" data-username="{{ user.firstname }} {{ user.lastname }}" class="custom-control-input is-actif-manager" id="swactif{{ user.id }}">
                                     <label class="custom-control-label" for="swactif{{ user.id }}">actif</label>
                                 </div>
                             </td>

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Model\ContestManager;
 use App\Model\UserManager;
+use App\Service\ContestDate;
 use App\Service\IndexFormControl;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -33,7 +34,6 @@ class JoshuaController extends AbstractController
                 if ($user) {
                     if ($login === $user['email']) {
                         if (password_verify($password, $user['password'])) {
-                            $userController = new UserController();
                             UserConnection::openConnection($user['id']);
                             header('Location: joshua/home');
                         } else {
@@ -60,9 +60,31 @@ class JoshuaController extends AbstractController
      */
     public function home()
     {
-        $contestManager = new ContestManager();
+        $contestManager  = new ContestManager();
         $visibleContests = $contestManager->getVisibleContests();
 
-        return $this->twig->render('home/home.html.twig', ['contests' => $visibleContests]);
+        $nbContests = count($visibleContests);
+        for ($i=0; $i<$nbContests; $i++) {
+            $visibleContests[$i]['active'] = (bool)$visibleContests[$i]['active'];
+
+            $beginning = $visibleContests[$i]['beginning'];
+            $duration  = $visibleContests[$i]['duration'];
+
+            $visibleContests[$i]['formatted_duration']  = ContestDate::getDurationInHoursAndMinutes($duration);
+            $visibleContests[$i]['end_date']            = ContestDate::getContestEndDate($beginning, $duration);
+        }
+
+        return $this->twig->render('Home/home.html.twig', ['contests' => $visibleContests]);
+    }
+
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function page404()
+    {
+        return $this->twig->render('404.html.twig', []);
     }
 }
