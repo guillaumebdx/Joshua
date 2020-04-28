@@ -1,5 +1,4 @@
 class contestTimer {
-
     /**
      * The end Time of contest format like aaaa-mm-jj hh:mm:ss
      * @param string endTime
@@ -14,7 +13,6 @@ class contestTimer {
         this.show(this.formatDiffTime(this.diffTime()));
         this.start();
     }
-
 
     diffTime()  {
         let restTime =  this.end.getTime() - Date.now();
