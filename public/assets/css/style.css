@@ -249,10 +249,6 @@ table.adminusers tr td {
     margin-top: 4rem;
 }
 
-.delete-btn {
-    background-color: var(--josh-red);
-}
-
 .existing_challenge {
     font-family: var(--josh-major-font);
     font-size: 0.8rem;
@@ -260,6 +256,11 @@ table.adminusers tr td {
 
 .list-container {
     height: 24rem;
+}
+
+.modal-contest {
+    background-color: var(--josh-grey);
+    color: var(--josh-green);
 }
 
 /* _Header */

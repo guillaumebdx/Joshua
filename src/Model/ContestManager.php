@@ -46,7 +46,6 @@ class ContestManager extends AbstractManager
      */
     public function editContest(object $contest)
     {
-
         $query     = 'UPDATE ' . self::TABLE;
         $query    .= ' SET name = :name, campus_id = :campus, description = :description,';
         $query    .= ' duration = :duration, image = :image';
@@ -61,6 +60,13 @@ class ContestManager extends AbstractManager
         if ($statement->execute()) {
             return (int)$this->pdo->lastInsertId();
         }
+    }
+
+    public function deleteContest(int $id)
+    {
+        $query = 'DELETE FROM ' . self::TABLE . ' WHERE id = '.$_GET['id'];
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
     }
 
     public function getVisibleContests()

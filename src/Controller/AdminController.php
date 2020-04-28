@@ -86,6 +86,13 @@ class AdminController extends AbstractController
             }
         }
 
+        if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['deleteContest'])) {
+            $contestManager = new ContestManager();
+            $contestManager->deleteContest($id);
+            header('Location: /admin/managecontest');
+            exit;
+        }
+
         return $this->twig->render('Admin/contest_edit.html.twig', [
             'campuses'   => $campusesList,
             'challenges' => $challengesList,
