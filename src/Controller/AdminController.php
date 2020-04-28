@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\ChallengeManager;
 use App\Model\ContestManager;
 use App\Model\CampusManager;
 use App\Model\SpecialtyManager;
@@ -23,7 +24,7 @@ class AdminController extends AbstractController
 
     public function manageContest()
     {
-        $campuses     = new CampusManager('campus');
+        $campuses     = new CampusManager();
         $campusesList = $campuses->selectAll();
 
         $contests     = new ContestManager();
@@ -42,10 +43,53 @@ class AdminController extends AbstractController
             }
         }
 
+        if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['createFullContest'])) {
+            $contest = new ContestFormControl($_POST);
+            $errors  = $contest->getErrors();
+            if (count($errors) === 0) {
+                $contestManager = new ContestManager();
+                $contestManager->addContest($contest);
+                header('Location: /admin/editcontest');
+                exit;
+            }
+        }
+
         return $this->twig->render('admin/contest.html.twig', [
             'campuses' => $campusesList,
             'contests' => $contestsList,
             'contest'  => $contest
+        ]);
+    }
+
+    public function editContest($id)
+    {
+        $id = $_GET['id'];
+
+        $campuses     = new CampusManager();
+        $campusesList = $campuses->selectAll();
+
+        $challenges     = new ChallengeManager();
+        $challengesList = $challenges->selectAll();
+
+        $contest      = new ContestManager();
+        $contestEdit  = $contest->selectOneById($id);
+
+        if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['saveContest'])) {
+            $contest = new ContestFormControl($_POST);
+            $errors  = $contest->getErrors();
+
+            if (count($errors) === 0) {
+                $contestManager = new ContestManager();
+                $contestManager->editContest($contest);
+                header('Location: /admin/managecontest');
+                exit;
+            }
+        }
+
+        return $this->twig->render('admin/contest_edit.html.twig', [
+            'campuses'   => $campusesList,
+            'challenges' => $challengesList,
+            'contest'    => $contestEdit,
         ]);
     }
 
@@ -122,7 +166,7 @@ class AdminController extends AbstractController
      */
     public function addCampus()
     {
-        $campusManager   = new CampusManager('campus');
+        $campusManager   = new CampusManager();
         $errors          = [];
         $campus          = null;
 

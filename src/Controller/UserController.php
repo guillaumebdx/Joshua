@@ -15,7 +15,7 @@ class UserController extends AbstractController
 {
     public function register()
     {
-        $campuses        = new CampusManager('campus');
+        $campuses        = new CampusManager();
         $campusesList    = $campuses->selectAll();
         $specialties     = new SpecialtyManager();
         $specialtiesList = $specialties->selectAll();
@@ -39,7 +39,7 @@ class UserController extends AbstractController
                 $this->openConnection($idUser);
                 header('location: /user/confirmuser/' . $idUser);
             } else {
-                $campuses        = new CampusManager('campus');
+                $campuses        = new CampusManager();
                 $campusesList    = $campuses->selectAll();
                 $specialties     = new SpecialtyManager();
                 $specialtiesList = $specialties->selectAll();
@@ -106,7 +106,7 @@ class UserController extends AbstractController
     {
         $user            = new UserManager();
         $userInfos       = $user->selectOneById($_SESSION['user_id']);
-        $campuses        = new CampusManager('campus');
+        $campuses        = new CampusManager();
         $campusesList    = $campuses->selectAll();
         $specialties     = new SpecialtyManager();
         $specialtiesList = $specialties->selectAll();
@@ -133,7 +133,7 @@ class UserController extends AbstractController
                 $this->openConnection($_SESSION['user_id']);
                 header('location:/user/profile/' . $idUser);
             } else {
-                $campuses        = new CampusManager('campus');
+                $campuses        = new CampusManager();
                 $campusesList    = $campuses->selectAll();
                 $specialties     = new SpecialtyManager();
                 $specialtiesList = $specialties->selectAll();
@@ -156,7 +156,7 @@ class UserController extends AbstractController
         $userConnected = $user->selectOneById($idUser);
         $specialties   = new SpecialtyManager();
         $userSpecialty = $specialties->selectOneById($userConnected['specialty_id']);
-        $campuses      = new CampusManager('campus');
+        $campuses      = new CampusManager();
         $userCampus    = $campuses->selectOneById($userConnected['campus_id']);
 
         $_SESSION['user_id']      = $idUser;

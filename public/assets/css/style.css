@@ -219,6 +219,10 @@ table.adminusers tr td {
     margin-top: 4rem;
 }
 
+.delete-btn {
+    background-color: var(--josh-red);
+}
+
 .existing_challenge {
     font-family: var(--josh-major-font);
     font-size: 0.8rem;
