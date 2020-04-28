@@ -5,26 +5,112 @@ namespace App\Controller;
 use App\Model\ContestManager;
 use App\Model\CampusManager;
 use App\Model\SpecialtyManager;
-use App\Service\CampusFormControl;
+use App\Model\UserManager;
 use App\Service\SpecialtyFormControl;
+use App\Service\CampusFormControl;
+use App\Service\ContestFormControl;
 
 class AdminController extends AbstractController
 {
     public function index()
     {
-        return $this->twig->render('Admin/admin.html.twig');
+        return $this->twig->render('admin/admin.html.twig');
     }
 
     // CHALLENGE
 
     // CONTEST
 
-    public function createContest()
+    public function manageContest()
     {
-        return $this->twig->render('Admin/contest.html.twig');
+        $campuses     = new CampusManager();
+        $campusesList = $campuses->selectAll();
+
+        $contests     = new ContestManager();
+        $contestsList = $contests->selectAll();
+
+        $contest      = null;
+
+        if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['createBlankContest'])) {
+            $contest = new ContestFormControl($_POST);
+            $errors  = $contest->getErrors();
+            if (count($errors) === 0) {
+                $contestManager = new ContestManager();
+                $contestManager->addContest($contest);
+                header('Location: /admin/managecontest');
+                exit;
+            }
+        }
+
+        return $this->twig->render('admin/contest.html.twig', [
+            'campuses' => $campusesList,
+            'contests' => $contestsList,
+            'contest'  => $contest
+        ]);
     }
 
     // USERS
+
+    /**
+     * Take an integer as input to manage pagination
+     * @param int $page Default 1
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function manageUsers(int $page = 1)
+    {
+        $usersManager     = new UserManager();
+        $users = $usersManager->selectAllOrderBy('lastname', 'ASC', $page);
+
+        return $this->twig->render('admin/users.html.twig', [
+            'users'        => $users,
+            'number_pages' => $usersManager->numberOfPages(),
+            'is_page'      => $page
+        ]);
+    }
+
+
+    public function setUserAdmin()
+    {
+        $json         = file_get_contents('php://input');
+        $data         = json_decode($json, true);
+        $usersManager = new UserManager();
+        $status       = ($data['is_admin']) ? 1 : 0;
+
+        if ($data['is_admin']) {
+            $texte = $data['username'] . ' est désormais administrateur';
+            $usersManager->userSetAdmin($status, $data['user_id']);
+        } else {
+            $texte = $data['username'] . ' n\'est plus administrateur';
+            $usersManager->userSetAdmin($status, $data['user_id']);
+        }
+
+        return $this->twig->render('/ajaxviews/toast_admin_user.html.twig', [
+            'data' => $texte,
+        ]);
+    }
+
+    public function setUserActif()
+    {
+        $json         = file_get_contents('php://input');
+        $data         = json_decode($json, true);
+        $usersManager = new UserManager();
+        $status       = ($data['is_admin']) ? 1 : 0;
+
+        if ($data['is_admin']) {
+            $texte = $data['username'] . ' est désormais actif';
+            $usersManager->userSetActive($status, $data['user_id']);
+        } else {
+            $texte = $data['username'] . ' est désormais inactif';
+            $usersManager->userSetActive($status, $data['user_id']);
+        }
+
+        return $this->twig->render('/ajaxviews/toast_admin_user.html.twig', [
+            'data' => $texte,
+        ]);
+    }
 
     // CAMPUS
 
@@ -50,11 +136,13 @@ class AdminController extends AbstractController
             }
         }
         $result=[
+
             'errors'=>$errors,
             'campus'=>$campus,
             'campuses'=>$campuses,
+
         ];
-        return $this->twig->render('Admin/campus.html.twig', $result);
+        return $this->twig->render('admin/campus.html.twig', $result);
     }
 
     // LANGUAGES
@@ -74,9 +162,10 @@ class AdminController extends AbstractController
             }
         }
         $result=[
-            'errors'=>$errors,
-            'specialty'=>$specialty,
-            'specialties'=>$specialties,
+            'errors'      => $errors,
+            'specialty'   => $specialty,
+            'specialties' => $specialties,
+
         ];
         return $this->twig->render('Admin/specialty.html.twig', $result);
     }

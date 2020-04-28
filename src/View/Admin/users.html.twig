@@ -1,0 +1,84 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Users manager{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1>Users manager</h1>
+            </div>
+        </div>
+        <div class="row d-flex flex-row justify-center">
+            <div class="col-12">
+                <table class="text-white adminusers" >
+                    <thead>
+                        <tr class="text-red">
+                            <th></th>
+                            <th>Last name</th>
+                            <th>First name</th>
+                            <th>Email</th>
+                            <th>Pseudo</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td><img src="https://avatars.githubusercontent.com/{{ user.github }}" alt="avatar github"
+                                     id="avatar" class="img-thumbnail rounded-circle" width="45"></td>
+                            <td>{{ user.lastname }}</td>
+                            <td>{{ user.firstname }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.pseudo }}</td>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" {% if user.is_admin == 1 %} checked {% endif %} data-user="{{ user.id }}" data-username="{{ user.firstname }} {{ user.lastname }}" class="custom-control-input is-admin-manager" id="swadmin{{ user.id }}">
+                                    <label class="custom-control-label" for="swadmin{{ user.id }}">admin</label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" {% if user.is_actif == 1 %} checked {% endif %} data-user="{{ user.id }}" data-username="{{ user.firstname }} {{ user.lastname }}" class="custom-control-input is-actif-manager" id="swactif{{ user.id }}">
+                                    <label class="custom-control-label" for="swactif{{ user.id }}">actif</label>
+                                </div>
+                            </td>
+                        </tr>
+                    {%  endfor %}
+                    </tbody>
+                </table>
+                <div class="row d-flex justify-content-start pagination">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            {% for i in range(1, number_pages+1 ) %}
+                            <li class="page-item {% if is_page == i %} active {% endif %}"><a class="page-link" href="/admin/manageusers/{{i}}">{{ i }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for user in users %}
+        <div class="toast" role="alert" id="user-toast-{{ user.id }}" style="position: fixed; top: 65px; right: 15px;">
+            <div class="toast-header bg-danger">
+                <img src="/assets/images/logo/picto.svg" class="rounded mr-2" alt="...">
+                <strong class="mr-auto text-white">Joshua administration</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body" id="body-toast-{{ user.id }}">
+            </div>
+        </div>
+    {%  endfor %}
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="/assets/js/joshuaAjax.js"></script>
+        <script src="/assets/js/admin_users_script.js"></script>
+{% endblock %}
+

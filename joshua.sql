@@ -111,6 +111,12 @@ CREATE TABLE challenge
 LOCK TABLES challenge WRITE;
 /*!40000 ALTER TABLE challenge
     DISABLE KEYS */;
+INSERT INTO challenge
+VALUES (null, 'Flag #1', 'Le premier drapeau de la quete', 1, 1, 'http://frvaillant.com/', 'dfghj765434§', now(), null),
+       (null, 'Flag #2', 'Mon second flag', 4, 2, 'http://frvaillant.com/', 'djkhaled', now(), null),
+       (null, 'Flag #3', 'Mon 3 flag', 3, 1, 'http://frvaillant.com/', 'eminem', now(), null),
+       (null, 'Flag #4', 'Mon 4 flag', 2, 2, 'http://frvaillant.com/', 'sophie41', now(), null),
+       (null, 'Flag #5', 'Mon 5 flag', 5, 1, 'http://frvaillant.com/', 'http://google.fr', now(), null);
 /*!40000 ALTER TABLE challenge
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -128,13 +134,17 @@ CREATE TABLE contest
     is_visible  TINYINT     NOT NULL DEFAULT 0,
     is_actif    TINYINT     NOT NULL DEFAULT 0,
     name        VARCHAR(45) NOT NULL,
-    image       TEXT        NOT NULL,
+    image       TEXT                 DEFAULT NULL,
     description TEXT        NOT NULL,
-    campus      INT                  DEFAULT NULL,
-    duration    VARCHAR(45) NOT NULL,
+    campus_id   INT         NOT NULL DEFAULT 0,
+    duration    INT         NOT NULL,
     created_on  DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_on  DATETIME             DEFAULT NULL,
-    PRIMARY KEY (id)
+    started_on  DATETIME             DEFAULT NULL,
+    PRIMARY KEY (id, campus_id),
+    KEY fk_contest_campus_idx (campus_id),
+    CONSTRAINT fk_contest_campus FOREIGN KEY (campus_id)
+        REFERENCES campus (id)
+        ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE = INNODB
   DEFAULT CHARSET = UTF8MB4
   COLLATE = UTF8MB4_GENERAL_CI;
@@ -147,6 +157,11 @@ CREATE TABLE contest
 LOCK TABLES contest WRITE;
 /*!40000 ALTER TABLE contest
     DISABLE KEYS */;
+INSERT INTO contest
+VALUES (null,1,0,'Lord of the flag','https://i2.wp.com/gusandco.net/wp-content/uploads/2019/02/herr-der-ringe-knechten-lord-of-ring-1228268.jpg?fit=3840%2C2160&ssl=1','Will you be able to take all the flags? Would you manage to crush all your competitors and become the lord of the flags?',0,3,now(),null),
+       (null,1,0,'Flag wars','https://cdn.pocket-lint.com/r/s/1200x/assets/images/147767-tv-feature-what-order-should-you-watch-all-the-star-wars-films-image1-1wdfjceytb.jpg','Get on your spaceship and go hunting for flags, may the force be with you!',1,2,now(),null),
+       (null,1,0,'Wild contest',null,'Cause when you look like that, i\'ve never ever wanted to be so bad, oh it drives me wild',3,8,now(),null),
+       (null,1,0,'Coca Cola Symphony',null,'Open a coke, open happiness, CHEERS !',1,24,now(),null);
 /*!40000 ALTER TABLE contest
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -184,6 +199,10 @@ CREATE TABLE contest_has_challenge
 LOCK TABLES contest_has_challenge WRITE;
 /*!40000 ALTER TABLE contest_has_challenge
     DISABLE KEYS */;
+INSERT INTO contest_has_challenge
+VALUES (1, 1, 1),
+       (1, 2, 2),
+       (2, 1, 2);
 /*!40000 ALTER TABLE contest_has_challenge
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -222,37 +241,6 @@ VALUES (null, 'Easy', '1'),
        (null, 'Pro', '4'),
        (null, 'Nightmare', '5');
 /*!40000 ALTER TABLE difficulty
-    ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table history_contest
---
-
-DROP TABLE IF EXISTS history_contest;
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE history_contest
-(
-    contest_id int      NOT NULL,
-    started_on datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    ended_on   datetime          DEFAULT NULL,
-    PRIMARY KEY (contest_id),
-    KEY fk_history_contest_contest_idx (contest_id),
-    CONSTRAINT fk_history_contest_contest FOREIGN KEY (contest_id) REFERENCES contest (id) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = UTF8MB4_GENERAL_CI;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table history_contest
---
-
-LOCK TABLES history_contest WRITE;
-/*!40000 ALTER TABLE history_contest
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE history_contest
     ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -317,6 +305,9 @@ CREATE TABLE type
 LOCK TABLES type WRITE;
 /*!40000 ALTER TABLE type
     DISABLE KEYS */;
+INSERT INTO type
+VALUES (1, 'sql', 'sql'),
+       (2, 'pass', 'pass');
 /*!40000 ALTER TABLE type
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -371,7 +362,8 @@ VALUES (null, '1', '1', 'Erpeldinger', 'Guillaume', 'Nighter', 'Nighter33', 'erp
        (null, '1', '1', 'Vaillant', 'François', 'Frvaillant', 'Frvaillant', 'frvaillant@gmail.com', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '1', '1', now(), null),
        (null, '1', '1', 'Regnault', 'Marien', 'Green-onions', 'Green-onions', 'regnault.marien@gmail.com', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '1', '1', now(), null),
        (null, '1', '1', 'Fourcade', 'Caroline', 'Caro', 'Carolinefourcade', 'carolinefourcade@yahoo.fr', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '1', '1', now(), null),
-       (null, '1', '1', 'Harari', 'Guillaume', 'Guillaumebdx', 'Guillaumebdx', 'guillaumeharari@hotmail.com', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '1', '1', now(), null);
+       (null, '1', '1', 'Harari', 'Guillaume', 'Guillaumebdx', 'Guillaumebdx', 'guillaumeharari@hotmail.com', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '1', '1', now(), null),
+       (null, '0', '1', 'Test', 'Test', 'Test', 'Test', 'test@test.fr', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '3', '1', now(), null);
 /*!40000 ALTER TABLE user
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -415,6 +407,13 @@ CREATE TABLE user_has_contest
 LOCK TABLES user_has_contest WRITE;
 /*!40000 ALTER TABLE user_has_contest
     DISABLE KEYS */;
+INSERT INTO user_has_contest
+VALUES (1, 1, 1, '2020-04-20 17:46:29', '2020-04-20 17:56:29'),
+       (1, 1, 2, '2020-04-20 17:57:29', '2020-04-20 18:16:29'),
+       (1, 2, 2, '2020-04-21 18:19:24', '2020-04-21 19:19:24'),
+       (2, 1, 1, '2020-04-17 13:40:29', '2020-04-17 17:56:29'),
+       (2, 2, 2, '2020-04-21 10:19:24', '2020-04-21 19:19:24'),
+       (2, 1, 2, '2020-04-22 15:57:29', '2020-04-22 18:16:29');
 /*!40000 ALTER TABLE user_has_contest
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -428,4 +427,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-18 19:47:41
+-- Dump completed on 2020-04-24 16:08:25

@@ -1,0 +1,120 @@
+{% extends 'layout.html.twig' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-s-12">
+                <h1>Profile & victories</h1>
+            </div>
+        </div>
+        <div class="row d-flex flex-row">
+            <div class="col-xs-12 col-md-6 text-white d-flex flex-row">
+                <div class="col-xs-12 col-lg-3">
+                    <img src="https://avatars.githubusercontent.com/{{ session.github }}" alt="avatar github"
+                         id="avatar" class="img-thumbnail rounded-circle" width="85">
+                </div>
+                <div class="col-xs-12 col-lg-9">
+                    <table id="profil-user">
+                        <tr>
+                            <td>
+                                <b>#NAME</b>
+                            </td>
+                            <td>
+                                {{ session.lastname }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>#FIRSTNAME</b>
+                            </td>
+                            <td>
+                                {{ session.firstname }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>#EMAIL</b>
+                            </td>
+                            <td>
+                                {{ session.email }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>#PSEUDO</b>
+                            </td>
+                            <td>
+                                {{ session.pseudo }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>#CAMPUS</b>
+                            </td>
+                            <td>
+                                {{ session.campus }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>#SPECIALTY</b>
+                            </td>
+                            <td>
+                                {{ session.specialty }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>#GITHUB</b>
+                            </td>
+                            <td>
+                                {{ session.github }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <a class="btn btn-dark" href="/user/edit">EDIT YOUR PROFILE <i class="fa fa-edit"></i></a>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-md-6 align-self-start text-white">
+                <h2>Last played contest{% if contests|length > 1 %}s{% endif %}</h2>
+                <div class="accordion" id="accordionExample">
+                    {% for contest in contests %}
+                        <div class="card">
+                            <div class="card-header header-palmares" id="c{{ contest.id }}">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link title-collapse collapsed" type="button"
+                                            data-toggle="collapse" data-target="#z{{ contest.id }}" aria-expanded="true"
+                                            aria-controls="collapseOne">
+                                        {{ contest.name }}
+                                    </button>
+                                </h2>
+                            </div>
+
+                            <div id="z{{ contest.id }}" class="collapse" aria-labelledby="headingOne"
+                                 data-parent="#accordionExample">
+                                <div class="row">
+                                    <div class="card-body text-grey col-10">
+                                        You started it à {{ contest.resume.started_on }}<br>
+                                        You earned {{ contest.resume.challenges_played }} flags out of {{ contest.resume.number_of_challenges }}<br>
+                                        <b>You were ranked {{ contest.resume.user_rank }} * {{ contest.resume.medal }}</b>
+                                    </div>
+                                    <div class="col-2">
+                                        <img src="/assets/images/medals/{{ contest.resume.medal }}-medal.svg">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{%  block javascript %}
+<script src="/assets/js/userForm.js"></script>
+{% endblock %}
