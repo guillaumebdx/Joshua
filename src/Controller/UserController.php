@@ -62,7 +62,7 @@ class UserController extends AbstractController
         $user        = new UserManager();
         $userCreated = $user->selectOneById($idUser);
 
-        return $this->twig->render('user/user_confirm.html.twig', [
+        return $this->twig->render('User/user_confirm.html.twig', [
             'user' => $userCreated,
         ]);
     }

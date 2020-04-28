@@ -42,8 +42,8 @@ class ContestManager extends AbstractManager
 
     public function getVisibleContests()
     {
-        $query = 'SELECT c.id, c.is_actif AS actif, c.name, c.image, c.description, ca.city AS campus , c.duration
-                  FROM ' . self::TABLE . ' c 
+        $query = 'SELECT c.id, c.is_active AS active, c.name, c.image, c.description, ca.city AS campus , c.duration,
+                   c.started_on AS beginning FROM ' . self::TABLE . ' c 
                   LEFT JOIN ' . CampusManager::TABLE . ' ca ON ca.id = c.campus_id 
                   WHERE c.is_visible = 1';
 
@@ -173,5 +173,13 @@ class ContestManager extends AbstractManager
             ];
         }
         return $palmares;
+    }
+
+    public function setContestActive(string $contestId)
+    {
+        $query = 'UPDATE ' . self::TABLE . ' SET is_active = 1, started_on = now() WHERE id = :id';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':id', $contestId, \PDO::PARAM_INT);
+        $statement->execute();
     }
 }
