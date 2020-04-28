@@ -8,6 +8,7 @@ use App\Model\SpecialtyManager;
 use App\Model\UserManager;
 use App\Service\UserFormControl;
 use App\Service\UserEditFormControl;
+use App\Service\UserConnection;
 
 use App\Model\ContestManager;
 
@@ -36,7 +37,7 @@ class UserController extends AbstractController
                 $newUser           = new UserManager();
                 $_POST['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
                 $idUser            = $newUser->addUser($_POST);
-                $this->openConnection($idUser);
+                UserConnection::openConnection($idUser);
                 header('location: /user/confirmuser/' . $idUser);
             } else {
                 $campuses        = new CampusManager();
@@ -61,7 +62,7 @@ class UserController extends AbstractController
         $user        = new UserManager();
         $userCreated = $user->selectOneById($idUser);
 
-        return $this->twig->render('user/user_confirm.html.twig', [
+        return $this->twig->render('User/user_confirm.html.twig', [
             'user' => $userCreated,
         ]);
     }
@@ -130,7 +131,7 @@ class UserController extends AbstractController
                     $_POST['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
                 }
                 $idUser = $userManager->updateUser($_POST);
-                $this->openConnection($_SESSION['user_id']);
+                UserConnection::openConnection($_SESSION['user_id']);
                 header('location:/user/profile/' . $idUser);
             } else {
                 $campuses        = new CampusManager();
@@ -149,30 +150,7 @@ class UserController extends AbstractController
         }
     }
 
-    public function openConnection($idUser)
-    {
-        $user = new UserManager();
-
-        $userConnected = $user->selectOneById($idUser);
-        $specialties   = new SpecialtyManager();
-        $userSpecialty = $specialties->selectOneById($userConnected['specialty_id']);
-        $campuses      = new CampusManager();
-        $userCampus    = $campuses->selectOneById($userConnected['campus_id']);
-
-        $_SESSION['user_id']      = $idUser;
-        $_SESSION['lastname']     = $userConnected['lastname'];
-        $_SESSION['firstname']    = $userConnected['firstname'];
-        $_SESSION['email']        = $userConnected['email'];
-        $_SESSION['pseudo']       = $userConnected['pseudo'];
-        $_SESSION['github']       = $userConnected['github'];
-        $_SESSION['is_admin']     = $userConnected['is_admin'];
-        $_SESSION['specialty']    = $userSpecialty['title'];
-        $_SESSION['specialty_id'] = $userConnected['specialty_id'];
-        $_SESSION['campus_id']    = $userConnected['campus_id'];
-        $_SESSION['campus']       = $userCampus['city'];
-    }
-
-    public function logOut()
+    public static function logOut()
     {
         $_SESSION = array();
         session_destroy();

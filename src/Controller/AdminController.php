@@ -15,7 +15,7 @@ class AdminController extends AbstractController
 {
     public function index()
     {
-        return $this->twig->render('admin/admin.html.twig');
+        return $this->twig->render('Admin/admin.html.twig');
     }
 
     // CHALLENGE
@@ -54,7 +54,7 @@ class AdminController extends AbstractController
             }
         }
 
-        return $this->twig->render('admin/contest.html.twig', [
+        return $this->twig->render('Admin/contest.html.twig', [
             'campuses' => $campusesList,
             'contests' => $contestsList,
             'contest'  => $contest
@@ -86,11 +86,18 @@ class AdminController extends AbstractController
             }
         }
 
-        return $this->twig->render('admin/contest_edit.html.twig', [
+        return $this->twig->render('Admin/contest_edit.html.twig', [
             'campuses'   => $campusesList,
             'challenges' => $challengesList,
             'contest'    => $contestEdit,
         ]);
+    }
+
+    public function setContestActive(string $contestId)
+    {
+        $contestManager = new ContestManager();
+        $contestManager->setContestActive($contestId);
+        header('Location: /admin/managecontest');
     }
 
     // USERS
@@ -108,7 +115,7 @@ class AdminController extends AbstractController
         $usersManager     = new UserManager();
         $users = $usersManager->selectAllOrderBy('lastname', 'ASC', $page);
 
-        return $this->twig->render('admin/users.html.twig', [
+        return $this->twig->render('Admin/users.html.twig', [
             'users'        => $users,
             'number_pages' => $usersManager->numberOfPages(),
             'is_page'      => $page
@@ -131,7 +138,7 @@ class AdminController extends AbstractController
             $usersManager->userSetAdmin($status, $data['user_id']);
         }
 
-        return $this->twig->render('/ajaxviews/toast_admin_user.html.twig', [
+        return $this->twig->render('/Ajaxviews/toast_admin_user.html.twig', [
             'data' => $texte,
         ]);
     }
@@ -141,9 +148,9 @@ class AdminController extends AbstractController
         $json         = file_get_contents('php://input');
         $data         = json_decode($json, true);
         $usersManager = new UserManager();
-        $status       = ($data['is_admin']) ? 1 : 0;
+        $status       = ($data['is_active']) ? 1 : 0;
 
-        if ($data['is_admin']) {
+        if ($data['is_active']) {
             $texte = $data['username'] . ' est désormais actif';
             $usersManager->userSetActive($status, $data['user_id']);
         } else {
@@ -151,7 +158,7 @@ class AdminController extends AbstractController
             $usersManager->userSetActive($status, $data['user_id']);
         }
 
-        return $this->twig->render('/ajaxviews/toast_admin_user.html.twig', [
+        return $this->twig->render('/Ajaxviews/toast_admin_user.html.twig', [
             'data' => $texte,
         ]);
     }
@@ -182,7 +189,7 @@ class AdminController extends AbstractController
             'errors' => $errors,
             'campus' => $campus,
         ];
-        return $this->twig->render('admin/campus.html.twig', $result);
+        return $this->twig->render('Admin/campus.html.twig', $result);
     }
 
     // LANGUAGES
