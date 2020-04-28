@@ -29,12 +29,13 @@
         <div class="container container-specialties">
             <div class="form-group">
                 <label class="text-white specialty-font"> All Specialties</label>
-                <select multiple class="form-control list-specialty" id="exampleFormControlSelect2">
+                <ul multiple class="form-control list-specialty" id="exampleFormControlSelect2">
                     {% for specialty in specialties %}
-                    <option>{{ specialty.title }}</option>
+                    <li>{{ specialty.title }}</li>
                     {% endfor %}
-                </select>
+                </ul>
             </div>
         </div>
     </div>
+</div>
     {% endblock %}

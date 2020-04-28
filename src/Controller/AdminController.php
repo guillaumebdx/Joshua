@@ -36,21 +36,23 @@ class AdminController extends AbstractController
      */
     public function addCampus()
     {
-        $campusManager   = new CampusManager('campus');
+        $campusManager   = new CampusManager();
         $errors          = [];
         $campus          = null;
+        $campuses        = $campusManager->getAllCampusOrderBy('country', 'ASC', 'city', 'ASC');
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $campus = new CampusFormControl($_POST);
             $errors = $campus->getErrors();
             if (count($errors) === 0) {
                 $campusManager->insertCampus($campus);
-                header('Location: /admin/index');
+                header('Location: /admin/addCampus');
             }
         }
         $result=[
             'errors'=>$errors,
             'campus'=>$campus,
+            'campuses'=>$campuses,
         ];
         return $this->twig->render('Admin/campus.html.twig', $result);
     }
@@ -58,7 +60,7 @@ class AdminController extends AbstractController
     // LANGUAGES
     public function addSpecialty()
     {
-        $specialtyManager = new SpecialtyManager('specialty');
+        $specialtyManager = new SpecialtyManager();
         $errors           = [];
         $specialty        = null;
         $specialties      = $specialtyManager->selectAll();
