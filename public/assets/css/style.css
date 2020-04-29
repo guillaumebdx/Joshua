@@ -258,6 +258,11 @@ table.adminusers tr td {
     height: 24rem;
 }
 
+.modal-contest {
+    background-color: var(--josh-grey);
+    color: var(--josh-green);
+}
+
 /* _Header */
 
 .navbar {

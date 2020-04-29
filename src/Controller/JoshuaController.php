@@ -26,11 +26,11 @@ class JoshuaController extends AbstractController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $connectUser = new IndexFormControl($_POST);
-            $login       = $connectUser->getProperty('email');
-            $password    = $connectUser->getProperty('password');
+            $login = $connectUser->getProperty('email');
+            $password = $connectUser->getProperty('password');
             if (count($connectUser->getErrors()) === 0) {
                 $userManager = new UserManager();
-                $user        = $userManager->selectOneByEmail($login);
+                $user = $userManager->selectOneByEmail($login);
                 if ($user) {
                     if ($login === $user['email']) {
                         if (password_verify($password, $user['password'])) {
@@ -60,32 +60,21 @@ class JoshuaController extends AbstractController
      */
     public function home()
     {
-        $contestManager  = new ContestManager();
+        $contestManager = new ContestManager();
         $visibleContests = $contestManager->getVisibleContests();
 
         $nbContests = count($visibleContests);
-        for ($i=0; $i<$nbContests; $i++) {
+        for ($i = 0; $i < $nbContests; $i++) {
             $visibleContests[$i]['active'] = (bool)$visibleContests[$i]['active'];
 
             $beginning = $visibleContests[$i]['beginning'];
-            $duration  = $visibleContests[$i]['duration'];
+            $duration = $visibleContests[$i]['duration'];
 
-            $visibleContests[$i]['formatted_duration']  = ContestDate::getDurationInHoursAndMinutes($duration);
-            $visibleContests[$i]['end_date']            = ContestDate::getContestEndDate($beginning, $duration);
+            $visibleContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration);
+            $visibleContests[$i]['end_date'] = ContestDate::getContestEndDate($beginning, $duration);
         }
 
         return $this->twig->render('Home/home.html.twig', ['contests' => $visibleContests]);
-    }
-
-    /**
-     * @return string
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
-     */
-    public function page404()
-    {
-        return $this->twig->render('404.html.twig', []);
     }
 
     /**

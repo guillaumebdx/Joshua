@@ -40,6 +40,35 @@ class ContestManager extends AbstractManager
         }
     }
 
+    /**
+     * @param object $contest
+     * @return int
+     */
+    public function editContest(object $contest)
+    {
+        $query     = 'UPDATE ' . self::TABLE;
+        $query    .= ' SET name = :name, campus_id = :campus, description = :description,';
+        $query    .= ' duration = :duration, image = :image';
+        $query    .= ' WHERE id = '.$_GET['id'];
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':name', $contest->getProperty('name'), \PDO::PARAM_STR);
+        $statement->bindValue(':campus', $contest->getProperty('campus'), \PDO::PARAM_INT);
+        $statement->bindValue(':description', $contest->getProperty('description'), \PDO::PARAM_STR);
+        $statement->bindValue(':duration', $contest->getProperty('duration'), \PDO::PARAM_INT);
+        $statement->bindValue(':image', $contest->getProperty('image'), \PDO::PARAM_STR);
+
+        if ($statement->execute()) {
+            return (int)$this->pdo->lastInsertId();
+        }
+    }
+
+    public function deleteContest(int $id)
+    {
+        $query = 'DELETE FROM ' . self::TABLE . ' WHERE id = '.$_GET['id'];
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+    }
+
     public function getVisibleContests()
     {
         $query = 'SELECT c.id, c.is_active AS active, c.name, c.image, c.description, ca.city AS campus , c.duration,
@@ -134,7 +163,7 @@ class ContestManager extends AbstractManager
     public function getNumberOfChallengesInContest(int $contest): ?int
     {
         $query = 'SELECT count(challenge_id) as total_challenges ' .
-            ' from contest_has_challenge where contest_id=:contest';
+            ' FROM contest_has_challenge where contest_id=:contest';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':contest', $contest, \PDO::PARAM_INT);
         if ($statement->execute()) {
