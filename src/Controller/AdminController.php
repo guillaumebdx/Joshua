@@ -34,6 +34,7 @@ class AdminController extends AbstractController
         if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['createBlankContest'])) {
             $contest = new ContestFormControl($_POST);
             $errors  = $contest->getErrors();
+            var_dump($contest);
             if (count($errors) === 0) {
                 $contestManager = new ContestManager();
                 $contestManager->addContest($contest);

@@ -87,15 +87,4 @@ class JoshuaController extends AbstractController
     {
         return $this->twig->render('404.html.twig', []);
     }
-
-    /**
-     * @return string
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
-     */
-    public function page404()
-    {
-        return $this->twig->render('404.html.twig', []);
-    }
 }

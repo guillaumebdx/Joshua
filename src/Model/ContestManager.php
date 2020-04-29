@@ -21,7 +21,6 @@ class ContestManager extends AbstractManager
 
     /**
      * @param object $contest
-     * @return int
      */
     public function addContest(object $contest)
     {
@@ -34,10 +33,7 @@ class ContestManager extends AbstractManager
         $statement->bindValue(':description', $contest->getProperty('description'), \PDO::PARAM_STR);
         $statement->bindValue(':duration', $contest->getProperty('duration'), \PDO::PARAM_INT);
         $statement->bindValue(':image', $contest->getProperty('image'), \PDO::PARAM_STR);
-
-        if ($statement->execute()) {
-            return (int)$this->pdo->lastInsertId();
-        }
+        $statement->execute();
     }
 
     public function getVisibleContests()

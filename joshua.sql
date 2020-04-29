@@ -44,7 +44,8 @@ LOCK TABLES campus WRITE;
 /*!40000 ALTER TABLE campus
     DISABLE KEYS */;
 INSERT INTO campus
-VALUES (null, 'Bordeaux', 'France', 'france.svg', 'bdx'),
+VALUES (0, 'All campus', 'all', 'all', 'all'),
+       (null, 'Bordeaux', 'France', 'france.svg', 'bdx'),
        (null, 'Biarritz', 'France', 'france.svg', 'biarritz'),
        (null, 'La Loupe', 'France', 'france.svg', 'loupe'),
        (null, 'Lille', 'France', 'france.svg', 'lille'),
@@ -323,7 +324,7 @@ CREATE TABLE user
 (
     id           INT          NOT NULL AUTO_INCREMENT,
     is_admin     TINYINT      NOT NULL DEFAULT 0,
-    is_active     TINYINT      NOT NULL DEFAULT 1,
+    is_active    TINYINT      NOT NULL DEFAULT 1,
     lastname     VARCHAR(45)  NOT NULL,
     firstname    VARCHAR(45)  NOT NULL,
     pseudo       VARCHAR(45)  NOT NULL,
