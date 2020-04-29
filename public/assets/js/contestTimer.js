@@ -1,4 +1,4 @@
-class joshuaTimer {
+class contestTimer {
 
     /**
      * The end Time of contest format like aaaa-mm-jj hh:mm:ss
@@ -12,6 +12,7 @@ class joshuaTimer {
         this.end = new Date(endTime);
         this.contestTimer = null;
         this.show(this.formatDiffTime(this.diffTime()));
+        this.start();
     }
 
 
