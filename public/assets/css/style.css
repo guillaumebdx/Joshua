@@ -348,6 +348,7 @@ h2 {
 
 .ranking li .score {
     float: right;
+}
 
 .badge-success {
     background-color: var(--josh-green);
@@ -445,8 +446,9 @@ nav .nav-link {
 
 .page-footer {
     margin-top: 25px;
-    border-top: 1px solid var(--josh-green);
-    background-color: var(--josh-grey);
+   }
+.page-footer a.rs-icons:hover {
+    text-decoration:none;
 }
 
 .page-footer img {
