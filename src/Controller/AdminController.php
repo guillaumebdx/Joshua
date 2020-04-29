@@ -124,7 +124,7 @@ class AdminController extends AbstractController
     {
         $campusManager   = new CampusManager();
         $errors          = [];
-        $campus          = null;
+        $campus          = ('');
         $campus          = ucfirst(strtolower($campus));
         $campuses        = $campusManager->getAllCampusOrderBy('country', 'ASC', 'city', 'ASC');
 
