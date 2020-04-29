@@ -348,6 +348,7 @@ h2 {
 
 .ranking li .score {
     float: right;
+}
 
 .badge-success {
     background-color: var(--josh-green);
