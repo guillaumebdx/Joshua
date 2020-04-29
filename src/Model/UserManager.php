@@ -139,7 +139,7 @@ class UserManager extends AbstractManager
 
     public function userSetActive(int $status, int $user) : void
     {
-        $query = 'UPDATE user SET is_actif = :status WHERE id = :user';
+        $query = 'UPDATE user SET is_active = :status WHERE id = :user';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':status', $status, \PDO::PARAM_INT);
         $statement->bindValue(':user', $user, \PDO::PARAM_INT);

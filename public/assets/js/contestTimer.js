@@ -1,5 +1,6 @@
 class contestTimer {
 
+  
     /**
      * The end Time of contest format like aaaa-mm-jj hh:mm:ss
      * @param string endTime
@@ -15,7 +16,6 @@ class contestTimer {
         this.start();
     }
 
-
     diffTime()  {
         let restTime =  this.end.getTime() - Date.now();
         return  restTime;
@@ -24,9 +24,9 @@ class contestTimer {
     formatDiffTime(restTime) {
         let thours = Math.floor(restTime/1000/3600);
         let restDate=new Date(restTime);
-        let hours = (thours<10) ? '0'+thours+ ' : ' : thours + ' : ';
-        let minutes = (restDate.getMinutes()<10) ? '0'+restDate.getMinutes()+ ' : ' : restDate.getMinutes() + ' : ';
-        let seconds = (restDate.getSeconds()<10) ? '0'+restDate.getSeconds() : restDate.getSeconds();
+        let hours = (thours<10) ? '0'+thours+ 'h ' : thours + 'h ';
+        let minutes = (restDate.getMinutes()<10) ? '0'+restDate.getMinutes() + 'm ' : restDate.getMinutes() + 'm ';
+        let seconds = (restDate.getSeconds()<10) ? '0'+restDate.getSeconds() + 's ' : restDate.getSeconds() + 's';
         return hours + minutes + seconds;
     }
 

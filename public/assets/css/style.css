@@ -29,6 +29,10 @@
     --josh-red : #e0013f;
 }
 
+main {
+    min-height: calc(100vh - 77px - 148px - 16px);
+}
+
 /* ****************************************** */
 /* ***************  GENERAL  **************** */
 /* ****************************************** */
@@ -344,6 +348,23 @@ h2 {
 
 .ranking li .score {
     float: right;
+
+.badge-success {
+    background-color: var(--josh-green);
+    color: var(--josh-grey);
+    margin-bottom: 0;
+    border-radius: unset;
+    padding: .4em;
+}
+
+.title-color {
+    text-transform: uppercase;
+}
+
+.btn-success {
+    border-radius: 10px;
+    background-color: var(--josh-green);
+    color: var(--josh-grey);
 }
 
 /* ADMIN */
@@ -413,6 +434,20 @@ nav .nav-link:hover {
 nav .nav-link {
     font-size: 1.1rem;
     font-variant-caps: small-caps;
+}
+
+/* _Footer */
+
+.page-footer {
+    margin-top: 25px;
+    border-top: 1px solid var(--josh-green);
+    background-color: var(--josh-grey);
+}
+
+.page-footer img {
+    width: 50px;
+    height: auto;
+    color: #e0013f;
 }
 
 /* Specialty */
