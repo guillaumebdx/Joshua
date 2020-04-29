@@ -62,7 +62,7 @@ class JoshuaController extends AbstractController
         $contestManager = new ContestManager();
         $visibleContests = $contestManager->getVisibleContests();
 
-        return $this->twig->render('home/home.html.twig', ['contests' => $visibleContests]);
+        return $this->twig->render('Home/home.html.twig', ['contests' => $visibleContests]);
     }
 
     /**

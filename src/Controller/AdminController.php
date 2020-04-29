@@ -14,7 +14,7 @@ class AdminController extends AbstractController
 {
     public function index()
     {
-        return $this->twig->render('admin/admin.html.twig');
+        return $this->twig->render('Admin/admin.html.twig');
     }
 
     // CHALLENGE
@@ -42,7 +42,7 @@ class AdminController extends AbstractController
             }
         }
 
-        return $this->twig->render('admin/contest.html.twig', [
+        return $this->twig->render('Admin/contest.html.twig', [
             'campuses' => $campusesList,
             'contests' => $contestsList,
             'contest'  => $contest
@@ -64,7 +64,7 @@ class AdminController extends AbstractController
         $usersManager     = new UserManager();
         $users = $usersManager->selectAllOrderBy('lastname', 'ASC', $page);
 
-        return $this->twig->render('admin/users.html.twig', [
+        return $this->twig->render('Admin/users.html.twig', [
             'users'        => $users,
             'number_pages' => $usersManager->numberOfPages(),
             'is_page'      => $page
@@ -125,6 +125,7 @@ class AdminController extends AbstractController
         $campusManager   = new CampusManager();
         $errors          = [];
         $campus          = null;
+        $campus          = ucfirst(strtolower($campus));
         $campuses        = $campusManager->getAllCampusOrderBy('country', 'ASC', 'city', 'ASC');
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -142,7 +143,7 @@ class AdminController extends AbstractController
             'campuses'=>$campuses,
 
         ];
-        return $this->twig->render('admin/campus.html.twig', $result);
+        return $this->twig->render('Admin/campus.html.twig', $result);
     }
 
     // LANGUAGES

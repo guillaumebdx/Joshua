@@ -12,16 +12,6 @@ class CampusManager extends AbstractManager
         parent::__construct(self::TABLE);
     }
 
-    /**
-     *
-     */
-    const TABLE = 'campus';
-
-    public function __construct()
-    {
-        parent::__construct(self::TABLE);
-    }
-
     public function insertCampus(object $campus)
     {
         // prepared request

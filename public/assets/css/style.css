@@ -254,7 +254,9 @@ nav .nav-link {
 }
 
 /* Specialty */
-
+ul{
+    list-style-type: none;
+}
 .list-specialty{
     height: 150px;
     width:42%;
@@ -280,7 +282,7 @@ nav .nav-link {
 .btn.specialty{
     border-radius: 1px;
     border-color: grey;
-    margin-left: 14rem;
+    margin-left: 13rem;
 }
 
 .btn-campus{
@@ -293,8 +295,7 @@ nav .nav-link {
     margin-top: 2rem;
 }
 .row-campus-flag {
-
-    margin-top: 2rem;
+    margin-top: 4rem;
     -webkit-column-count: 5;
     -moz-column-count: 5;
     column-count: 5;
