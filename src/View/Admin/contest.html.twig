@@ -3,108 +3,108 @@
 {% block title %}Contest manager{% endblock %}
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h1>Contest manager</h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-4 offset-1">
-                <div class="text-center pb-3">
-                    <h2>Existing contests</h2>
-                </div>
-                <div class="row list-container overflow-auto">
-                    <ul class="list-group col-12">
-                        {% for contest in contests|reverse %}
-                        <li class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2">
-                            <p class="mb-0 existing_challenge pb-1"><i class="fa fa-flag"></i> {{ contest.name }}</p>
-                            <div class="row col-12">
-                                <a class="btn btn btn-dark text-white rounded-sm mr-4 mt-1 p-1 pl-2 pr-2" href="/admin/editcontest/?id={{ contest.id }}">Edit</a>
-                                <div class="custom-control custom-switch mt-2 mr-4">
-                                    <input type="checkbox" class="custom-control-input manage-contest-active" id="active-{{ contest.id }}" data-target="{{ contest.id }}" {% if (contest.is_actif == '1') %} checked {% endif %}>
-                                <!--<div class="custom-control custom-switch mt-2 mr-4">
-                                    <input type="checkbox" class="custom-control-input manage-contest-active" id="active-{{ contest.id }}" data-target="{{ contest.id }}" {% if (contest.is_active == '1') %} checked {% endif %}>
-                                    <label class="custom-control-label" for="active-{{ contest.id }}">Active</label>
-                                    </div> -->
-                                </div>
-                                <div>
-                                    <a href="/admin/setcontestactive/{{ contest.id }}"><button>active</button></a>
-                                </div>
-                                <div class="custom-control custom-switch mt-2">
-                                    <input type="checkbox" class="custom-control-input manage-contest-display" id="display-{{ contest.id }}" data-target="{{ contest.id }}" {% if (contest.is_visible == '1') %} checked {% endif %}>
-                                    <label class="custom-control-label" for="display-{{ contest.id }}">Display</label>
-                                </div>
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            <div class="col-4 offset-2">
-                <form action="" method="post">
-                    <div class="row d-flex justify-content-center">
-                        <div class="text-center pb-3">
-                            <h2>Create a contest</h2>
-                        </div>
-                    </div>
-                    <div class="row d-flex justify-content-center">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Title</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="Max 30 characters" aria-describedby="basic-addon1" name="name" value="{{ contest.name }}" required>
-                        </div>
-                    </div>
-                    <div class="row d-flex justify-content-center">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="campus" id="inputGroup-campus">Campus</label>
-                            </div>
-                            <select class="custom-select" id="campus" name="campus" required>
-                                <option value="0">All campuses</option>
-                                {% for campus in campuses %}
-                                    <option value="{{ campus.id }}" {% if contest.campus_id == campus.id %}selected{% endif %}>{{ campus.city }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row d-flex justify-content-center">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Description</span>
-                            </div>
-                            <textarea class="form-control" aria-label="Description" maxlength="200" placeholder="Between 30 and 200 characters" name="description" required>{{ contest.description }}</textarea>
-                        </div>
-                    </div>
-                    <div class="row d-flex justify-content-center">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Duration</span>
-                            </div>
-                            <input type="number" class="form-control" placeholder="Contest duration in hours" aria-describedby="basic-addon1" name="duration" value="{{ contest.duration }}" required>
-                        </div>
-                    </div>
-                    <div class="row d-flex justify-content-center">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Image</span>
-                            </div>
-                            <input type="url" class="form-control" placeholder="Paste here the url of the image" aria-describedby="basic-addon1" name="image" value="{{ contest.url }}">
-                        </div>
-                    </div>
-                    <div class="row d-flex justify-content-center">
-                        <div class="form-group">
-                            <button type="submit" name="createFullContest" class="align-self-center btn btn-dark text-white">Next step (add challenges) <i class="fa fa-arrow-right"></i></button>
-                        </div>
-                    </div>
-                    <div class="row d-flex justify-content-center">
-                        <div class="form-group">
-                            <button type="submit" name="createBlankContest" class="align-self-center btn btn-dark text-white">Create a blank contest <i class="fa fa-save"></i></button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1>Contest manager</h1>
         </div>
     </div>
+    <div class="row">
+        <div class="col-4 offset-1">
+            <div class="text-center pb-3">
+                <h2>Existing contests</h2>
+            </div>
+            <div class="row list-container overflow-auto">
+                <ul class="list-group col-12">
+                    {% for contest in contests|reverse %}
+                    <li class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2">
+                        <p class="mb-0 existing_challenge pb-1"><i class="fa fa-flag"></i> {{ contest.name }}</p>
+                        <div class="row col-12">
+                            <a class="btn btn btn-dark text-white rounded-sm mr-4 mt-1 p-1 pl-2 pr-2" href="/admin/editcontest/{{ contest.id }}">Edit</a>
+                            <div class="custom-control custom-switch mt-2 mr-4">
+                                <input type="checkbox" class="custom-control-input manage-contest-active" id="active-{{ contest.id }}" data-target="{{ contest.id }}" {% if (contest.is_actif == '1') %} checked {% endif %}>
+                            <!--<div class="custom-control custom-switch mt-2 mr-4">
+                                <input type="checkbox" class="custom-control-input manage-contest-active" id="active-{{ contest.id }}" data-target="{{ contest.id }}" {% if (contest.is_active == '1') %} checked {% endif %}>
+                                <label class="custom-control-label" for="active-{{ contest.id }}">Active</label>
+                                </div> -->
+                            </div>
+                            <div>
+                                <a href="/admin/setcontestactive/{{ contest.id }}"><button>active</button></a>
+                            </div>
+                            <div class="custom-control custom-switch mt-2">
+                                <input type="checkbox" class="custom-control-input manage-contest-display" id="display-{{ contest.id }}" data-target="{{ contest.id }}" {% if (contest.is_visible == '1') %} checked {% endif %}>
+                                <label class="custom-control-label" for="display-{{ contest.id }}">Display</label>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-4 offset-2">
+            <form action="" method="post">
+                <div class="row d-flex justify-content-center">
+                    <div class="text-center pb-3">
+                        <h2>Create a contest</h2>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Title</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Max 30 characters" aria-describedby="basic-addon1" name="name" value="{{ contest.name }}" required>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="campus" id="inputGroup-campus">Campus</label>
+                        </div>
+                        <select class="custom-select" id="campus" name="campus" required>
+                            <option value="0">All campus</option>
+                            {% for campus in campuses %}
+                                <option value="{{ campus.id }}" {% if contest.campus_id == campus.id %}selected{% endif %}>{{ campus.city }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Description</span>
+                        </div>
+                        <textarea class="form-control" aria-label="Description" maxlength="200" placeholder="Between 30 and 200 characters" name="description" required>{{ contest.description }}</textarea>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Duration</span>
+                        </div>
+                        <input type="number" class="form-control" placeholder="Contest duration in hours" aria-describedby="basic-addon1" name="duration" value="{{ contest.duration }}" required>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Image</span>
+                        </div>
+                        <input type="url" class="form-control" placeholder="Paste here the url of the image" aria-describedby="basic-addon1" name="image" value="{{ contest.url }}">
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="form-group">
+                        <button type="submit" name="createFullContest" class="align-self-center btn btn-dark text-white">Next step (add challenges) <i class="fa fa-arrow-right"></i></button>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="form-group">
+                        <button type="submit" name="createBlankContest" class="align-self-center btn btn-dark text-white">Create a blank contest <i class="fa fa-save"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
