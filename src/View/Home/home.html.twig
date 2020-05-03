@@ -1,24 +1,44 @@
 {% extends 'layout.html.twig' %}
 {% block content %}
     <div class="container">
+        <h1 class="text-center">Available contest</h1>
         <div class="row row-cols-1 row-cols-lg-3 justify-content-center">
             {% for contest in contests %}
-                <div class="col mb-4">
+                <div class="col mb-3">
                     <div class="card h-100 mx-auto bg-dark text-white border-success">
-                        <img src="{% if contest.image is null %}/assets/images/default_contest.jpg{% else %}{{ contest.image }}{% endif %}" class="card-img-top" alt="image contest">
+                        <p class="badge badge-success">{{ contest.campus|upper }}</p>
+                        <img src="{% if contest.image is null %}/assets/images/default_contest.jpg{% else %}{{ contest.image }}{% endif %}"
+                             class="card-img-top" alt="image contest">
                         <div class="card-body">
-                            <p>{% if contest.campus is null %}ALL CAMPUS{% else %}{{ contest.campus|upper }}{% endif %}</p>
-                            <h5 class="card-title">{{ contest.name }}</h5>
+                            <h5 class="card-title title-color">{{ contest.name }}</h5>
                             <p class="card-text">{{ contest.description }}</p>
                         </div>
                         <div class="card-footer">
-                            <p class="float-left margin-duration">Duration : {{ contest.duration }}H</p>
-                            <button class="btn btn-dark float-right">Let's Go !</button>
+                            {% if contest.active == true %}
+                                <p class="float-left margin-duration" id="contest-timer{{ contest.id }}"></p>
+                                <a href="/contest/play/{{ contest.id }}">
+                                    <button class="btn btn-dark float-right">Let's Go !</button>
+                                </a>
+                            {% else %}
+                                <p class="float-left margin-duration">Duration : {{ contest.formatted_duration.hours }}h {% if contest.formatted_duration.minutes != 0 %}{{ contest.formatted_duration.minutes }}m{% endif %}</p>
+                                <button class="btn btn-dark float-right">Soon !</button>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
+        <div class="text-center mt-4">
+            <a href="" class="btn btn-success">See old contests</a>
+        </div>
     </div>
 {% endblock %}
 
+{% block javascript %}
+<script src="/assets/js/contestTimer.js"></script>
+{% for contest in contests %}
+<script>
+    let timer{{ contest.id }} = new contestTimer('{{ contest.end_date }}', 'contest-timer{{ contest.id }}', ['h ', 'm ', 's ']);
+</script>
+{% endfor %}
+{% endblock %}

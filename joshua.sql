@@ -44,7 +44,8 @@ LOCK TABLES campus WRITE;
 /*!40000 ALTER TABLE campus
     DISABLE KEYS */;
 INSERT INTO campus
-VALUES (null, 'Bordeaux', 'France', 'france.svg', 'bdx'),
+VALUES (0, 'All campus', 'all', 'all', 'all'),
+       (null, 'Bordeaux', 'France', 'france.svg', 'bdx'),
        (null, 'Biarritz', 'France', 'france.svg', 'biarritz'),
        (null, 'La Loupe', 'France', 'france.svg', 'loupe'),
        (null, 'Lille', 'France', 'france.svg', 'lille'),
@@ -132,7 +133,7 @@ CREATE TABLE contest
 (
     id          INT         NOT NULL AUTO_INCREMENT,
     is_visible  TINYINT     NOT NULL DEFAULT 0,
-    is_actif    TINYINT     NOT NULL DEFAULT 0,
+    is_active    TINYINT     NOT NULL DEFAULT 0,
     name        VARCHAR(45) NOT NULL,
     image       TEXT                 DEFAULT NULL,
     description TEXT        NOT NULL,
@@ -158,10 +159,10 @@ LOCK TABLES contest WRITE;
 /*!40000 ALTER TABLE contest
     DISABLE KEYS */;
 INSERT INTO contest
-VALUES (null,1,0,'Lord of the flag','https://i2.wp.com/gusandco.net/wp-content/uploads/2019/02/herr-der-ringe-knechten-lord-of-ring-1228268.jpg?fit=3840%2C2160&ssl=1','Will you be able to take all the flags? Would you manage to crush all your competitors and become the lord of the flags?',0,3,now(),null),
-       (null,1,0,'Flag wars','https://cdn.pocket-lint.com/r/s/1200x/assets/images/147767-tv-feature-what-order-should-you-watch-all-the-star-wars-films-image1-1wdfjceytb.jpg','Get on your spaceship and go hunting for flags, may the force be with you!',1,2,now(),null),
-       (null,1,0,'Wild contest',null,'Cause when you look like that, i\'ve never ever wanted to be so bad, oh it drives me wild',3,8,now(),null),
-       (null,1,0,'Coca Cola Symphony',null,'Open a coke, open happiness, CHEERS !',1,24,now(),null);
+VALUES (null,1,0,'Lord of the flag','https://i2.wp.com/gusandco.net/wp-content/uploads/2019/02/herr-der-ringe-knechten-lord-of-ring-1228268.jpg?fit=3840%2C2160&ssl=1','Will you be able to take all the flags? Would you manage to crush all your competitors and become the lord of the flags?',0,180,now(),null),
+       (null,1,0,'Flag wars','https://cdn.pocket-lint.com/r/s/1200x/assets/images/147767-tv-feature-what-order-should-you-watch-all-the-star-wars-films-image1-1wdfjceytb.jpg','Get on your spaceship and go hunting for flags, may the force be with you!',1,120,now(),null),
+       (null,1,0,'Wild contest',null,'Cause when you look like that, i\'ve never ever wanted to be so bad, oh it drives me wild !',3,480,now(),null),
+       (null,1,0,'Coca Cola Symphony','http://frvaillant.com/wcs/joshua/Coca.png','Open a coke, open happiness, CHEERS !',1,1440,now(),null);
 /*!40000 ALTER TABLE contest
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -323,7 +324,7 @@ CREATE TABLE user
 (
     id           INT          NOT NULL AUTO_INCREMENT,
     is_admin     TINYINT      NOT NULL DEFAULT 0,
-    is_actif     TINYINT      NOT NULL DEFAULT 1,
+    is_active    TINYINT      NOT NULL DEFAULT 1,
     lastname     VARCHAR(45)  NOT NULL,
     firstname    VARCHAR(45)  NOT NULL,
     pseudo       VARCHAR(45)  NOT NULL,

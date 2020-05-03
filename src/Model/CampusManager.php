@@ -12,6 +12,11 @@ class CampusManager extends AbstractManager
         parent::__construct(self::TABLE);
     }
 
+    public function selectAll(): array
+    {
+        return $this->pdo->query('SELECT * FROM ' . self::TABLE . ' WHERE id != 0')->fetchAll();
+    }
+
     public function insertCampus(object $campus)
     {
         // prepared request
