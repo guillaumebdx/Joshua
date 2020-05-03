@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Model;
 
 use \Exception;
@@ -13,16 +12,24 @@ class UserManager extends AbstractManager
     const TABLE = 'user';
     const LIMIT_LIST_USERS = 5;
 
+    /**
+     * UserManager constructor.
+     */
     public function __construct()
     {
         parent::__construct(self::TABLE);
     }
 
-    public function addUser(array $data)
+    /**
+     * @param array $data
+     * @return int
+     * @throws Exception
+     */
+    public function addUser(array $data): int
     {
-        $query  = 'INSERT INTO ' . self::TABLE;
-        $query .= ' (lastname, firstname, pseudo, github, email, password, specialty_id, campus_id) ';
-        $query .= ' VALUES (:lastname, :firstname, :pseudo, :github, :email, :password, :specialty, :campus)';
+        $query  = 'INSERT INTO ' . self::TABLE .
+            ' (lastname, firstname, pseudo, github, email, password, specialty_id, campus_id)' .
+            ' VALUES (:lastname, :firstname, :pseudo, :github, :email, :password, :specialty, :campus)';
 
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':lastname', $data['lastname'], \PDO::PARAM_STR);
@@ -41,16 +48,18 @@ class UserManager extends AbstractManager
         }
     }
 
-    public function updateUser(array $data)
+    /**
+     * @param array $data
+     */
+    public function updateUser(array $data): void
     {
-        $query  = 'UPDATE ' . self::TABLE;
-        $query .= ' set lastname = :lastname, firstname = :firstname, pseudo = :pseudo, github = :github, ';
-        $query .= ' email = :email, ';
+        $query  = 'UPDATE ' . self::TABLE .
+            ' set lastname = :lastname, firstname = :firstname, pseudo = :pseudo, github = :github, email = :email,';
         if ($data['password']!='') {
-            $query.= ' password = :password, ';
+            $query .= ' password = :password, ';
         }
-        $query.=' specialty_id = :specialty, campus_id = :campus ';
-        $query.=' WHERE id = '.$_SESSION['user_id'];
+        $query .= ' specialty_id = :specialty, campus_id = :campus' .
+            ' WHERE id = ' . $_SESSION['user_id'];
 
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':lastname', $data['lastname'], \PDO::PARAM_STR);
@@ -58,22 +67,23 @@ class UserManager extends AbstractManager
         $statement->bindValue(':pseudo', $data['joshuapseudo'], \PDO::PARAM_STR);
         $statement->bindValue(':github', $data['github'], \PDO::PARAM_STR);
         $statement->bindValue(':email', $data['email'], \PDO::PARAM_STR);
-        if ($data['password']!='') {
+        if ($data['password'] != '') {
             $statement->bindValue(':password', $data['password'], \PDO::PARAM_STR);
         }
         $statement->bindValue(':specialty', $data['specialty'], \PDO::PARAM_INT);
         $statement->bindValue(':campus', $data['campus'], \PDO::PARAM_INT);
 
-        if ($statement->execute()) {
-            return;
-        } else {
-            throw new Exception('Unable to update user');
-        }
+        $statement->execute();
     }
 
-    public function selectOneByEmail(string $email)
+    /**
+     * @param string $email
+     * @return array
+     */
+    public function selectOneByEmail(string $email): array
     {
-        $statement = $this->pdo->prepare('SELECT * FROM ' . self::TABLE . ' WHERE email=:email');
+        $query     = 'SELECT * FROM ' . self::TABLE . ' WHERE email=:email';
+        $statement = $this->pdo->prepare($query);
         $statement->bindValue(':email', $email, \PDO::PARAM_STR);
         $statement->execute();
 
@@ -84,17 +94,19 @@ class UserManager extends AbstractManager
      * Total number of users
      * @return int
      */
-    public function getTotalUsers() : int
+    public function getTotalUsers(): int
     {
-        $statement = $this->pdo->prepare(
-            'SELECT count(id) AS total FROM ' . self::TABLE
-        );
+        $query     = 'SELECT count(id) AS total FROM ' . self::TABLE;
+        $statement = $this->pdo->prepare($query);
         $statement->execute();
-        $results = $statement->fetch();
+        $results   = $statement->fetch();
         return $results['total'];
     }
 
-    public function numberOfPages() : int
+    /**
+     * @return int
+     */
+    public function numberOfPages(): int
     {
         return ceil($this->getTotalUsers()) / self::LIMIT_LIST_USERS;
     }
@@ -104,19 +116,17 @@ class UserManager extends AbstractManager
      * @param string $orderBy
      * Sort order : ASC or DESC
      * @param string $sortOrder
+     * @param int $page
      * @return array
      */
-
     public function selectAllOrderBy(string $orderBy, string $sortOrder, int $page = 1): array
     {
-
         $offset = ($page-1) * self::LIMIT_LIST_USERS;
 
-        $statement = $this->pdo->prepare(
-            'SELECT * FROM ' . self::TABLE .
-                      ' ORDER BY ' . $orderBy . ' ' . $sortOrder .
-                      ' LIMIT ' . self::LIMIT_LIST_USERS . ' OFFSET ' . $offset
-        );
+        $query  = 'SELECT * FROM ' . self::TABLE .
+            ' ORDER BY ' . $orderBy . ' ' . $sortOrder .
+            ' LIMIT ' . self::LIMIT_LIST_USERS . ' OFFSET ' . $offset;
+        $statement = $this->pdo->prepare($query);
         $statement->execute();
 
         return $statement->fetchAll();
@@ -128,18 +138,22 @@ class UserManager extends AbstractManager
      * The user ID
      * @param int $user
      */
-    public function userSetAdmin(int $status, int $user) : void
+    public function userSetAdmin(int $status, int $user): void
     {
-        $query = 'UPDATE user SET is_admin = :status WHERE id = :user';
+        $query = 'UPDATE ' . self::TABLE . ' SET is_admin = :status WHERE id = :user';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':status', $status, \PDO::PARAM_INT);
         $statement->bindValue(':user', $user, \PDO::PARAM_INT);
         $statement->execute();
     }
 
-    public function userSetActive(int $status, int $user) : void
+    /**
+     * @param int $status
+     * @param int $user
+     */
+    public function userSetActive(int $status, int $user): void
     {
-        $query = 'UPDATE user SET is_active = :status WHERE id = :user';
+        $query = 'UPDATE ' . self::TABLE . ' SET is_active = :status WHERE id = :user';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':status', $status, \PDO::PARAM_INT);
         $statement->bindValue(':user', $user, \PDO::PARAM_INT);

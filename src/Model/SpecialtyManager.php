@@ -1,21 +1,24 @@
 <?php
 
-
 namespace App\Model;
 
 class SpecialtyManager extends AbstractManager
 {
-    /**
-     *
-     */
     const TABLE = 'specialty';
-    
+
+    /**
+     * SpecialtyManager constructor.
+     */
     public function __construct()
     {
         parent::__construct(self::TABLE);
     }
 
-    public function insertSpecialty(object $specialty)
+    /**
+     * @param object $specialty
+     * @return int
+     */
+    public function insertSpecialty(object $specialty): int
     {
         $query = 'INSERT INTO ' . self::TABLE . ' (title) VALUES (:title)';
         $statement = $this->pdo->prepare($query);
