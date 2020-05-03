@@ -14,31 +14,32 @@ class UserFormControl extends AbstractFormControl
     public function __construct(array $data)
     {
         $this->data = $data;
+        $github = ($data['github']!= '') ? $data['github'] : 'github';
         $this->verifyName($data['lastname'], 'lastname', 'lastname')
             ->verifyName($data['firstname'], 'firstname', 'firstname')
             ->verifyEmail($data['email'], 'email')
             ->verifyPseudo($data['joshuapseudo'], 'joshuapseudo', 'joshuapseudo')
-            ->verifyPseudo($data['github'], 'github', 'github')
+            ->verifyPseudo($github, 'github', 'github')
             ->verifyPassword($data['password'], 'password')
             ->verifySelected($data['campus'], 'campus')
             ->verifySelected($data['specialty'], 'specialty');
     }
 
 
-    public function getDatas() : array
+    public function getData() : array
     {
-        $datas = [];
-        $datas['errors'] = $this->getErrors();
-        $datas['user']= [
+        $data = [];
+        $data['errors'] = $this->getErrors();
+        $data['user']= [
             'firstname' => $this->getProperty('firstname'),
             'lastname' => $this->getProperty('lastname'),
             'email' => $this->getProperty('email'),
             'joshuapseudo' => $this->getProperty('joshuapseudo'),
             'password' => $this->getProperty('password'),
             'github' => $this->getProperty('github'),
-            'campus' => $this->getProperty('campus'),
-            'specialty' => $this->getProperty('specialty'),
+            'campus_id' => $this->getProperty('campus'),
+            'specialty_id' => $this->getProperty('specialty'),
         ];
-        return $datas;
+        return $data;
     }
 }

@@ -2,16 +2,22 @@
 
 namespace App\Controller;
 
+use App\Model\ContestManager;
 use App\Model\UserManager;
+use App\Service\ContestDate;
 use App\Service\IndexFormControl;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+use App\Service\UserConnection;
 
 class JoshuaController extends AbstractController
 {
     /**
      * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function index()
     {
@@ -28,9 +34,8 @@ class JoshuaController extends AbstractController
                 if ($user) {
                     if ($login === $user['email']) {
                         if (password_verify($password, $user['password'])) {
-                            $userController = new UserController();
-                            $userController->openConnection($user['id']);
-                            header('Location: Admin/index');
+                            UserConnection::openConnection($user['id']);
+                            header('Location: joshua/home');
                         } else {
                             $error = 'Invalid password !';
                         }
@@ -45,5 +50,41 @@ class JoshuaController extends AbstractController
             'login' => $login,
             'error' => $error,
         ]);
+    }
+
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function home()
+    {
+        $contestManager = new ContestManager();
+        $visibleContests = $contestManager->getVisibleContests();
+
+        $nbContests = count($visibleContests);
+        for ($i = 0; $i < $nbContests; $i++) {
+            $visibleContests[$i]['active'] = (bool)$visibleContests[$i]['active'];
+
+            $beginning = $visibleContests[$i]['beginning'];
+            $duration = $visibleContests[$i]['duration'];
+
+            $visibleContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration);
+            $visibleContests[$i]['end_date'] = ContestDate::getContestEndDate($beginning, $duration);
+        }
+
+        return $this->twig->render('Home/home.html.twig', ['contests' => $visibleContests]);
+    }
+
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function page404()
+    {
+        return $this->twig->render('404.html.twig', []);
     }
 }

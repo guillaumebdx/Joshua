@@ -1,0 +1,121 @@
+{% extends 'layout.html.twig' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1>You're about to edit your profile</h1>
+            </div>
+        </div>
+        <form method="POST" action="/user/edituser">
+            <div class="row">
+                <div class="col-12 align-self-center text-center">
+                    <img src="https://avatars.githubusercontent.com/{{session.github}}" alt="avatar github" id="avatar" class="img-thumbnail rounded-circle" width="85">
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-xs-12 col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend ">
+                            <span class="input-group-text  {% if (errors.error_firstname) %} error {% endif %} " id="inputGroup-firstname">Firstname *</span>
+                        </div>
+                        <input type="text" maxlength="45" placeholder="Only letters please." class="form-control" id="firstname" name="firstname" value="{{ user.firstname }}">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text  {% if (errors.error_lastname) %} error {% endif %} " id="inputGroup-lastname">Name *</span>
+                        </div>
+                        <input type="text"  placeholder="Only letters please."  class="form-control" id="lastname" name="lastname" value="{{ user.lastname }}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text  {% if (errors.error_email) %} error {% endif %} " id="inputGroup-email">Email *</span>
+                        </div>
+                        <input type="email"  placeholder="name@domain.ext" class="form-control" id="email" name="email" value="{{ user.email }}">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-pseudo">Pseudo *</span>
+                        </div>
+                        <input type="text"  placeholder="Only letters or numbers without space." class="form-control" id="joshuapseudo" name="joshuapseudo" value="{{ user.pseudo }}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text  {% if (errors.error_password) %} error {% endif %}" id="inputGroup-password">Password *</span>
+                        </div>
+                        <input type="password" class="form-control" id="password" name="password" value="">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary show-pass show-hide-pass"  data-target="password"  type="button" id="button-password">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                        <small class="text-white">At least 8 characters whith at least 1 upperCase, 1 lowercase and 1 digit</small>
+                        <span class="text-green">Let empty if you don't want to change your password</span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-password2">Repeat password *</span>
+                        </div>
+                        <input type="password" class="form-control" id="passwordcopy" name="passwordcopy" value="">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary show-pass show-hide-pass"  data-target="passwordcopy"  type="button" id="button-password-copy">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <small class="text-white">At least 8 characters whith at least 1 upperCase, 1 lowercase and 1 digit</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex">
+                <div class="col-xs-12 col-md-6">
+                    <div class="input-group mb-3">
+                        {% include 'Components/_select_campus.html.twig' %}
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="input-group mb-3">
+                        {% include 'Components/_select_specialty.html.twig' %}
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex">
+                <div class="col-xs-12 col-md-6">
+                    <div class="row d-flex">
+                        <div class="col-12">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text {% if (errors.error_github) %} error {% endif %} " id="inputGroup-github" >Your github pseudo</span>
+                                </div>
+                                <input type="text" class="form-control" id="github" name="github"  value="{{ user.github }}" placeholder="We just use it to get your avatar">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6 align-self-center">
+                    <div class="form-group ">
+                        <button type="submit" name="updateUser" class="align-self-center btn btn-dark text-white">Save <i class="fa fa-save"></i></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{%  block javascript %}
+<script src="/assets/js/userForm.js"></script>
+{% endblock %}

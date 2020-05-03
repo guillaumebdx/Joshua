@@ -1,0 +1,7 @@
+<div id="contest-timer" class="timer">
+</div>
+
+<script src="/assets/js/contestTimer.js"></script>
+<script>
+    let timer = new contestTimer({% if contest.date %}{{ contest.date }}{% else %}'2020-05-20 17:18:00'{% endif %}, 'contest-timer');
+</script>
