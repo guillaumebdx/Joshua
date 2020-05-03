@@ -17,15 +17,7 @@ class CampusManager extends AbstractManager
         return $this->pdo->query('SELECT * FROM ' . self::TABLE . ' WHERE id != 0')->fetchAll();
     }
 
-    /**
-     *
-     */
-    const TABLE = 'campus';
 
-    public function __construct()
-    {
-        parent::__construct(self::TABLE);
-    }
 
     public function insertCampus(object $campus)
     {
