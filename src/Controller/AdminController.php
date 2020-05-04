@@ -63,8 +63,6 @@ class AdminController extends AbstractController
 
     public function editContest($id)
     {
-        $id = $_GET['id'];
-
         $campuses     = new CampusManager();
         $campusesList = $campuses->selectAll();
 
@@ -80,7 +78,7 @@ class AdminController extends AbstractController
 
             if (count($errors) === 0) {
                 $contestManager = new ContestManager();
-                $contestManager->editContest($contest);
+                $contestManager->editContest($contest, $id);
                 header('Location: /admin/managecontest');
                 exit;
             }
@@ -203,6 +201,7 @@ class AdminController extends AbstractController
     }
 
     // LANGUAGES
+
     public function addSpecialty()
     {
         $specialtyManager = new SpecialtyManager();

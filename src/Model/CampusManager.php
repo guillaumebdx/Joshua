@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Model;
 
 class CampusManager extends AbstractManager
@@ -12,6 +11,9 @@ class CampusManager extends AbstractManager
         parent::__construct(self::TABLE);
     }
 
+    /**
+     * @return array
+     */
     public function selectAll(): array
     {
         return $this->pdo->query('SELECT * FROM ' . self::TABLE . ' WHERE id != 0')->fetchAll();
