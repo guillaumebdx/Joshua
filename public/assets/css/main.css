@@ -1,3 +1,8 @@
+@import "joshua.css";
+@import "admin.css";
+@import "user.css";
+@import "contest.css";
+
 @font-face {
     font-family: 'pixelmix';
     src: url('../fonts/pixelmix.ttf') format('truetype');
@@ -20,6 +25,8 @@
     }
 }
 
+/* GENERAL */
+
 * {
     --josh-major-font: 'pixelmix';
     --josh-text-font: 'Overpass Mono', monospace;
@@ -32,10 +39,6 @@
 main {
     min-height: calc(100vh - 77px - 148px - 16px);
 }
-
-/* ****************************************** */
-/* ***************  GENERAL  **************** */
-/* ****************************************** */
 
 body {
     background-color: var(--josh-grey);
@@ -72,6 +75,7 @@ h2 {
 .bold {
     font-weight: bold;
 }
+
 .text-red {
     color:var(--josh-red);
 }
@@ -95,6 +99,7 @@ h2 {
 .bg-none {
     background:none;
 }
+
 .list-group-item {
     border-color: #adce86;
 }
@@ -106,326 +111,15 @@ h2 {
     display: inline-block;
 }
 
-/* ****************************************** */
-/* *********  BOOTSTRAP SURCHARGE  ********** */
-/* ****************************************** */
-
 .btn {
     border-radius:0;
     font-family: var(--josh-major-font);
     font-size:0.9rem;
 }
 
-/* USER */
+/* END GENERAL */
 
-#profil-user {
-    width:100%;
-}
-#profil-user td {
-    height:40px;
-}
-#profil-user tr td:first-child {
-    width:40%;
-    color:var(--josh-green);
-}
-
-.header-palmares {
-    background-color: #111111;
-}
-
-.title-collapse {
-    color:var(--josh-red);
-}
-.title-collapse.collapsed {
-    color:#ccc;
-}
-.title-collapse:hover {
-    color:var(--josh-red);
-}
-
-.input-group-text {
-    font-family: var(--josh-major-font);
-    font-size:0.7rem;
-}
-
-/* INDEX */
-
-.input-pass-index {
-    padding-left: 0;
-    padding-right: 0;
-}
-
-.enter-btn {
-    padding-top: 0;
-    margin-top: -15px;
-    margin-left: 15px;
-}
-
-.enter-btn .d-lg-block {
-    max-width: 70px;
-}
-
-.enter-btn .d-lg-none {
-    max-height: 35px;
-    margin-top: 20px;
-}
-
-.index-link {
-    color: white;
-}
-
-.index-link:hover {
-    color: var(--josh-green);
-}
-
-/* HOME */
-
-.card-deck {
-    margin-left: 0;
-    margin-right: 0;
-}
-
-.border-success {
-    border-color: var(--josh-green) !important;
-}
-
-.card-footer {
-    border-top: 1px solid var(--josh-green);
-}
-
-.bg-dark {
-    background-color: var(--josh-grey) !important;
-}
-
-.border-success img {
-    height: 225px;
-    width: auto;
-}
-
-.margin-duration {
-    margin-top: 8px;
-    margin-bottom: 8px;
-}
-
-/* CONTEST */
-.w-70 {
-    width:70%;
-}
-
-.hide {
-    display:none;
-}
-
-.mgt-20 {
-    margin-top:20px;
-}
-
-.mgb-15 {
-    margin-bottom:15px;
-}
-
-.steper  {
-    display:flex;
-    border-left:1px solid #fff;
-    flex-direction: column;
-    padding-bottom:42px;
-    background: url('/assets/images/white-left-flag.svg') no-repeat bottom left;
-}
-
-.step {
-     display:flex;
-    flex-direction: row;
-    margin-top:10px;
- }
-
-.step:last-child {
-}
-
-.step-order {
-    width:25px;
-    height:25px;
-    border:1px solid #fff;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 25px;
-    background-color: var(--josh-grey);
-    margin-left:-12px;
-}
-.step-name {
-    display:inline-block;
-    margin-left:30px;
-}
-.done {
-    color:#fff;
-}
-
-.doing {
-    color:var(--josh-green);
-}
-
-.doing .step-order {
-    background-color:#fff;
-    color:var(--josh-grey);
-}
-
-.todo {
-    color:#424242;
-}
-
-.alert {
-    border-radius: 0;
-}
-
-.flag-playground .alert-danger {
-    background-color: var(--josh-red);
-    color:#fff;
-}
-.flag-playground .alert-success {
-    background-color: var(--josh-green);
-    color:var(--josh-grey);
-}
-
-.info-challenge-title {
-    display:inline-block;
-    padding:1px 4px;
-    background:white;
-    color:var(--josh-grey);
-    margin-bottom:3px;
-}
-
-.difficulty {
-    display:block;
-    margin-bottom: 20px;
-}
-
-.cursor {
-    display:block;
-    width:10px;
-    height:15px;
-    background-color: white;
-    display:inline-block;
-    opacity: 0.8;
-    animation: clignote 1s infinite;
-}
-
-.go-to-flag:hover {
-    background-color: var(--josh-red);
-}
-
-.ranking {
-    padding:0;
-    margin-top:10px;
-    width:80%;
-}
-.ranking li {
-    font-size: 0.8rem;
-    padding : 3px 0;
-    list-style: none;
-    position:relative;
-}
-
-.ranking li.podium::before {
-    position:absolute;
-    left:0;
-    width:30px;
-    height:17px;
-    display: block;
-    content: ' ';
-    top:3px;
-    background-size: contain !important;
-    margin-left:-30px;
-}
-
-.ranking li.first::before {
-    background:url('/assets/images/golden-flag.svg') no-repeat center center;
-}
-.ranking li.second::before {
-    background:url('/assets/images/silver-flag.svg') no-repeat center center;
-}
-.ranking li.third::before {
-    background:url('/assets/images/bronze-flag.svg') no-repeat center center;
-}
-
-.ranking li .score {
-    float: right;
-}
-
-.badge-success {
-    background-color: var(--josh-green);
-    color: var(--josh-grey);
-    margin-bottom: 0;
-    border-radius: unset;
-    padding: .4em;
-}
-
-.title-color {
-    text-transform: uppercase;
-}
-
-.btn-success {
-    border-radius: 10px;
-    background-color: var(--josh-green);
-    color: var(--josh-grey);
-}
-
-/* ADMIN */
-
-/* //////////// ADMIN USERS */
-
-table.adminusers {
-    width:100%;
-}
-table.adminusers tr:not(:last-child) {
-    border-bottom : 1px solid #ccc;
-}
-table.adminusers tr td {
-    padding: 10px 0 ;
-}
-
-.custom-control-input:checked ~ .custom-control-label::before {
-    border-color: var(--josh-red);
-    background-color:  var(--josh-red);
-}
-.pagination {
-    margin-top:20px;
-    padding-left:35px;
-}
-.page-item .page-link {
-    color:var(--josh-grey);
-    font-family: var(--josh-text-font);
-}
-.page-item.active .page-link {
-    background-color: var(--josh-red);
-    border-color: var(--josh-red);
-    color:white;
-}
-
-/* //////////// FIN ADMIN USERS */
-
-
-.admin_title {
-    margin: 4rem;
-}
-
-.admin_button {
-    margin-top: 4rem;
-}
-
-.existing_challenge {
-    font-family: var(--josh-major-font);
-    font-size: 0.8rem;
-}
-
-.list-container {
-    height: 24rem;
-}
-
-.modal-contest {
-    background-color: var(--josh-grey);
-    color: var(--josh-green);
-}
-
-/* _Header */
+/* HEADER */
 
 .navbar {
     background-color: var(--josh-grey);
@@ -442,7 +136,9 @@ nav .nav-link {
     font-variant-caps: small-caps;
 }
 
-/* _Footer */
+/* END HEADER */
+
+/* FOOTER */
 
 .page-footer {
     margin-top: 25px;
@@ -455,51 +151,4 @@ nav .nav-link {
     color: #e0013f;
 }
 
-/* Specialty */
-ul{
-    list-style-type: none;
-}
-.list-specialty{
-    height: 150px;
-    width:42%;
-    line-height: normal;
-}
-.container-specialties{
-    justify-content: center;
-    align-items: center;
-    margin-left: 11rem;
-}
-.input-group.specialty.campus{
-    padding: 0;
-}
-.row-specialty{
-    margin-top: 2rem;
-
-}
-.specialty-font{
-    margin-top: 3rem;
-    font-family: var(--josh-major-font);
-}
-
-.btn.specialty{
-    border-radius: 1px;
-    border-color: grey;
-    margin-left: 13rem;
-}
-
-.btn-campus{
-    border-radius: 1px;
-    border-color: grey;
-    margin-left: 14rem;
-}
-.row-campus{
-    margin-left: 23rem;
-    margin-top: 2rem;
-}
-.row-campus-flag {
-    margin-top: 4rem;
-    -webkit-column-count: 5;
-    -moz-column-count: 5;
-    column-count: 5;
-}
-
+/*END FOOTER */

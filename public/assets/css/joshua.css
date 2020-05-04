@@ -1,0 +1,62 @@
+/* INDEX */
+
+.input-pass-index {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.enter-btn {
+    padding-top: 0;
+    margin-top: -15px;
+    margin-left: 15px;
+}
+
+.enter-btn .d-lg-block {
+    max-width: 70px;
+}
+
+.enter-btn .d-lg-none {
+    max-height: 35px;
+    margin-top: 20px;
+}
+
+.index-link {
+    color: white;
+}
+
+.index-link:hover {
+    color: var(--josh-green);
+}
+
+/* END INDEX */
+
+/* HOME */
+
+.card-deck {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.border-success {
+    border-color: var(--josh-green) !important;
+}
+
+.card-footer {
+    border-top: 1px solid var(--josh-green);
+}
+
+.bg-dark {
+    background-color: var(--josh-grey) !important;
+}
+
+.border-success img {
+    height: 225px;
+    width: auto;
+}
+
+.margin-duration {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+/* END HOME */

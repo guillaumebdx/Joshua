@@ -1,0 +1,122 @@
+/* MAIN ADMIN PAGE */
+
+.admin_title {
+    margin: 4rem;
+}
+
+.admin_button {
+    margin-top: 4rem;
+}
+
+/* END MAIN ADMIN PAGE */
+
+/* ADMIN USERS */
+
+table.adminusers {
+    width:100%;
+}
+
+table.adminusers tr:not(:last-child) {
+    border-bottom : 1px solid #ccc;
+}
+
+table.adminusers tr td {
+    padding: 10px 0 ;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    border-color: var(--josh-red);
+    background-color:  var(--josh-red);
+}
+
+.pagination {
+    margin-top:20px;
+    padding-left:35px;
+}
+
+.page-item .page-link {
+    color:var(--josh-grey);
+    font-family: var(--josh-text-font);
+}
+
+.page-item.active .page-link {
+    background-color: var(--josh-red);
+    border-color: var(--josh-red);
+    color:white;
+}
+
+/* END ADMIN USERS */
+
+/* CONTEST */
+
+.existing_challenge {
+    font-family: var(--josh-major-font);
+    font-size: 0.8rem;
+}
+
+.list-container {
+    height: 24rem;
+}
+
+.modal-contest {
+    background-color: var(--josh-grey);
+    color: var(--josh-green);
+}
+
+/* END CONTEST */
+
+/* SPECIALTY */
+
+ul {
+    list-style-type: none;
+}
+
+.list-specialty {
+    height: 150px;
+    width:42%;
+    line-height: normal;
+}
+
+.container-specialties {
+    justify-content: center;
+    align-items: center;
+    margin-left: 11rem;
+}
+
+.input-group.specialty.campus {
+    padding: 0;
+}
+
+.row-specialty {
+    margin-top: 2rem;
+}
+
+.specialty-font {
+    margin-top: 3rem;
+    font-family: var(--josh-major-font);
+}
+
+.btn.specialty {
+    border-radius: 1px;
+    border-color: grey;
+    margin-left: 13rem;
+}
+
+.btn-campus {
+    border-radius: 1px;
+    border-color: grey;
+    margin-left: 14rem;
+}
+.row-campus {
+    margin-left: 23rem;
+    margin-top: 2rem;
+}
+
+.row-campus-flag {
+    margin-top: 4rem;
+    -webkit-column-count: 5;
+    -moz-column-count: 5;
+    column-count: 5;
+}
+
+/* END SPECIALTY */
