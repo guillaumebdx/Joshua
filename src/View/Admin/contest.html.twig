@@ -20,7 +20,7 @@
                     <li class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2">
                         <p class="mb-0 existing_challenge pb-1"><i class="fa fa-flag"></i> {{ contest.name }}</p>
                         <div class="row col-12">
-                            <a class="btn btn btn-dark text-white rounded-sm mr-4 mt-1 p-1 pl-2 pr-2" href="/admin/editcontest/{{ contest.id }}">Edit</a>
+                            <a class="btn btn-dark text-white rounded-sm mr-4 mt-1 p-1 pl-2 pr-2" href="/admin/editcontest/{{ contest.id }}">Edit</a>
                             <div class="custom-control custom-switch mt-2 mr-4">
                                 <input type="checkbox" class="custom-control-input manage-contest-active" id="active-{{ contest.id }}" data-target="{{ contest.id }}" {% if (contest.is_actif == '1') %} checked {% endif %}>
                             <!--<div class="custom-control custom-switch mt-2 mr-4">
