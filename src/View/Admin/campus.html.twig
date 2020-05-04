@@ -3,34 +3,41 @@
 
 {% block content %}
     <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h1 class="text-center">PUBLISHING CAMPUS</h1>
-            </div>
-            <div class="col-12">
-                <h2 class="text-white text-center">Please fill this fields</h2>
-            </div>
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">CREATE CAMPUS</h1>
         </div>
+    </div>
+    <div class="container-campus">
         <form method="post">
-            <div class="row">
-                <div class="input-group mb-3">
+            <div class="row-campus">
+                <div class="input-group campus mb-3 col-6">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Country</span>
                     </div>
-                    <input value="{{ campus.country }}" type="text" class="form-control" name="country" aria-label="Country" aria-describedby="basic-addon1">
+                    <input value="{{ campus.country }}" type="text" class="form-control" name="country"
+                           aria-label="Country" aria-describedby="basic-addon1">
                 </div>
                 <p class="text-white">{{ errors.error_country }}</p>
-                <div class="input-group mb-3">
+                <div class="input-group mb-3 col-6">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">City</span>
                     </div>
-                    <input value="{{ campus.city }}" type="text" class="form-control" name="city" aria-label="City" aria-describedby="basic-addon1">
+                    <input value="{{ campus.city }}" type="text" class="form-control" name="city" aria-label="City"
+                           aria-describedby="basic-addon1">
                 </div>
                 <p class="text-white">{{ errors.error_city }}</p>
-                <button class="background-grey "type="submit" class="btn btn-primary">Submit</button>
-
+                <button class="btn btn-campus text-white " type="submit" class="btn btn-primary">Add Campus</button>
             </div>
         </form>
+
+        <div class="row-campus-flag text-white">
+            {% for campus in campuses %}
+            <img src="/assets/images/flags/{{ campus.flag }}" width="30" alt="flag picture">
+            {{ campus.city }}
+            <br>
+            {% endfor %}
+        </div>
+    </div>
     </div>
 {% endblock %}
-
