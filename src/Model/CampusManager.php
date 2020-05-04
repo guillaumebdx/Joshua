@@ -19,10 +19,6 @@ class CampusManager extends AbstractManager
         return $this->pdo->query('SELECT * FROM ' . self::TABLE . ' WHERE id != 0')->fetchAll();
     }
 
-    /**
-     * @param object $campus
-     * @return int
-     */
     public function insertCampus(object $campus)
     {
         // prepared request
@@ -36,5 +32,15 @@ class CampusManager extends AbstractManager
         if ($statement->execute()) {
             return (int)$this->pdo->lastInsertId();
         }
+    }
+
+    public function getAllCampusOrderBy(string $order1, string $sort1 = 'ASC', string $order2 = '', string $sort2 = 'ASC'): array
+    {
+        $query = 'SELECT * FROM ' . self::TABLE . ' ORDER BY ' . $order1 . ' ' . $sort1;
+        if ($order2 != '') {
+            $query .= ', ' . $order2 . ' ' . $sort2;
+        }
+        $statement = $this->pdo->query($query);
+        return $statement->fetchAll();
     }
 }

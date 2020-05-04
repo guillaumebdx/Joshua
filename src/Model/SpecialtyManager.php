@@ -20,7 +20,9 @@ class SpecialtyManager extends AbstractManager
      */
     public function insertSpecialty(object $specialty): int
     {
+
         $query = 'INSERT INTO ' . self::TABLE . ' (title) VALUES (:title)';
+
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':title', $specialty->getProperty('title'), \PDO::PARAM_STR);
 

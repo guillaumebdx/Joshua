@@ -63,6 +63,7 @@ class JoshuaController extends AbstractController
         $contestManager = new ContestManager();
         $visibleContests = $contestManager->getVisibleContests();
 
+
         $nbContests = count($visibleContests);
         for ($i = 0; $i < $nbContests; $i++) {
             $visibleContests[$i]['active'] = (bool)$visibleContests[$i]['active'];

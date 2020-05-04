@@ -456,9 +456,11 @@ nav .nav-link {
 }
 
 /* Specialty */
-
+ul{
+    list-style-type: none;
+}
 .list-specialty{
-    height: 300px;
+    height: 150px;
     width:42%;
     line-height: normal;
 }
@@ -467,18 +469,37 @@ nav .nav-link {
     align-items: center;
     margin-left: 11rem;
 }
-.input-group.specialty{
+.input-group.specialty.campus{
     padding: 0;
 }
 .row-specialty{
-    margin-top: 4rem;
+    margin-top: 2rem;
+
 }
 .specialty-font{
     margin-top: 3rem;
     font-family: var(--josh-major-font);
 }
+
 .btn.specialty{
+    border-radius: 1px;
+    border-color: grey;
+    margin-left: 13rem;
+}
+
+.btn-campus{
     border-radius: 1px;
     border-color: grey;
     margin-left: 14rem;
 }
+.row-campus{
+    margin-left: 23rem;
+    margin-top: 2rem;
+}
+.row-campus-flag {
+    margin-top: 4rem;
+    -webkit-column-count: 5;
+    -moz-column-count: 5;
+    column-count: 5;
+}
+
