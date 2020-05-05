@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Model\ChallengeManager;
 use App\Model\ContestManager;
 use App\Model\UserManager;
+use App\Service\ContestDate;
 use App\Service\ContestService;
 
 class ContestController extends AbstractController
@@ -32,6 +33,8 @@ class ContestController extends AbstractController
 
             //CONTEST
             $theContest = $contestManager->selectOneById($contest);
+            $contestDate = new ContestDate();
+            $endDate=$contestDate->getContestEndDate($theContest['started_on'], $theContest['duration']);
             //TODO Importer la date heure de fin du contest pour le timer
 
             // USER //
@@ -53,6 +56,7 @@ class ContestController extends AbstractController
                     'difficulty' => $difficulty,
                     'ended' => false,
                     'open' => true,
+                    'end_date' => $endDate,
                 ]);
             } else {
                 return $this->twig->render('Contests/play.html.twig', [
@@ -60,12 +64,26 @@ class ContestController extends AbstractController
                     'github' => $github,
                     'challenges' => $challengesList,
                     'ended' => true,
+                    'end_date' => $endDate,
                 ]);
             }
         } else {
             header('Location:/');
             die;
         }
+    }
+
+    public function results(int $contest)
+    {
+        $contestManager=new ContestManager();
+        $theContest = $contestManager->selectOneById($contest);
+        $contestDate = new ContestDate();
+        $endDate=$contestDate->getContestEndDate($theContest['started_on'], $theContest['duration']);
+        return $this->twig->render('Contests/results.html.twig', [
+            'contest' => $theContest,
+            'ended'   => $contestDate->isEnded($endDate),
+            'end_date' => $endDate,
+        ]);
     }
 
     public function sendSolution()

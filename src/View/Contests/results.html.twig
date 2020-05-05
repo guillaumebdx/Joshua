@@ -1,0 +1,26 @@
+{% extends 'layout.html.twig' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-6 offset-md-3 text-center">
+            <h1>{{contest.name}}</h1>
+        </div>
+    </div>
+    {% if ended %}
+        <div class="row text-center">
+            <div class="col-12 col-md-6 offset-md-3 text-center">
+                <p class="text-white ">On affiche le classement</p>
+            </div>
+        </div>
+    {% else %}
+        <div class="row text-center">
+            <div class="col-12 col-md-6 offset-md-3 text-center">
+                <small class="text-red">Time left before contest end </small><br>
+                {% include 'Components/_contest_timer.html.twig' %}
+                <p class="text-white mgt-20">You'll see the results after<br>contest will be ended</p>
+
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

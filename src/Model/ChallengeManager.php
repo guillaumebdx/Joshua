@@ -78,7 +78,7 @@ class ChallengeManager extends AbstractManager
      * @return array|null
      */
     // TODO verify data
-    public function challengeOnTheWayByUser($contest): ?array
+    public function challengeOnTheWayByUser($contest)
     {
         $query = 'SELECT c.name, c.description, c.url, c.id, t.title AS type, d.title AS difficulty,' .
             ' chc.order_challenge FROM ' . ChallengeManager::TABLE . ' c ' .

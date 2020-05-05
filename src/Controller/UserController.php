@@ -124,9 +124,9 @@ class UserController extends AbstractController
                 if ($_POST['password'] != '') {
                     $_POST['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
                 }
-                $idUser = $userManager->updateUser($_POST);
+                $userManager->updateUser($_POST);
                 UserConnection::openConnection($_SESSION['user_id']);
-                header('location:/user/profile/' . $idUser);
+                header('location:/user/profile/' . $_SESSION['user_id']);
             } else {
                 $campuses        = new CampusManager();
                 $campusesList    = $campuses->selectAll();

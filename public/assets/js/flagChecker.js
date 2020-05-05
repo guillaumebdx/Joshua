@@ -1,16 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
+    $('#modal-success').modal('hide');
 
     const flagSolutionForm = document.getElementById('form-flag');
     flagSolutionForm.addEventListener('submit', (event)=>{
             event.preventDefault();
-            let challenge_id = document.getElementById('challenge-id').value;
-            let challenge_order = document.getElementById('challenge-order').value;
-            let contest_id = document.getElementById('contest-id').value;
-            let flagSolution = document.getElementById('flag').value;
-            const errorMessage = document.getElementById('error-message');
-            const spinner = document.getElementById('spinner-solution');
+            let challenge_id         = document.getElementById('challenge-id').value;
+            let challenge_order      = document.getElementById('challenge-order').value;
+            let contest_id           = document.getElementById('contest-id').value;
+            let flagSolution         = document.getElementById('flag').value;
+            let solutionForm         = document.getElementById('solution-form');
+            const errorMessage       = document.getElementById('error-message');
+            const spinner            = document.getElementById('spinner-solution');
             const successMessageText = '<img src="/assets/images/white-right-flag.svg" width="40"> You Won :-) <a class="btn btn-dark text-white" href="/contest/play/' + contest_id + '">> Next step</a>';
-            const errorMessageText = 'Your solution is wrong :-(';
+            const errorMessageText   = 'Your solution is wrong :-(';
 
             spinner.classList.remove('hide');
 
@@ -40,12 +42,15 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (data.message === 'success') {
                 errorMessage.classList.remove('alert-danger');
                 errorMessage.classList.add('alert', 'alert-success');
+                solutionForm.classList.add('hide');
                 errorMessage.innerHTML = successMessageText;
             } else if (data.message === 'end') {
                 errorMessage.classList.remove('alert-danger');
                 errorMessage.classList.add('alert', 'alert-success');
+                solutionForm.classList.add('hide');
                 errorMessage.innerHTML = successMessageText;
-                alert('Congratulations');
+                $('#modal-success').modal('show');
+
             }
             spinner.classList.add('hide');
         });
