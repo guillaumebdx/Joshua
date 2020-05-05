@@ -27,7 +27,7 @@
                     {% for user in users %}
                         <tr>
                             <td><img src="https://avatars.githubusercontent.com/{{ user.github }}" alt="avatar github"
-                                     id="avatar" class="img-thumbnail rounded-circle" width="45"></td>
+                                     id="avatar{{ user.id }}" class="img-thumbnail rounded-circle" width="45"></td>
                             <td>{{ user.lastname }}</td>
                             <td>{{ user.firstname }}</td>
                             <td>{{ user.email }}</td>

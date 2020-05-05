@@ -95,8 +95,8 @@ class ChallengeManager extends AbstractManager
     public function registerChallengeSuccess(int $challenge, int $contest) : void
     {
         $query = 'UPDATE ' . UserHasContestManager::TABLE .
-            ' SET ended_on = :now ' .
-            ' WHERE user_id = :user and contest_id = :contest and challenge_id = :challenge ';
+                 ' SET ended_on = :now ' .
+                 ' WHERE user_id = :user and contest_id = :contest and challenge_id = :challenge ';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':now', date('Y-m-d H:i:s'), \PDO::PARAM_STR);
         $statement->bindValue(':user', $_SESSION['user_id'], \PDO::PARAM_INT);
