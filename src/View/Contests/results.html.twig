@@ -16,11 +16,22 @@
         <div class="row text-center">
             <div class="col-12 col-md-6 offset-md-3 text-center">
                 <small class="text-red">Time left before contest end </small><br>
-                {% include 'Components/_contest_timer.html.twig' %}
+                <div id="contest-timer" class="timer"></div>
                 <p class="text-white mgt-20">You'll see the results after<br>contest will be ended</p>
 
             </div>
         </div>
     {% endif %}
 </div>
+{% endblock %}
+
+{% block javascript %}
+<script src="/assets/js/contestTimer.js"></script>
+<script>
+    let timer = new contestTimer({% if end_date %}'{{ end_date }}'{% else %} '2020-05-20 17:18:00' {% endif %},
+        'contest-timer',
+        function() {
+            window.location.href = '/contest/results/{{ contest.id }}';
+        });
+</script>
 {% endblock %}

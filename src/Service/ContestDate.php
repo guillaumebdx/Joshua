@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use DateTime;
+use DateTimeZone;
 
 class ContestDate
 {
@@ -41,9 +42,12 @@ class ContestDate
      * @param string $endDate
      * @return bool
      */
-    public function isEnded(string $endDate): bool
+    public static function isEnded(string $endDate): bool
     {
-        if ($endDate<=date('H-m-d H:i:s')) {
+        date_default_timezone_set('Europe/Paris');
+        $now = new DateTime(date('Y-m-d H:i:s'));
+        $endDate = new DateTime($endDate);
+        if ($endDate <= $now) {
             return true;
         } else {
             return false;

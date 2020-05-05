@@ -59,8 +59,8 @@
             </div>
             <div class="col-12 col-md-3 text-white">
                 <img src="https://avatars.githubusercontent.com/{{ github }}?s=75" class="img-thumbnail rounded-circle"><br>
-                <small class="text-white">You have left :</small>
-                {% include 'Components/_contest_timer.html.twig' %}
+                <small class="text-white">You have left :</small><br>
+                <div id="contest-timer" class="timer"></div>
                 <div class="steper">
                     {% for challenge in challenges %}
                         <div class="step  {{ challenge.status }}">
@@ -80,8 +80,8 @@
             </div>
             {% else %}
                 <div class="col-12 text-center flag-playground">
-                    <h1>You allready played this contest</h1>
-                    <a class="btn btn-dark text-white">See your results</a>
+                    <h1>You allready played this contest or this challenge is Off</h1>
+                    <a class="btn btn-dark text-white" href="/contest/results/{{contest.id}}">See the results</a>
                 </div>
             {% endif %}
         </div>
@@ -110,5 +110,13 @@
 {% endblock %}
 
 {% block javascript %}
-    <script src="/assets/js/flagChecker.js"></script>
+<script src="/assets/js/flagChecker.js"></script>
+<script src="/assets/js/contestTimer.js"></script>
+<script>
+    let timer = new contestTimer({% if end_date %}'{{ end_date }}'{% else %} '2020-05-20 17:18:00' {% endif %},
+        'contest-timer',
+        function() {
+            window.location.href = '/contest/results/{{ contest.id }}';
+        });
+</script>
 {% endblock %}

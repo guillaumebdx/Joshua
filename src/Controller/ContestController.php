@@ -44,7 +44,7 @@ class ContestController extends AbstractController
             //CHALLENGES
             $challengesList = $contestService->listChallengesWithSuccess($contest);
             $challengeOnTheWay = $challengeManager->challengeOnTheWayByUser($contest);
-            if ($challengeOnTheWay) {
+            if ($challengeOnTheWay && !ContestDate::isEnded($endDate)) {
                 $difficulty = $contestService->difficulties($challengeOnTheWay['difficulty']);
 
                 //RENDER
@@ -77,11 +77,10 @@ class ContestController extends AbstractController
     {
         $contestManager=new ContestManager();
         $theContest = $contestManager->selectOneById($contest);
-        $contestDate = new ContestDate();
-        $endDate=$contestDate->getContestEndDate($theContest['started_on'], $theContest['duration']);
+        $endDate=ContestDate::getContestEndDate($theContest['started_on'], $theContest['duration']);
         return $this->twig->render('Contests/results.html.twig', [
             'contest' => $theContest,
-            'ended'   => $contestDate->isEnded($endDate),
+            'ended'   => ContestDate::isEnded($endDate),
             'end_date' => $endDate,
         ]);
     }

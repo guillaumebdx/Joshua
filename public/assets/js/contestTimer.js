@@ -7,7 +7,7 @@ class contestTimer {
      * The id of the div where to render the timer
      * @param string target
      */
-    constructor(endTime, target) {
+    constructor(endTime, target, endAction = null) {
         this.target=document.getElementById(target);
         this.intervalTime = 1000;
         this.end = new Date(endTime);
@@ -15,6 +15,7 @@ class contestTimer {
         this.contestTimer = null;
         this.show(this.formatDiffTime(this.diffTime()));
         this.start();
+        this.endAction = endAction;
     }
 
     diffTime()  {
@@ -48,6 +49,7 @@ class contestTimer {
     stop() {
         clearInterval(this.contestTimer);
         this.target.innerHTML = 'Ended';
+        this.endAction();
     }
 
     show(restTime) {
