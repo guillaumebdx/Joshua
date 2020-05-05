@@ -44,7 +44,6 @@ class ContestDate
      */
     public static function isEnded(string $endDate): bool
     {
-        date_default_timezone_set('Europe/Paris');
         $now = new DateTime(date('Y-m-d H:i:s'));
         $endDate = new DateTime($endDate);
         if ($endDate <= $now) {

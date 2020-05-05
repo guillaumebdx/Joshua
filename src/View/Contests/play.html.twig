@@ -45,17 +45,19 @@
                         <img src="/assets/images/white-left-flag-inline.svg" width="30">
                     </a>
                 </p>
-                <p class="text-grey-light">When done, paste you solution below <span class="cursor"></span></p>
-                <form id="form-flag">
-                    <div id="solution-form">
-                        <input type="hidden" name="challenge-id" id="challenge-id" value="{{ challengeOnTheWay.id }}">
-                        <input type="hidden" name="contest-id" id="contest-id" value="{{contest.id}}">
-                        <input type="hidden" name="challenge-order" id="challenge-order" value="{{challengeOnTheWay.order_challenge}}">
-                        <input type="text" name="flag" id="flag" placeholder="your solution" value="">
-                        <input type="submit" class="btn btn-dark text-white go-to-flag" value="Try it"> <i id="spinner-solution" class="fa fa-spinner fa-spin text-white hide"></i>
-                    </div>
-                    <div class=" alert-danger w-70 mgt-20 game-message" id="error-message"></div>
-                </form>
+                <div id="solution-poster">
+                    <p class="text-grey-light">When done, paste you solution below <span class="cursor"></span></p>
+                    <form id="form-flag">
+                        <div id="solution-form">
+                            <input type="hidden" name="challenge-id" id="challenge-id" value="{{ challengeOnTheWay.id }}">
+                            <input type="hidden" name="contest-id" id="contest-id" value="{{contest.id}}">
+                            <input type="hidden" name="challenge-order" id="challenge-order" value="{{challengeOnTheWay.order_challenge}}">
+                            <input type="text" name="flag" id="flag" placeholder="your solution" value="">
+                            <input type="submit" class="btn btn-dark text-white go-to-flag" value="Try it"> <i id="spinner-solution" class="fa fa-spinner fa-spin text-white hide"></i>
+                        </div>
+                        <div class=" alert-danger w-70 mgt-20 game-message" id="error-message"></div>
+                    </form>
+                </div>
             </div>
             <div class="col-12 col-md-3 text-white">
                 <img src="https://avatars.githubusercontent.com/{{ github }}?s=75" class="img-thumbnail rounded-circle"><br>
@@ -107,6 +109,26 @@
     </div>
 
 
+    <div class="modal" tabindex="-1" role="dialog" id="modal-endtime">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-left">
+                    <h5 class="modal-title text-left text-red">TIME OUT</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-left">
+                    <p>This contest is out of time... Sorry</p>
+                </div>
+                <div class="modal-footer d-flex justify-content-start">
+                    <a class="btn btn-dark " href="/contest/results/{{ contest.id }}">Go to last step</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
 
 {% block javascript %}
@@ -116,7 +138,9 @@
     let timer = new contestTimer({% if end_date %}'{{ end_date }}'{% else %} '2020-05-20 17:18:00' {% endif %},
         'contest-timer',
         function() {
-            window.location.href = '/contest/results/{{ contest.id }}';
+            $('#modal-endtime').modal('show');
+            let solutionPoster = document.getElementById('solution-poster');
+            solutionPoster.classList.add('hide');
         });
 </script>
 {% endblock %}

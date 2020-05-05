@@ -46,7 +46,6 @@ class ChallengeManager extends AbstractManager
         $statement->bindValue(':challenge', $challenge, \PDO::PARAM_INT);
         $statement->execute();
         $result = $statement->fetch();
-
         if (is_null($result['ended_on']) && !is_null($result['started_on'])) {
             return 'doing';
         } elseif (!is_null($result['ended_on']) && !is_null($result['started_on'])) {

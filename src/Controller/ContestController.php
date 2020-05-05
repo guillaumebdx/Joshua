@@ -14,7 +14,6 @@ class ContestController extends AbstractController
     public function play(int $contest)
     {
         // TODO AJOUTER SI CONTEST EXIST et si contest Contest is active et si pas terminé
-        // TODO Peut être créer un contest status ??? active, on the way, ended
 
         if (isset($_SESSION['user_id']) && $_SESSION['user_id']!='') {
             $contestService=new ContestService();
@@ -25,7 +24,6 @@ class ContestController extends AbstractController
             // TEST SOLUTION IF POST
             if (isset($_POST['solution']) && !empty($_POST['solution'])) {
                 $contestService->testChallengeSolution(
-                    // TODO verify entry
                     $challengeManager->challengeOnTheWayByUser($contest),
                     $_POST['solution']
                 );
@@ -35,7 +33,6 @@ class ContestController extends AbstractController
             $theContest = $contestManager->selectOneById($contest);
             $contestDate = new ContestDate();
             $endDate=$contestDate->getContestEndDate($theContest['started_on'], $theContest['duration']);
-            //TODO Importer la date heure de fin du contest pour le timer
 
             // USER //
             $user = $userManager->selectOneById($_SESSION['user_id']);
@@ -78,6 +75,7 @@ class ContestController extends AbstractController
         $contestManager=new ContestManager();
         $theContest = $contestManager->selectOneById($contest);
         $endDate=ContestDate::getContestEndDate($theContest['started_on'], $theContest['duration']);
+
         return $this->twig->render('Contests/results.html.twig', [
             'contest' => $theContest,
             'ended'   => ContestDate::isEnded($endDate),
