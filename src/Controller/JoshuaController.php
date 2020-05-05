@@ -6,6 +6,7 @@ use App\Model\ContestManager;
 use App\Model\UserManager;
 use App\Service\ContestDate;
 use App\Service\IndexFormControl;
+use App\Service\Ranking;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -71,7 +72,7 @@ class JoshuaController extends AbstractController
             $beginning = $visibleContests[$i]['beginning'];
             $duration = $visibleContests[$i]['duration'];
 
-            $visibleContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration);
+            $visibleContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration, 1);
             $visibleContests[$i]['end_date'] = ContestDate::getContestEndDate($beginning, $duration);
         }
 
