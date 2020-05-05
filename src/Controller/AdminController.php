@@ -117,12 +117,12 @@ class AdminController extends AbstractController
      */
     public function manageUsers(int $page = 1)
     {
-        $usersManager     = new UserManager();
-        $users = $usersManager->selectAllOrderBy('lastname', 'ASC', $page);
+        $userManager     = new UserManager();
+        $users = $userManager->selectAllOrderBy('lastname', 'ASC', $page);
 
         return $this->twig->render('Admin/users.html.twig', [
             'users'        => $users,
-            'number_pages' => $usersManager->numberOfPages(),
+            'number_pages' => $userManager->numberOfPages(),
             'is_page'      => $page
         ]);
     }
@@ -132,19 +132,23 @@ class AdminController extends AbstractController
     {
         $json         = file_get_contents('php://input');
         $data         = json_decode($json, true);
-        $usersManager = new UserManager();
+        $userManager  = new UserManager();
         $status       = ($data['is_admin']) ? 1 : 0;
+        $text         = '';
 
-        if ($data['is_admin']) {
-            $texte = $data['username'] . ' est désormais administrateur';
-            $usersManager->userSetAdmin($status, $data['user_id']);
+        if ($_SESSION['is_admin'] === 1) {
+            if ($data['is_admin']) {
+                $text = $data['username'] . ' is now admin';
+                $userManager->userSetAdmin($status, $data['user_id']);
+            } else {
+                $text = $data['username'] . ' is not admin anymore';
+                $userManager->userSetAdmin($status, $data['user_id']);
+            }
         } else {
-            $texte = $data['username'] . ' n\'est plus administrateur';
-            $usersManager->userSetAdmin($status, $data['user_id']);
+            $text = 'You haven\'t got the good rights to do this';
         }
-
         return $this->twig->render('/Ajaxviews/toast_admin_user.html.twig', [
-            'data' => $texte,
+            'data' => $text,
         ]);
     }
 
@@ -152,19 +156,24 @@ class AdminController extends AbstractController
     {
         $json         = file_get_contents('php://input');
         $data         = json_decode($json, true);
-        $usersManager = new UserManager();
+        $userManager  = new UserManager();
         $status       = ($data['is_active']) ? 1 : 0;
+        $text         = '';
 
-        if ($data['is_active']) {
-            $texte = $data['username'] . ' est désormais actif';
-            $usersManager->userSetActive($status, $data['user_id']);
+        if ($_SESSION['is_admin'] === 1) {
+            if ($data['is_active']) {
+                $text = $data['username'] . ' is now active';
+                $userManager->userSetActive($status, $data['user_id']);
+            } else {
+                $text = $data['username'] . ' is not active anymore';
+                $userManager->userSetActive($status, $data['user_id']);
+            }
         } else {
-            $texte = $data['username'] . ' est désormais inactif';
-            $usersManager->userSetActive($status, $data['user_id']);
+            $text = 'You haven\'t got the good rights to do this';
         }
 
         return $this->twig->render('/Ajaxviews/toast_admin_user.html.twig', [
-            'data' => $texte,
+            'data' => $text,
         ]);
     }
 

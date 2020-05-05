@@ -122,13 +122,11 @@ class UserManager extends AbstractManager
     public function selectAllOrderBy(string $orderBy, string $sortOrder, int $page = 1): array
     {
         $offset = ($page-1) * self::LIMIT_LIST_USERS;
-
         $query  = 'SELECT * FROM ' . self::TABLE .
             ' ORDER BY ' . $orderBy . ' ' . $sortOrder .
             ' LIMIT ' . self::LIMIT_LIST_USERS . ' OFFSET ' . $offset;
         $statement = $this->pdo->prepare($query);
         $statement->execute();
-
         return $statement->fetchAll();
     }
 

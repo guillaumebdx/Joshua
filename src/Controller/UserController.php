@@ -11,6 +11,7 @@ use App\Service\UserEditFormControl;
 use App\Service\UserConnection;
 
 use App\Model\ContestManager;
+use App\Service\UserService;
 
 class UserController extends AbstractController
 {
@@ -70,27 +71,20 @@ class UserController extends AbstractController
     public function profile()
     {
         $userId = $_SESSION['user_id'];
-
+        $userService = new UserService();
         $contestManager = new ContestManager();
         $userContests   = $contestManager->getContestsPlayedByUser($_SESSION['user_id'], 5);
 
         $limit = count($userContests);
         for ($i = 0; $i < $limit; $i++) {
             $contestId = $userContests[$i]['id'];
-
-            $palmares = $contestManager->getContestPalmares($contestId);
-
-            $userRank = array_search($userId, array_keys($palmares)) + 1;
-            $suffix   = ['', 'st', 'nd', 'rd'];
-            $medals   = ['', 'gold', 'silver', 'bronze'];
-            $rank     = ($userRank <= 3) ? $userRank . $suffix[$userRank] : $userRank . 'th';
-
+            $palmares = $userService->formatUserRankingInContest($contestId);
             $userContests[$i]['resume'] = [
                 'started_on'           => $contestManager->getUserContestStartTime($userId, $contestId),
-                'challenges_played'    => $palmares[$_SESSION['user_id']]['flags_succeed'],
+                'challenges_played'    => $palmares['flags_succeed'],
                 'number_of_challenges' => $contestManager->getNumberOfChallengesInContest($contestId),
-                'user_rank'            => $rank,
-                'medal'                => $medals[$userRank],
+                'user_rank'            => $palmares['rank'],
+                'medal'                => $palmares['medal'],
             ];
         }
 
