@@ -17,6 +17,22 @@ class ContestManager extends AbstractManager
     }
 
     /**
+     * @param int $status
+     * Don't add anything for all, add 1 for not ended, add 2 for ended
+     * @return array
+     */
+    public function selectAll(int $status = null): array
+    {
+        $query = 'SELECT * FROM ' . $this->table;
+        if ($status === 1) {
+            $query .= ' WHERE NOW() < DATE_ADD(started_on,interval duration minute)';
+        } elseif ($status === 2) {
+            $query .= ' WHERE NOW() > DATE_ADD(started_on,interval duration minute)';
+        }
+        return $this->pdo->query($query)->fetchAll();
+    }
+
+    /**
      * @param object $contest
      */
     public function addContest(object $contest): void
@@ -55,6 +71,9 @@ class ContestManager extends AbstractManager
         }
     }
 
+    /**
+     * @param int $id
+     */
     public function displayContestOn(int $id): void
     {
         $query = 'UPDATE ' . self::TABLE . ' SET is_visible = 1 WHERE id = ' . $id;
@@ -62,6 +81,9 @@ class ContestManager extends AbstractManager
         $statement->execute();
     }
 
+    /**
+     * @param int $id
+     */
     public function displayContestOff(int $id): void
     {
         $query = 'UPDATE ' . self::TABLE . ' SET is_visible = 0 WHERE id = ' . $id;
@@ -87,7 +109,7 @@ class ContestManager extends AbstractManager
         $query = 'SELECT c.id, c.is_active AS active, c.name, c.image, c.description, ca.city AS campus , c.duration,' .
             ' c.started_on AS beginning FROM ' . self::TABLE . ' c' .
             ' LEFT JOIN ' . CampusManager::TABLE . ' ca ON ca.id = c.campus_id' .
-            ' WHERE c.is_visible = 1';
+            ' WHERE c.is_visible = 1 AND NOW() < DATE_ADD(c.started_on,interval c.duration minute)';
 
         return $this->pdo->query($query)->fetchAll();
     }
