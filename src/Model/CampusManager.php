@@ -36,7 +36,7 @@ class CampusManager extends AbstractManager
 
     public function getAllCampusOrderBy(string $order1, string $sort1 = 'ASC', string $order2 = '', string $sort2 = 'ASC'): array
     {
-        $query = 'SELECT * FROM ' . self::TABLE . ' ORDER BY ' . $order1 . ' ' . $sort1;
+        $query = 'SELECT * FROM ' . self::TABLE . ' WHERE id != 0 ORDER BY ' . $order1 . ' ' . $sort1;
         if ($order2 != '') {
             $query .= ', ' . $order2 . ' ' . $sort2;
         }
