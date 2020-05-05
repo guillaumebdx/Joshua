@@ -4,17 +4,17 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12 text-center">
-            <h1>404</h1>
-            <p class="text-white">
-                Sorry, this page doesn't exists
-            </p>
-            <a class="btn btn-dark" href="/">Go back joshua home</a>
+    <div class="body-404">
+        <div class="noise-404"></div>
+        <div class="overlay-404"></div>
+        <div class="terminal-404">
+            <h1>Error <span class="errorcode-404">404</span></h1>
+            <p class="output-404">The page you are looking for might have been removed, <br>had its name changed or is temporarily unavailable.</p>
+            <p class="output-404">Please <a href="/">return to the homepage of Joshua</a>.</p>
+            <p class="output-404">Have a good game.</p>
+            <div class="signature-404">Design 404 by <a href="https://codepen.io/robinselmer">Robin Selmer</a></div>
         </div>
     </div>
-</div>
 {%  endblock %}
 
 {% block footer %}

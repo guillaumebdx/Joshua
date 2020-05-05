@@ -63,8 +63,6 @@ class AdminController extends AbstractController
 
     public function editContest($id)
     {
-        $id = $_GET['id'];
-
         $campuses     = new CampusManager();
         $campusesList = $campuses->selectAll();
 
@@ -80,7 +78,7 @@ class AdminController extends AbstractController
 
             if (count($errors) === 0) {
                 $contestManager = new ContestManager();
-                $contestManager->editContest($contest);
+                $contestManager->editContest($contest, $id);
                 header('Location: /admin/managecontest');
                 exit;
             }
@@ -191,24 +189,28 @@ class AdminController extends AbstractController
     {
         $campusManager   = new CampusManager();
         $errors          = [];
-        $campus          = null;
+        $campus          = ('');
+        $campus          = ucfirst(strtolower($campus));
+        $campuses        = $campusManager->getAllCampusOrderBy('country', 'ASC', 'city', 'ASC');
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $campus = new CampusFormControl($_POST);
             $errors = $campus->getErrors();
             if (count($errors) === 0) {
                 $campusManager->insertCampus($campus);
-                header('Location: /admin/index');
+                header('Location: /admin/addCampus');
             }
         }
         $result=[
-            'errors' => $errors,
-            'campus' => $campus,
+            'errors'=>$errors,
+            'campus'=>$campus,
+            'campuses'=>$campuses,
         ];
         return $this->twig->render('Admin/campus.html.twig', $result);
     }
 
     // LANGUAGES
+
     public function addSpecialty()
     {
         $specialtyManager = new SpecialtyManager();

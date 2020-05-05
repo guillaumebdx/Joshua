@@ -1,0 +1,155 @@
+@import "joshua.css";
+@import "admin.css";
+@import "user.css";
+@import "contest.css";
+@import "error404.css";
+
+@font-face {
+    font-family: 'pixelmix';
+    src: url('../fonts/pixelmix.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@keyframes clignote {
+    0% {
+        opacity: 0.8;
+    }
+    49% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* GENERAL */
+
+* {
+    --josh-major-font: 'pixelmix';
+    --josh-text-font: 'Overpass Mono', monospace;
+    --josh-green : #adce86;
+    --josh-grey : #1a1a1a;
+    --josh-yellow : #fec200;
+    --josh-red : #e0013f;
+}
+
+main {
+    min-height: calc(100vh - 77px - 148px - 16px);
+}
+
+body {
+    background-color: var(--josh-grey);
+    font-family: var(--josh-text-font);
+}
+
+h1 {
+    font-family: var(--josh-major-font);
+    color: var(--josh-green);
+    font-size:2rem;
+    padding:35px 0;
+}
+
+h2 {
+    font-family: var(--josh-major-font);
+    color: var(--josh-green);
+    font-size: 1.2rem;
+}
+
+.error {
+    background-color: var(--josh-red);
+    color:#fff;
+}
+
+.success {
+    background-color: var(--josh-green);
+    color:var(--josh-grey);
+}
+
+.btn.show-pass i {
+    font-size:1.5rem;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.text-red {
+    color:var(--josh-red);
+}
+
+.text-grey {
+    color:var(--josh-grey);
+}
+
+.text-grey-light {
+    color:#999;
+}
+
+.text-green {
+    color:var(--josh-green);
+}
+
+.navbar-brand {
+    font-size:1.8rem;
+}
+
+.bg-none {
+    background:none;
+}
+
+.list-group-item {
+    border-color: #adce86;
+}
+
+.timer {
+    padding:6px 12px;
+    border:1px solid #fff;
+    color:#fff;
+    display: inline-block;
+}
+
+.btn {
+    border-radius:0;
+    font-family: var(--josh-major-font);
+    font-size:0.9rem;
+}
+
+/* END GENERAL */
+
+/* HEADER */
+
+.navbar {
+    background-color: var(--josh-grey);
+}
+
+nav .nav-link:hover {
+    color: var(--josh-green) !important;
+    font-size: 1.2rem;
+    transition: 0.4s;
+}
+
+nav .nav-link {
+    font-size: 1.1rem;
+    font-variant-caps: small-caps;
+}
+
+/* END HEADER */
+
+/* FOOTER */
+
+.page-footer {
+    margin-top: 25px;
+    background-color: var(--josh-grey);
+}
+
+.page-footer img {
+    width: 50px;
+    height: auto;
+    color: #e0013f;
+}
+
+/*END FOOTER */

@@ -24,6 +24,7 @@ class ContestController extends AbstractController
             // TEST SOLUTION IF POST
             if (isset($_POST['solution']) && !empty($_POST['solution'])) {
                 $contestService->testChallengeSolution(
+                    // TODO verify entry
                     $challengeManager->challengeOnTheWayByUser($contest),
                     $_POST['solution']
                 );
