@@ -79,6 +79,20 @@ class JoshuaController extends AbstractController
         return $this->twig->render('Home/home.html.twig', ['contests' => $visibleContests]);
     }
 
+    public function oldContests()
+    {
+        $contestManager = new ContestManager();
+        $oldContests = $contestManager->selectAll(2);
+
+        $nbContests = count($oldContests);
+        for ($i = 0; $i < $nbContests; $i++) {
+            $duration = $oldContests[$i]['duration'];
+            $oldContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration, 1);
+        }
+
+        return $this->twig->render('Home/old_contests.html.twig', ['contests' => $oldContests]);
+    }
+
     /**
      * @return string
      * @throws LoaderError

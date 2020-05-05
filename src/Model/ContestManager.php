@@ -17,13 +17,18 @@ class ContestManager extends AbstractManager
     }
 
     /**
-     * @param int $status
+     * @param int|null $status
      * Don't add anything for all, add 1 for not ended, add 2 for ended
+     * @param int $campus
+     * Default show campus information else add 0 for just show campus id
      * @return array
      */
-    public function selectAll(int $status = null): array
+    public function selectAll(int $status = null, int $campus = 1): array
     {
         $query = 'SELECT * FROM ' . $this->table;
+        if ($campus === 1) {
+            $query .= ' LEFT JOIN ' . CampusManager::TABLE . ' ca ON ca.id = campus_id';
+        }
         if ($status === 1) {
             $query .= ' WHERE NOW() < DATE_ADD(started_on,interval duration minute)';
         } elseif ($status === 2) {
