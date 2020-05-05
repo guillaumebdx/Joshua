@@ -23,9 +23,11 @@ class ContestDate
 
     /**
      * @param int $minutes
-     * @return array
+     * Default string, if you want a array put 1;
+     * @param int $format
+     * @return mixed
      */
-    public static function getDurationInHoursAndMinutes(int $minutes): array
+    public static function getDurationInHoursAndMinutes(int $minutes, int $format = 0)
     {
         $date1 = new DateTime('00:00:00');
         $date2 = new DateTime('00:00:00');
@@ -35,7 +37,17 @@ class ContestDate
         $duration['hours'] = $contestDuration->days * self::HOURS_IN_DAY + $contestDuration->h;
         $duration['minutes'] = $contestDuration->i;
 
-        return $duration;
+        if ($duration['hours'] === 0) {
+            $result = $duration['minutes'] . 'm';
+        } else {
+            $result = $duration['hours'] . 'h' . $duration['minutes'] . 'm';
+        }
+
+        if ($format === 1) {
+            $result = $duration;
+        }
+
+        return $result;
     }
 
     /**

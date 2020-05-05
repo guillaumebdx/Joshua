@@ -199,7 +199,7 @@ class ContestManager extends AbstractManager
      */
     public function getContestPalmares(int $contest): ?array
     {
-        $query = 'SELECT user_id, SUM(TIMEDIFF(ended_on, started_on)) AS total_time,' .
+        $query = 'SELECT user_id, SUM(ROUND(TIME_TO_SEC(TIMEDIFF(ended_on, started_on))/60)) AS total_time,' .
             ' COUNT(challenge_id) AS flags_succeed' .
             ' FROM ' . UserHasContestManager::TABLE .
             ' WHERE contest_id = :contest and ended_on IS NOT NULL' .
