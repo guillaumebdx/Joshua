@@ -6,9 +6,6 @@ use \Exception;
 
 class ContestManager extends AbstractManager
 {
-    /**
-     *
-     */
     const TABLE = 'contest';
 
     /**
@@ -22,11 +19,10 @@ class ContestManager extends AbstractManager
     /**
      * @param object $contest
      */
-    public function addContest(object $contest)
+    public function addContest(object $contest): void
     {
-        $query     = 'INSERT INTO ' . self::TABLE;
-        $query    .= ' (name, campus_id, description, duration, image)';
-        $query    .= ' VALUES (:name, :campus, :description, :duration, :image)';
+        $query = 'INSERT INTO ' . self::TABLE . ' (name, campus_id, description, duration, image)' .
+            ' VALUES (:name, :campus, :description, :duration, :image)';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':name', $contest->getProperty('name'), \PDO::PARAM_STR);
         $statement->bindValue(':campus', $contest->getProperty('campus'), \PDO::PARAM_INT);
@@ -38,15 +34,16 @@ class ContestManager extends AbstractManager
 
     /**
      * @param object $contest
+     * @param int $id
      * @return int
      */
-    public function editContest(object $contest)
+    public function editContest(object $contest, int $id): int
     {
-        $query     = 'UPDATE ' . self::TABLE;
-        $query    .= ' SET name = :name, campus_id = :campus, description = :description,';
-        $query    .= ' duration = :duration, image = :image';
-        $query    .= ' WHERE id = '.$_GET['id'];
+        $query = 'UPDATE ' . self::TABLE . ' SET name = :name, campus_id = :campus, description = :description,' .
+            ' duration = :duration, image = :image' .
+            ' WHERE id = :id';
         $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
         $statement->bindValue(':name', $contest->getProperty('name'), \PDO::PARAM_STR);
         $statement->bindValue(':campus', $contest->getProperty('campus'), \PDO::PARAM_INT);
         $statement->bindValue(':description', $contest->getProperty('description'), \PDO::PARAM_STR);
@@ -58,19 +55,25 @@ class ContestManager extends AbstractManager
         }
     }
 
-    public function deleteContest(int $id)
+    /**
+     * @param int $id
+     */
+    public function deleteContest(int $id): void
     {
-        $query = 'DELETE FROM ' . self::TABLE . ' WHERE id = '.$_GET['id'];
+        $query = 'DELETE FROM ' . self::TABLE . ' WHERE id = ' . $id;
         $statement = $this->pdo->prepare($query);
         $statement->execute();
     }
 
-    public function getVisibleContests()
+    /**
+     * @return array
+     */
+    public function getVisibleContests(): array
     {
-        $query = 'SELECT c.id, c.is_active AS active, c.name, c.image, c.description, ca.city AS campus , c.duration,
-                   c.started_on AS beginning FROM ' . self::TABLE . ' c 
-                  LEFT JOIN ' . CampusManager::TABLE . ' ca ON ca.id = c.campus_id 
-                  WHERE c.is_visible = 1';
+        $query = 'SELECT c.id, c.is_active AS active, c.name, c.image, c.description, ca.city AS campus , c.duration,' .
+            ' c.started_on AS beginning FROM ' . self::TABLE . ' c' .
+            ' LEFT JOIN ' . CampusManager::TABLE . ' ca ON ca.id = c.campus_id' .
+            ' WHERE c.is_visible = 1';
 
         return $this->pdo->query($query)->fetchAll();
     }
@@ -85,8 +88,8 @@ class ContestManager extends AbstractManager
      */
     public function getContestsPlayedByUser(int $user, int $limit = 0): array
     {
-        $query = 'SELECT distinct c.id, c.name  FROM contest c ' .
-            ' JOIN user_has_contest uhc ON ' .
+        $query = 'SELECT distinct c.id, c.name  FROM ' . self::TABLE . ' c ' .
+            ' JOIN ' . UserHasContestManager::TABLE . ' uhc ON ' .
             ' uhc.contest_id = c.id ' .
             ' WHERE uhc.user_id = :user ' .
             ' ORDER BY c.name ';
@@ -110,8 +113,8 @@ class ContestManager extends AbstractManager
      */
     public function getUserContestStartTime(int $user, int $contest): ?string
     {
-        $query = 'SELECT started_on from user_has_contest ' .
-            'where user_id=:user and contest_id=:contest order by started_on LIMIT 1';
+        $query = 'SELECT started_on FROM ' . UserHasContestManager::TABLE .
+            ' WHERE user_id = :user AND contest_id = :contest ORDER BY started_on LIMIT 1';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':user', $user, \PDO::PARAM_INT);
         $statement->bindValue(':contest', $contest, \PDO::PARAM_INT);
@@ -135,8 +138,8 @@ class ContestManager extends AbstractManager
      */
     public function getNumberFlagsPlayedByUserInContest(int $user, int $contest): ?int
     {
-        $query = 'SELECT count(challenge_id) as challenges_ended from user_has_contest ' .
-            'where user_id=:user and contest_id=:contest and ended_on IS NOT NULL ';
+        $query = 'SELECT count(challenge_id) AS challenges_ended FROM ' . UserHasContestManager::TABLE .
+            ' WHERE user_id = :user AND contest_id = :contest AND ended_on IS NOT NULL ';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':user', $user, \PDO::PARAM_INT);
         $statement->bindValue(':contest', $contest, \PDO::PARAM_INT);
@@ -158,8 +161,8 @@ class ContestManager extends AbstractManager
      */
     public function getNumberOfChallengesInContest(int $contest): ?int
     {
-        $query = 'SELECT count(challenge_id) as total_challenges ' .
-            ' FROM contest_has_challenge where contest_id=:contest';
+        $query = 'SELECT count(challenge_id) as total_challenges' .
+            ' FROM ' . ContestHasChallengeManager::TABLE . ' WHERE contest_id = :contest';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':contest', $contest, \PDO::PARAM_INT);
         if ($statement->execute()) {
@@ -182,10 +185,10 @@ class ContestManager extends AbstractManager
      */
     public function getContestPalmares(int $contest): ?array
     {
-        $query = 'SELECT user_id, SUM(TIMEDIFF(ended_on, started_on)) AS total_time, ' .
-            ' COUNT(challenge_id) AS flags_succeed ' .
-            ' FROM user_has_contest WHERE contest_id = :contest and ended_on IS NOT NULL ' .
-            ' GROUP BY user_id ORDER BY flags_succeed DESC, total_time ASC ';
+        $query = 'SELECT user_id, SUM(TIMEDIFF(ended_on, started_on)) AS total_time,' .
+            ' COUNT(challenge_id) AS flags_succeed' .
+            ' FROM ' . UserHasContestManager::TABLE . ' WHERE contest_id = :contest and ended_on IS NOT NULL' .
+            ' GROUP BY user_id ORDER BY flags_succeed DESC, total_time ASC';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':contest', $contest, \PDO::PARAM_INT);
         $statement->execute();
@@ -200,7 +203,10 @@ class ContestManager extends AbstractManager
         return $palmares;
     }
 
-    public function setContestActive(string $contestId)
+    /**
+     * @param string $contestId
+     */
+    public function setContestActive(string $contestId): void
     {
         $query = 'UPDATE ' . self::TABLE . ' SET is_active = 1, started_on = now() WHERE id = :id';
         $statement = $this->pdo->prepare($query);
