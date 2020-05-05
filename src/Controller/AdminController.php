@@ -105,6 +105,21 @@ class AdminController extends AbstractController
         header('Location: /admin/managecontest');
     }
 
+    public function displayContest()
+    {
+        $json       = file_get_contents('php://input');
+        $object     = json_decode($json);
+        $contestId = $object->id;
+        $isVisible = $object->visible;
+        $contestManager = new ContestManager();
+
+        if ($isVisible == 0) {
+            $contestManager->displayContestOn($contestId);
+        } elseif ($isVisible == 1) {
+            $contestManager->displayContestOff($contestId);
+        }
+    }
+
     // USERS
 
     /**
@@ -126,7 +141,6 @@ class AdminController extends AbstractController
             'is_page'      => $page
         ]);
     }
-
 
     public function setUserAdmin()
     {

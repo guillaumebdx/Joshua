@@ -1,3 +1,17 @@
+@keyframes activated {
+    from {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
 /* MAIN ADMIN PAGE */
 
 .admin_title {
@@ -61,6 +75,15 @@ table.adminusers tr td {
 .modal-contest {
     background-color: var(--josh-grey);
     color: var(--josh-green);
+}
+
+.activated {
+    animation: activated 2s infinite;
+    background-color: var(--josh-red);
+}
+
+.activated-buttons {
+    width: 6.5rem;
 }
 
 /* END CONTEST */

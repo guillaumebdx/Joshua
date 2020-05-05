@@ -55,6 +55,20 @@ class ContestManager extends AbstractManager
         }
     }
 
+    public function displayContestOn(int $id): void
+    {
+        $query = 'UPDATE ' . self::TABLE . ' SET is_visible = 1 WHERE id = ' . $id;
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+    }
+
+    public function displayContestOff(int $id): void
+    {
+        $query = 'UPDATE ' . self::TABLE . ' SET is_visible = 0 WHERE id = ' . $id;
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+    }
+
     /**
      * @param int $id
      */
