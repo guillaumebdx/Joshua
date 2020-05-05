@@ -11,6 +11,7 @@ class contestTimer {
         this.target=document.getElementById(target);
         this.intervalTime = 1000;
         this.end = new Date(endTime);
+        console.log(this.end)
         this.contestTimer = null;
         this.show(this.formatDiffTime(this.diffTime()));
         this.start();
@@ -18,7 +19,7 @@ class contestTimer {
 
     diffTime()  {
         let restTime =  this.end.getTime() - Date.now();
-        return  restTime;
+        return restTime;
     }
 
     formatDiffTime(restTime) {
@@ -31,18 +32,22 @@ class contestTimer {
     }
 
     start() {
-        this.contestTimer = setInterval(()=>{
-            if (this.diffTime() > 0) {
-                this.show(this.formatDiffTime(this.diffTime()));
-            } else {
-                this.stop();
-            }
-        }, this.intervalTime);
+        if (this.diffTime()>0) {
+            this.contestTimer = setInterval(() => {
+                if (this.diffTime() > 0) {
+                    this.show(this.formatDiffTime(this.diffTime()));
+                } else {
+                    this.stop();
+                }
+            }, this.intervalTime);
+        } else {
+            this.show('Ended');
+        }
     }
 
     stop() {
         clearInterval(this.contestTimer);
-        this.target.innerHTML = 'Terminé';
+        this.target.innerHTML = 'Ended';
     }
 
     show(restTime) {

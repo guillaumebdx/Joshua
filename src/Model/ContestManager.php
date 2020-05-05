@@ -187,10 +187,12 @@ class ContestManager extends AbstractManager
     {
         $query = 'SELECT user_id, SUM(TIMEDIFF(ended_on, started_on)) AS total_time,' .
             ' COUNT(challenge_id) AS flags_succeed' .
-            ' FROM ' . UserHasContestManager::TABLE . ' WHERE contest_id = :contest and ended_on IS NOT NULL' .
+            ' FROM ' . UserHasContestManager::TABLE .
+            ' WHERE contest_id = :contest and ended_on IS NOT NULL' .
             ' GROUP BY user_id ORDER BY flags_succeed DESC, total_time ASC';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':contest', $contest, \PDO::PARAM_INT);
+
         $statement->execute();
         $results  = $statement->fetchAll();
         $palmares = [];

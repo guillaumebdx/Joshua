@@ -36,4 +36,17 @@ class ContestDate
 
         return $duration;
     }
+
+    /**
+     * @param string $endDate
+     * @return bool
+     */
+    public function isEnded(string $endDate): bool
+    {
+        if ($endDate<=date('H-m-d H:i:s')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
