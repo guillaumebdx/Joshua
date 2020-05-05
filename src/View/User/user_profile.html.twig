@@ -98,8 +98,8 @@
                                  data-parent="#accordionExample">
                                 <div class="row">
                                     <div class="card-body text-grey col-10">
-                                        You started it à {{ contest.resume.started_on }}<br>
-                                        You earned {{ contest.resume.challenges_played }} flags out of {{ contest.resume.number_of_challenges }}<br>
+                                        You played it on {{ contest.resume.started_on | date('Y-m-d') }}<br>
+                                        You succeeded {{ contest.resume.challenges_played }} flags out of {{ contest.resume.number_of_challenges }}<br>
                                         <b>You were ranked {{ contest.resume.user_rank }} * {{ contest.resume.medal }}</b>
                                     </div>
                                     <div class="col-2">
