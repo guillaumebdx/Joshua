@@ -44,7 +44,7 @@ class AdminController extends AbstractController
                 $challengeManager = new ChallengeManager();
                 $challengeManager->addChallenge($challenge);
                 header('Location: /admin/managechallenge');
-                die;
+                die();
             }
         }
 
@@ -52,8 +52,47 @@ class AdminController extends AbstractController
             'challenges'   => $challengesList,
             'difficulties' => $difficultiesList,
             'types'        => $typesList,
+            'challenge'    => $challenge,
         ]);
     }
+
+    public function editChallenge($id)
+    {
+        $difficulties     = new DifficultyManager();
+        $difficultiesList = $difficulties->selectAll();
+
+        $types     = new TypeManager();
+        $typesList = $types->selectAll();
+
+        $challenge      = new ChallengeManager();
+        $challengeEdit  = $challenge->selectOneById($id);
+
+        if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['saveChallenge'])) {
+            $challenge = new ChallengeFormControl($_POST);
+            $errors  = $challenge->getErrors();
+
+            if (count($errors) === 0) {
+                $challengeManager = new ChallengeManager();
+                $challengeManager->editChallenge($challenge, $id);
+                header('Location: /admin/managechallenge');
+                die();
+            }
+        }
+
+        if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['deleteChallenge'])) {
+            $challengeManager = new ChallengeManager();
+            $challengeManager->deleteChallenge($id);
+            header('Location: /admin/managechallenge');
+            die();
+        }
+
+        return $this->twig->render('Admin/challenge_edit.html.twig', [
+            'challenge'    => $challengeEdit,
+            'difficulties' => $difficultiesList,
+            'types'        => $typesList,
+        ]);
+    }
+
     // CONTEST
 
     public function manageContest()
@@ -82,8 +121,8 @@ class AdminController extends AbstractController
             $errors  = $contest->getErrors();
             if (count($errors) === 0) {
                 $contestManager = new ContestManager();
-                $contestManager->addContest($contest);
-                header('Location: /admin/editcontest');
+                $contestId = $contestManager->addContest($contest);
+                header('Location: /admin/editcontest/' . $contestId);
                 die();
             }
         }

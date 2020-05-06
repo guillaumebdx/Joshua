@@ -17,9 +17,51 @@ class ChallengeManager extends AbstractManager
         parent::__construct(self::TABLE);
     }
 
+    /**
+     * @param object $challenge
+     */
     public function addChallenge(object $challenge): void
     {
+        $query = 'INSERT INTO ' . self::TABLE . ' (name, description, difficulty_id, type_id, url, flag)' .
+            ' VALUES (:name, :description, :difficulty_id, :type_id, :url, :flag)';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':name', $challenge->getProperty('name'), \PDO::PARAM_STR);
+        $statement->bindValue(':description', $challenge->getProperty('description'), \PDO::PARAM_STR);
+        $statement->bindValue(':difficulty_id', $challenge->getProperty('difficulty'), \PDO::PARAM_INT);
+        $statement->bindValue(':type_id', $challenge->getProperty('type'), \PDO::PARAM_INT);
+        $statement->bindValue(':url', $challenge->getProperty('url'), \PDO::PARAM_STR);
+        $statement->bindValue(':flag', $challenge->getProperty('flag'), \PDO::PARAM_STR);
+        $statement->execute();
+    }
 
+    /**
+     * @param object $challenge
+     * @param int $id
+     */
+    public function editChallenge(object $challenge, int $id): void
+    {
+        $query = 'UPDATE ' . self::TABLE . ' SET name = :name, description = :description,' .
+            ' difficulty_id = :difficulty_id, type_id = :type_id, url = :url, flag = :flag' .
+            ' WHERE id = :id';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->bindValue(':name', $challenge->getProperty('name'), \PDO::PARAM_STR);
+        $statement->bindValue(':description', $challenge->getProperty('description'), \PDO::PARAM_STR);
+        $statement->bindValue(':difficulty_id', $challenge->getProperty('difficulty'), \PDO::PARAM_INT);
+        $statement->bindValue(':type_id', $challenge->getProperty('type'), \PDO::PARAM_INT);
+        $statement->bindValue(':url', $challenge->getProperty('url'), \PDO::PARAM_STR);
+        $statement->bindValue(':flag', $challenge->getProperty('flag'), \PDO::PARAM_STR);
+        $statement->execute();
+    }
+
+    /**
+     * @param int $id
+     */
+    public function deleteChallenge(int $id): void
+    {
+        $query = 'DELETE FROM ' . self::TABLE . ' WHERE id = ' . $id;
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
     }
 
     /**

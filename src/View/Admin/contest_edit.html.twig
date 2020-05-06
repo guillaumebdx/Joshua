@@ -36,7 +36,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">Title</span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Contest title" aria-describedby="basic-addon1" name="name" value="{{ contest.name }}" required>
+                            <input type="text" class="form-control" placeholder="Contest title" maxlength="30" aria-describedby="basic-addon1" name="name" value="{{ contest.name }}" required>
                         </div>
                     </div>
                     <div class="row d-flex justify-content-center">
@@ -57,7 +57,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Description</span>
                             </div>
-                            <textarea class="form-control" aria-label="Description" maxlength="200" placeholder="Between 30 and 200 characters" name="description" required>{{ contest.description }}</textarea>
+                            <textarea class="form-control" aria-label="Description" minlength="30" maxlength="200" placeholder="Between 30 and 200 characters" name="description" required>{{ contest.description }}</textarea>
                         </div>
                     </div>
                     <div class="row d-flex justify-content-center">
