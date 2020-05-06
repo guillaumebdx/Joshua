@@ -8,6 +8,7 @@ use App\Model\ContestManager;
 use App\Model\UserManager;
 use App\Service\ContestDate;
 use App\Service\ContestService;
+use App\Service\Ranking;
 
 class ContestController extends AbstractController
 {
@@ -32,8 +33,7 @@ class ContestController extends AbstractController
             //CONTEST
             $theContest = $contestManager->selectOneById($contest);
             if ($theContest) {
-                $contestDate = new ContestDate();
-                $endDate = $contestDate->getContestEndDate($theContest['started_on'], $theContest['duration']);
+                $endDate = ContestDate::getContestEndDate($theContest['started_on'], $theContest['duration']);
                 if (!empty($endDate)) {
                     // USER //
                     $user = $userManager->selectOneById($_SESSION['user_id']);
@@ -55,6 +55,7 @@ class ContestController extends AbstractController
                             'ended' => false,
                             'open' => true,
                             'end_date' => $endDate,
+                            'rank_users' => Ranking::getRankingContest($contest),
                         ]);
                     } else {
                         return $this->twig->render('Contests/play.html.twig', [
@@ -63,6 +64,7 @@ class ContestController extends AbstractController
                             'challenges' => $challengesList,
                             'ended' => true,
                             'end_date' => $endDate,
+                            'rank_users' => Ranking::getRankingContest($contest),
                         ]);
                     }
                 } else {
