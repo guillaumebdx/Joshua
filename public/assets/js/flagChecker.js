@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     $('#modal-success').modal('hide');
+    $('#modal-endtime').modal('hide');
+
 
     const flagSolutionForm = document.getElementById('form-flag');
     flagSolutionForm.addEventListener('submit', (event)=>{
