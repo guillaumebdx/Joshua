@@ -50,8 +50,8 @@ class AdminController extends AbstractController
             $errors  = $contest->getErrors();
             if (count($errors) === 0) {
                 $contestManager = new ContestManager();
-                $contestManager->addContest($contest);
-                header('Location: /admin/editcontest');
+                $insertId = $contestManager->addContest($contest);
+                header('Location: /admin/editcontest/' . $insertId);
                 die();
             }
         }

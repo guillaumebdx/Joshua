@@ -10,7 +10,7 @@ class UserManager extends AbstractManager
      * @const table name
      */
     const TABLE = 'user';
-    const LIMIT_LIST_USERS = 5;
+    const LIMIT_LIST_USERS = 4;
 
     /**
      * UserManager constructor.
@@ -113,9 +113,6 @@ class UserManager extends AbstractManager
     {
         $nbPagesPre = $this->getTotalUsers($_SESSION['user_id']) / self::LIMIT_LIST_USERS;
         $nbPages = ceil($nbPagesPre);
-        if (!is_integer($nbPagesPre)) {
-            $nbPages++;
-        }
         return $nbPages;
     }
 

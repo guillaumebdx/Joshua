@@ -39,7 +39,7 @@ class ContestManager extends AbstractManager
     /**
      * @param object $contest
      */
-    public function addContest(object $contest): void
+    public function addContest(object $contest): int
     {
         $query = 'INSERT INTO ' . self::TABLE . ' (name, campus_id, description, duration, image)' .
             ' VALUES (:name, :campus, :description, :duration, :image)';
@@ -49,7 +49,9 @@ class ContestManager extends AbstractManager
         $statement->bindValue(':description', $contest->getProperty('description'), \PDO::PARAM_STR);
         $statement->bindValue(':duration', $contest->getProperty('duration'), \PDO::PARAM_INT);
         $statement->bindValue(':image', $contest->getProperty('image'), \PDO::PARAM_STR);
-        $statement->execute();
+        if ($statement->execute()) {
+            return (int)$this->pdo->lastInsertId();
+        }
     }
 
     /**

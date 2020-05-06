@@ -31,14 +31,16 @@ class ContestController extends AbstractController
 
                     $challengesList = $contestService->listChallengesWithSuccess($contest);
                     $challengeOnTheWay = $challengeManager->challengeOnTheWayByUser($contest);
-                    $difficulty = $contestService->difficulties($challengeOnTheWay['difficulty']);
 
                     if ($challengeOnTheWay && !ContestDate::isEnded($endDate)) {
+                        $difficulty = $contestService->difficulties($challengeOnTheWay['difficulty']);
                         $ended = false;
                         $opened = true;
                     } else {
-                        $ended = true;
-                        $opened = false;
+                        $challengeOnTheWay = $challengeManager->startFirstChallenge($contest);
+                        $difficulty = $contestService->difficulties($challengeOnTheWay['difficulty']);
+                        $ended = false;
+                        $opened = true;
                     }
 
                     return $this->twig->render('Contests/play.html.twig', [

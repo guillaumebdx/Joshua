@@ -47,10 +47,14 @@ class ChallengeManager extends AbstractManager
         $statement->bindValue(':challenge', $challenge, \PDO::PARAM_INT);
         $statement->execute();
         $result = $statement->fetch();
-        if (is_null($result['ended_on']) && !is_null($result['started_on'])) {
-            return 'doing';
-        } elseif (!is_null($result['ended_on']) && !is_null($result['started_on'])) {
-            return 'done';
+        if ($result) {
+            if (is_null($result['ended_on']) && !is_null($result['started_on'])) {
+                return 'doing';
+            } elseif (!is_null($result['ended_on']) && !is_null($result['started_on'])) {
+                return 'done';
+            } else {
+                return 'todo';
+            }
         } else {
             return 'todo';
         }
@@ -97,15 +101,19 @@ class ChallengeManager extends AbstractManager
             return $results;
         } else {
             // Si le contest n'est pas complet ou fini
-            if (ContestService::isSolutionPossible($contest)) {
-                $firstChallenge = $this->getNextChallengeToPlay(1, $contest);
-                $this->startNextChallenge($firstChallenge, $contest);
-                $this->challengeOnTheWayByUser($contest);
-            } else {
+            if (!ContestService::isSolutionPossible($contest)) {
                 header('Location:/contest/results/' . $contest);
                 die();
             }
         }
+    }
+
+    public function startFirstChallenge(int $contest): array
+    {
+
+        $firstChallenge = $this->getNextChallengeToPlay(1, $contest);
+        $this->startNextChallenge($firstChallenge, $contest);
+        return $this->challengeOnTheWayByUser($contest);
     }
 
 
