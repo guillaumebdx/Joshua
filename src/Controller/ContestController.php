@@ -23,7 +23,6 @@ class ContestController extends AbstractController
             $challengeManager = new ChallengeManager();
 
             $theContest = $contestManager->selectOneById($contest);
-
             if ($theContest) {
                 $endDate = ContestDate::getContestEndDate($theContest['started_on'], $theContest['duration']);
                 if (!empty($endDate)) {
@@ -53,7 +52,13 @@ class ContestController extends AbstractController
                         'end_date' => $endDate,
                         'rank_users' => Ranking::getRankingContest($contest),
                     ]);
+                } else {
+                    header('Location:/');
+                    die();
                 }
+            } else {
+                header('Location:/');
+                die();
             }
         } else {
             header('Location:/');

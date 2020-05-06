@@ -72,13 +72,22 @@ class ContestService
     {
         $return = false;
         $contestManager = new ContestManager();
+        $challengeManager = new ChallengeManager();
         $theContest = $contestManager->selectOneById($contest);
         if ($theContest) {
             $endDate = ContestDate::getContestEndDate($theContest['started_on'], $theContest['duration']);
-            if (!ContestDate::isEnded($endDate)) {
+            if (!ContestDate::isEnded($endDate) && !ContestService::isContestCompletedByUser($contest, $_SESSION['user_id'])) {
                 $return = true;
             }
         }
         return $return;
+    }
+
+    public static function isContestCompletedByUser(int $contest, int $user): bool
+    {
+        $contestManager = new ContestManager();
+        $challengeNumber = $contestManager->getNumberOfChallengesInContest($contest);
+        $numberPlayed = $contestManager->getNumberFlagsPlayedByUserInContest($user, $contest);
+        return ($challengeNumber === $numberPlayed)? true : false;
     }
 }
