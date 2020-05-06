@@ -8,7 +8,7 @@
                     <div class="card h-100 mx-auto bg-dark text-white border-success">
                         <p class="badge badge-success">{{ contest.campus|upper }}</p>
                         <img src="{% if contest.image is null %}/assets/images/default_contest.jpg{% else %}{{ contest.image }}{% endif %}"
-                             class="card-img-top" alt="image contest">
+                             class="card-img-top contest-image" alt="image contest">
                         <div class="card-body">
                             <h5 class="card-title title-color">{{ contest.name }}</h5>
                             <p class="card-text">{{ contest.description }}</p>

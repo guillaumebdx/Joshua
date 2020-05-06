@@ -44,7 +44,7 @@ LOCK TABLES campus WRITE;
 /*!40000 ALTER TABLE campus
     DISABLE KEYS */;
 INSERT INTO campus
-VALUES (0, 'All campus', 'all', 'all', 'all'),
+VALUES (0, 'All campus', 'all', 'europe.svg', 'all'),
        (null, 'Bordeaux', 'France', 'france.svg', 'bdx'),
        (null, 'Biarritz', 'France', 'france.svg', 'biarritz'),
        (null, 'La Loupe', 'France', 'france.svg', 'loupe'),
