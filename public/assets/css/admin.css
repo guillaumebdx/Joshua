@@ -68,6 +68,14 @@ table.adminusers tr td {
     font-size: 0.8rem;
 }
 
+.existing_challenge span {
+    font-size: 0.6rem;
+}
+
+.list-group-item-dark .btn {
+    font-size: 0.8rem;
+}
+
 .list-container {
     height: 24rem;
 }
@@ -78,12 +86,20 @@ table.adminusers tr td {
 }
 
 .activated {
+    font-family: var(--josh-major-font);
+    font-size: 0.8rem;
     animation: activated 2s infinite;
     background-color: var(--josh-red);
+    border: 1px solid transparent;
 }
 
 .activated-buttons {
     width: 6.5rem;
+}
+
+.display-switch {
+    font-family: var(--josh-major-font);
+    font-size: 0.8rem;
 }
 
 /* END CONTEST */

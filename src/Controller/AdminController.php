@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Model\ChallengeManager;
 use App\Model\ContestManager;
 use App\Model\CampusManager;
+use App\Model\DifficultyManager;
 use App\Model\SpecialtyManager;
 use App\Model\TypeManager;
 use App\Model\UserManager;
+use App\Service\ChallengeFormControl;
 use App\Service\SpecialtyFormControl;
 use App\Service\CampusFormControl;
 use App\Service\ContestFormControl;
@@ -21,6 +23,75 @@ class AdminController extends AbstractController
     }
 
     // CHALLENGE
+
+    public function manageChallenge()
+    {
+        $challenges     = new ChallengeManager();
+        $challengesList = $challenges->selectAll();
+
+        $difficulties     = new DifficultyManager();
+        $difficultiesList = $difficulties->selectAll();
+
+        $types     = new TypeManager();
+        $typesList = $types->selectAll();
+
+        $challenge = null;
+
+        if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['createChallenge'])) {
+            $challenge = new ChallengeFormControl($_POST);
+            $errors  = $challenge->getErrors();
+            if (count($errors) === 0) {
+                $challengeManager = new ChallengeManager();
+                $challengeManager->addChallenge($challenge);
+                header('Location: /admin/managechallenge');
+                die();
+            }
+        }
+
+        return $this->twig->render('Admin/challenge.html.twig', [
+            'challenges'   => $challengesList,
+            'difficulties' => $difficultiesList,
+            'types'        => $typesList,
+            'challenge'    => $challenge,
+        ]);
+    }
+
+    public function editChallenge($id)
+    {
+        $difficulties     = new DifficultyManager();
+        $difficultiesList = $difficulties->selectAll();
+
+        $types     = new TypeManager();
+        $typesList = $types->selectAll();
+
+        $challenge      = new ChallengeManager();
+        $challengeEdit  = $challenge->selectOneById($id);
+
+        if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['saveChallenge'])) {
+            $challenge = new ChallengeFormControl($_POST);
+            $errors  = $challenge->getErrors();
+
+            if (count($errors) === 0) {
+                $challengeManager = new ChallengeManager();
+                $challengeManager->editChallenge($challenge, $id);
+                header('Location: /admin/managechallenge');
+                die();
+            }
+        }
+
+        if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['deleteChallenge'])) {
+            $challengeManager = new ChallengeManager();
+            $challengeManager->deleteChallenge($id);
+            header('Location: /admin/managechallenge');
+            die();
+        }
+
+        return $this->twig->render('Admin/challenge_edit.html.twig', [
+            'challenge'    => $challengeEdit,
+            'difficulties' => $difficultiesList,
+            'types'        => $typesList,
+        ]);
+    }
 
     // CONTEST
 
@@ -50,8 +121,8 @@ class AdminController extends AbstractController
             $errors  = $contest->getErrors();
             if (count($errors) === 0) {
                 $contestManager = new ContestManager();
-                $insertId = $contestManager->addContest($contest);
-                header('Location: /admin/editcontest/' . $insertId);
+                $contestId = $contestManager->addContest($contest);
+                header('Location: /admin/editcontest/' . $contestId);
                 die();
             }
         }
@@ -115,9 +186,9 @@ class AdminController extends AbstractController
         $isVisible = $object->visible;
         $contestManager = new ContestManager();
 
-        if ($isVisible == 0) {
+        if ($isVisible === 0) {
             $contestManager->displayContestOn($contestId);
-        } elseif ($isVisible == 1) {
+        } elseif ($isVisible === 1) {
             $contestManager->displayContestOff($contestId);
         }
     }

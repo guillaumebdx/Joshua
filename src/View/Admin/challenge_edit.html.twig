@@ -1,34 +1,20 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Contest editor{% endblock %}
+{% block title %}Challenge editor{% endblock %}
 
 {% block content %}
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 text-center">
-                <h1>Contest editor</h1>
+                <h1>Challenge editor</h1>
             </div>
         </div>
         <div class="row">
-            <div class="col-4 offset-1">
-                <div class="text-center pb-3">
-                    <h2>Select challenges</h2>
-                </div>
-                <div class="row list-container overflow-auto">
-                    <ul class="list-group col-12">
-                        {% for challenge in challenges|reverse %}
-                            <li class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2">
-                                <p class="mb-0 existing_challenge pb-1"><i class="fa fa-flag"></i> {{ challenge.name }}</p>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            <div class="col-4 offset-2">
+            <div class="col-4 offset-4">
                 <form action="" method="post">
                     <div class="row d-flex justify-content-center">
                         <div class="text-center pb-3">
-                            <h2>Modify your contest</h2>
+                            <h2>Modify your challenge</h2>
                         </div>
                     </div>
                     <div class="row d-flex justify-content-center">
@@ -36,20 +22,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">Title</span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Contest title" maxlength="30" aria-describedby="basic-addon1" name="name" value="{{ contest.name }}" required>
-                        </div>
-                    </div>
-                    <div class="row d-flex justify-content-center">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="campus" id="inputGroup-campus">Campus</label>
-                            </div>
-                            <select class="custom-select" id="campus" name="campus" required>
-                                <option value="0">All campuses</option>
-                                {% for campus in campuses %}
-                                    <option value="{{ campus.id }}" {% if contest.campus_id == campus.id %}selected{% endif %}>{{ campus.city }}</option>
-                                {% endfor %}
-                            </select>
+                            <input type="text" class="form-control" placeholder="Max 30 characters" maxlength="30" aria-describedby="basic-addon1" name="name" value="{{ challenge.name }}" required>
                         </div>
                     </div>
                     <div class="row d-flex justify-content-center">
@@ -57,36 +30,60 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Description</span>
                             </div>
-                            <textarea class="form-control" aria-label="Description" minlength="30" maxlength="200" placeholder="Between 30 and 200 characters" name="description" required>{{ contest.description }}</textarea>
+                            <textarea class="form-control" aria-label="Description" minlength="30" maxlength="200" placeholder="Between 30 and 200 characters" name="description" required>{{ challenge.description }}</textarea>
                         </div>
                     </div>
                     <div class="row d-flex justify-content-center">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Duration</span>
+                                <label class="input-group-text" for="difficulty" id="inputGroup-difficulty">Difficulty</label>
                             </div>
-                            <input type="number" class="form-control" placeholder="Contest duration in hours" aria-describedby="basic-addon1" name="duration" value="{{ contest.duration }}" required>
+                            <select class="custom-select" id="difficulty" name="difficulty" required>
+                                {% for difficulty in difficulties %}
+                                    <option value="{{ difficulty.id }}" {% if challenge.difficulty_id == difficulty.id %} selected {% endif %}>{{ difficulty.title }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                     <div class="row d-flex justify-content-center">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Image</span>
+                                <label class="input-group-text" for="type" id="inputGroup-type">Type</label>
                             </div>
-                            <input type="url" class="form-control" placeholder="Paste here the url of the image" aria-describedby="basic-addon1" name="image" value="{{ contest.image }}">
+                            <select class="custom-select" id="type" name="type" required>
+                                {% for type in types %}
+                                    <option value="{{ type.id }}" {% if challenge.type_id == type.id %} selected {% endif %}>{{ type.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">URL</span>
+                            </div>
+                            <input type="url" class="form-control" placeholder="Paste the link to the challenge" aria-describedby="basic-addon1" name="url" value="{{ challenge.url }}">
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Flag</span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="The challenge's answer" aria-describedby="basic-addon1" name="flag" value="{{ challenge.flag }}">
                         </div>
                     </div>
                     <div class="row d-flex justify-content-center">
                         <div class="form-group">
-                            <button type="submit" name="saveContest" class="align-self-center btn btn-dark text-white">Save your contest <i class="fa fa-save"></i></button>
-                            <button type="button" name="deleteContest" class="align-self-center btn btn-danger text-white" data-toggle="modal" data-target="#confirmDeletion">Delete <i class="fa fa-trash"></i></button>
+                            <button type="submit" name="saveChallenge" class="align-self-center btn btn-dark text-white">Save your challenge <i class="fa fa-save"></i></button>
+                            <button type="button" name="deleteChallenge" class="align-self-center btn btn-danger text-white" data-toggle="modal" data-target="#confirmDeletion">Delete <i class="fa fa-trash"></i></button>
                         </div>
                     </div>
                     <div class="modal fade" id="confirmDeletion" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content modal-contest">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Delete the contest</h5>
+                                    <h5 class="modal-title" id="staticBackdropLabel">Delete the challenge</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -96,7 +93,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-danger" name="deleteContest">Yes <i class="fa fa-trash"></i></button>
+                                    <button type="submit" class="btn btn-danger" name="deleteChallenge">Yes <i class="fa fa-trash"></i></button>
                                 </div>
                             </div>
                         </div>
