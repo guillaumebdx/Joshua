@@ -19,21 +19,20 @@ class ContestManager extends AbstractManager
     /**
      * @param int|null $status
      * Don't add anything for all, add 1 for not ended, add 2 for ended
-     * @param int $campus
-     * Default show campus information else add 0 for just show campus id
      * @return array
      */
-    public function selectAll(int $status = null, int $campus = 1): array
+    public function selectAll(int $status = null): array
     {
-        $query = 'SELECT * FROM ' . $this->table;
-        if ($campus === 1) {
-            $query .= ' LEFT JOIN ' . CampusManager::TABLE . ' ca ON ca.id = campus_id';
-        }
+        $query = 'SELECT c.id, c.is_visible, c.is_active, c.name, c.image, c.description, c.duration, c.created_on,' .
+            ' c.campus_id, ca.city AS campus, ca.flag FROM ' . self::TABLE . ' c' .
+            ' LEFT JOIN ' . CampusManager::TABLE . ' ca ON ca.id = campus_id';
+
         if ($status === 1) {
-            $query .= ' WHERE NOW() < DATE_ADD(started_on,interval duration minute)';
+            $query .= ' WHERE started_on IS NULL OR NOW() < DATE_ADD(started_on,interval duration minute)';
         } elseif ($status === 2) {
             $query .= ' WHERE NOW() > DATE_ADD(started_on,interval duration minute)';
         }
+
         return $this->pdo->query($query)->fetchAll();
     }
 
@@ -111,10 +110,11 @@ class ContestManager extends AbstractManager
      */
     public function getVisibleContests(): array
     {
-        $query = 'SELECT c.id, c.is_active AS active, c.name, c.image, c.description, ca.city AS campus , c.duration,' .
-            ' c.started_on AS beginning FROM ' . self::TABLE . ' c' .
+        $query = 'SELECT c.id, c.is_active AS active, c.name, c.image, c.description, ca.city AS campus, ca.flag,' .
+            ' c.duration, c.started_on AS beginning FROM ' . self::TABLE . ' c' .
             ' LEFT JOIN ' . CampusManager::TABLE . ' ca ON ca.id = c.campus_id' .
-            ' WHERE c.is_visible = 1 AND NOW() < DATE_ADD(c.started_on,interval c.duration minute)';
+            ' WHERE c.is_visible = 1' .
+            ' AND ( c.started_on IS NULL OR NOW() < DATE_ADD( c.started_on,interval c.duration minute))';
 
         return $this->pdo->query($query)->fetchAll();
     }

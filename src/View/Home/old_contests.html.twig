@@ -6,7 +6,7 @@
             {% for contest in contests %}
                 <div class="col mb-3">
                     <div class="card h-100 mx-auto bg-dark text-white border-success">
-                        <p class="badge badge-success">{{ contest.city|upper }}</p>
+                        <p class="badge badge-success">{{ contest.campus|upper }}</p>
                         <img src="{% if contest.image is null %}/assets/images/default_contest.jpg{% else %}{{ contest.image }}{% endif %}"
                              class="card-img-top" alt="image contest">
                         <div class="card-body">
