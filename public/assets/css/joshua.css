@@ -37,6 +37,10 @@
     margin-right: 0;
 }
 
+.card-img-top {
+    height: 220px;
+}
+
 .border-success {
     border-color: var(--josh-green) !important;
 }

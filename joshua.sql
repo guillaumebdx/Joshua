@@ -9,7 +9,7 @@
 /*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
 /*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE = @@TIME_ZONE */;
-/*!40103 SET TIME_ZONE = '+00:00' */;
+/*!40103 SET TIME_ZONE = '+02:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0 */;
 /*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
@@ -113,11 +113,10 @@ LOCK TABLES challenge WRITE;
 /*!40000 ALTER TABLE challenge
     DISABLE KEYS */;
 INSERT INTO challenge
-VALUES (null, 'Flag #1', 'Le premier drapeau de la quete', 1, 1, 'http://frvaillant.com/', 'test', now(), null),
-       (null, 'Flag #2', 'Mon second flag', 4, 2, 'http://frvaillant.com/', 'test', now(), null),
-       (null, 'Flag #3', 'Mon 3 flag', 3, 1, 'http://frvaillant.com/', 'test', now(), null),
-       (null, 'Flag #4', 'Mon 4 flag', 2, 2, 'http://frvaillant.com/', 'test', now(), null),
-       (null, 'Flag #5', 'Mon 5 flag', 5, 1, 'http://frvaillant.com/', 'test', now(), null);
+VALUES (null, 'Flag #1', 'The first flag !', 1, 1, 'http://frvaillant.com/', 'test', now(), null),
+       (null, 'Flag #2', 'I\'m the second', 4, 2, 'http://frvaillant.com/', 'test', now(), null),
+       (null, 'Flag #3', 'Darla dirladada', 3, 1, 'http://frvaillant.com/', 'test', now(), null),
+       (null, 'Flag #4', 'Wan\'t to touch my tralala?', 2, 2, 'http://frvaillant.com/', 'test', now(), null);
 /*!40000 ALTER TABLE challenge
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -159,10 +158,11 @@ LOCK TABLES contest WRITE;
 /*!40000 ALTER TABLE contest
     DISABLE KEYS */;
 INSERT INTO contest
-VALUES (null,1,0,'Lord of the flag','https://i2.wp.com/gusandco.net/wp-content/uploads/2019/02/herr-der-ringe-knechten-lord-of-ring-1228268.jpg?fit=3840%2C2160&ssl=1','Will you be able to take all the flags? Would you manage to crush all your competitors and become the lord of the flags?',0,180,now(),null),
-       (null,1,0,'Flag wars','https://cdn.pocket-lint.com/r/s/1200x/assets/images/147767-tv-feature-what-order-should-you-watch-all-the-star-wars-films-image1-1wdfjceytb.jpg','Get on your spaceship and go hunting for flags, may the force be with you!',1,120,now(),null),
+VALUES (null,1,1,'Lord of the flag','https://i2.wp.com/gusandco.net/wp-content/uploads/2019/02/herr-der-ringe-knechten-lord-of-ring-1228268.jpg?fit=3840%2C2160&ssl=1','Will you be able to take all the flags? Would you manage to crush all your competitors and become the lord of the flags?',0,180,DATE_ADD(NOW(), interval '-1:30' hour_minute),DATE_ADD(NOW(), interval -1 hour)),
+       (null,0,0,'Flag wars','https://cdn.pocket-lint.com/r/s/1200x/assets/images/147767-tv-feature-what-order-should-you-watch-all-the-star-wars-films-image1-1wdfjceytb.jpg','Get on your spaceship and go hunting for flags, may the force be with you!',1,120,now(),null),
        (null,1,0,'Wild contest',null,'Cause when you look like that, i\'ve never ever wanted to be so bad, oh it drives me wild !',3,480,now(),null),
-       (null,1,0,'Coca Cola Symphony','http://frvaillant.com/wcs/joshua/Coca.png','Open a coke, open happiness, CHEERS !',1,1440,now(),null);
+       (null,1,1,'Coca Cola Symphony','http://frvaillant.com/wcs/joshua/Coca.png','Open a coke, open happiness, CHEERS !',1,1440,DATE_ADD(NOW(), interval '-25:30' hour_minute),DATE_ADD(NOW(), interval -25 hour)),
+       (null,1,1,'Storm Contest', 'http://frvaillant.com/wcs/images/storm.png', 'Can you capture your vars? Don\'t forget to type them !',17,180,DATE_ADD(NOW(), interval '-5:30' hour_minute),DATE_ADD(NOW(), interval -5 hour));
 /*!40000 ALTER TABLE contest
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -203,7 +203,8 @@ LOCK TABLES contest_has_challenge WRITE;
 INSERT INTO contest_has_challenge
 VALUES (1, 1, 1),
        (1, 2, 2),
-       (2, 1, 2);
+       (1, 3, 3),
+       (1, 4, 4);
 /*!40000 ALTER TABLE contest_has_challenge
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -364,7 +365,12 @@ VALUES (null, '1', '1', 'Erpeldinger', 'Guillaume', 'Nighter', 'Nighter33', 'erp
        (null, '1', '1', 'Regnault', 'Marien', 'Green-onions', 'Green-onions', 'regnault.marien@gmail.com', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '1', '1', now(), null),
        (null, '1', '1', 'Fourcade', 'Caroline', 'Caro', 'Carolinefourcade', 'carolinefourcade@yahoo.fr', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '1', '1', now(), null),
        (null, '1', '1', 'Harari', 'Guillaume', 'Guillaumebdx', 'Guillaumebdx', 'guillaumeharari@hotmail.com', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '1', '1', now(), null),
-       (null, '0', '1', 'Test', 'Test', 'Test', 'Test', 'test@test.fr', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '3', '1', now(), null);
+       (null, '0', '1', 'Test1', 'Test1', 'Test1', 'Test', 'test1@test.fr', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '3', '23', now(), null),
+       (null, '0', '1', 'Test2', 'Test2', 'Test2', 'Test', 'test2@test.fr', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '2', '9', now(), null),
+       (null, '0', '1', 'Test3', 'Test3', 'Test3', 'Test', 'test3@test.fr', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '1', '8', now(), null),
+       (null, '0', '1', 'Test4', 'Test4', 'Test4', 'Test', 'test4@test.fr', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '2', '5', now(), null),
+       (null, '0', '1', 'Test5', 'Test5', 'Test5', 'Test', 'test5@test.fr', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '3', '3', now(), null),
+       (null, '0', '1', 'Test6', 'Test6', 'Test6', 'Test', 'test6@test.fr', '$2y$10$YpNUQG6fRpKSp4HKrNXjMORak8FT2/ZUj3vZ/bYCO7CaJRuq8XEPO' , '3', '17', now(), null);
 /*!40000 ALTER TABLE user
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -409,51 +415,43 @@ LOCK TABLES user_has_contest WRITE;
 /*!40000 ALTER TABLE user_has_contest
     DISABLE KEYS */;
 INSERT INTO user_has_contest
-VALUES (1,1,1,'2020-05-05 10:05:18','2020-05-05 10:15:25'),
-       (1,1,2,'2020-05-05 10:15:25','2020-05-05 10:22:46'),
-       (1,1,3,'2020-05-05 10:22:46','2020-05-05 10:36:55'),
-       (1,1,4,'2020-05-05 10:36:55','2020-05-05 10:55:05'),
-       (1,1,5,'2020-05-05 10:55:05','2020-05-05 11:23:36'),
-       (1,1,6,'2020-05-05 11:23:36','2020-05-05 11:44:59'),
-       (1,1,7,'2020-05-05 11:44:59','2020-05-05 11:59:25'),
-       (1,1,8,'2020-05-05 11:59:25','2020-05-05 12:32:18'),
-       (1,1,9,'2020-05-05 12:32:18','2020-05-05 12:37:29'),
-       (2,1,1,'2020-05-05 10:07:02','2020-05-05 10:18:24'),
-       (2,1,2,'2020-05-05 10:18:24','2020-05-05 10:21:05'),
-       (2,1,3,'2020-05-05 10:21:05','2020-05-05 10:32:07'),
-       (2,1,4,'2020-05-05 10:32:07','2020-05-05 10:48:34'),
-       (2,1,5,'2020-05-05 10:48:34','2020-05-05 11:28:10'),
-       (2,1,6,'2020-05-05 11:28:10','2020-05-05 11:47:41'),
-       (2,1,7,'2020-05-05 11:47:41','2020-05-05 12:02:28'),
-       (2,1,8,'2020-05-05 12:02:28','2020-05-05 12:38:14'),
-       (2,1,9,'2020-05-05 12:38:14','2020-05-05 12:42:39'),
-       (3,1,1,'2020-05-05 10:03:39','2020-05-05 10:15:03'),
-       (3,1,2,'2020-05-05 10:15:03','2020-05-05 10:24:53'),
-       (3,1,3,'2020-05-05 10:24:53','2020-05-05 10:38:00'),
-       (3,1,4,'2020-05-05 10:38:00','2020-05-05 10:57:09'),
-       (3,1,5,'2020-05-05 10:57:09','2020-05-05 11:24:51'),
-       (3,1,6,'2020-05-05 11:24:51','2020-05-05 11:47:32'),
-       (3,1,7,'2020-05-05 11:47:32','2020-05-05 12:05:25'),
-       (3,1,8,'2020-05-05 12:05:25','2020-05-05 12:36:29'),
-       (3,1,9,'2020-05-05 12:36:29','2020-05-05 12:48:23'),
-       (4,1,1,'2020-05-05 10:02:18','2020-05-05 10:25:17'),
-       (4,1,2,'2020-05-05 10:25:17','2020-05-05 10:45:22'),
-       (4,1,3,'2020-05-05 10:45:22','2020-05-05 11:00:10'),
-       (4,1,4,'2020-05-05 11:00:10','2020-05-05 11:28:37'),
-       (4,1,5,'2020-05-05 11:28:37','2020-05-05 11:57:36'),
-       (4,1,6,'2020-05-05 11:57:36','2020-05-05 12:17:01'),
-       (4,1,7,'2020-05-05 12:17:01','2020-05-05 12:43:25'),
-       (4,1,8,'2020-05-05 12:43:25',null),
-       (5,1,1,'2020-05-05 10:01:02','2020-05-05 10:05:02'),
-       (5,1,2,'2020-05-05 10:05:02','2020-05-05 10:12:46'),
-       (5,1,3,'2020-05-05 10:12:46',null),
-       (6,1,1,'2020-05-05 10:00:54','2020-05-05 10:31:41'),
-       (6,1,2,'2020-05-05 10:31:41','2020-05-05 11:00:41'),
-       (6,1,3,'2020-05-05 11:00:41','2020-05-05 11:36:02'),
-       (6,1,4,'2020-05-05 11:36:02','2020-05-05 12:02:05'),
-       (6,1,5,'2020-05-05 12:02:05','2020-05-05 12:31:07'),
-       (6,1,6,'2020-05-05 12:31:07','2020-05-05 12:59:03'),
-       (6,1,7,'2020-05-05 12:59:03',null);
+VALUES (1,1,1,DATE_ADD(NOW(), interval '05:17' minute_second),DATE_ADD(NOW(), interval '10:21' minute_second)),
+       (1,1,2,DATE_ADD(NOW(), interval '10:21' minute_second),DATE_ADD(NOW(), interval '18:56' minute_second)),
+       (1,1,3,DATE_ADD(NOW(), interval '18:56' minute_second),DATE_ADD(NOW(), interval '29:19' minute_second)),
+       (1,1,4,DATE_ADD(NOW(), interval '29:19' minute_second),DATE_ADD(NOW(), interval '53:02' minute_second)),
+       (2,1,1,DATE_ADD(NOW(), interval '01:22' minute_second),DATE_ADD(NOW(), interval '08:45' minute_second)),
+       (2,1,2,DATE_ADD(NOW(), interval '08:45' minute_second),DATE_ADD(NOW(), interval '14:43' minute_second)),
+       (2,1,3,DATE_ADD(NOW(), interval '14:43' minute_second),null),
+       (3,1,1,DATE_ADD(NOW(), interval '00:50' minute_second),DATE_ADD(NOW(), interval '11:33' minute_second)),
+       (3,1,2,DATE_ADD(NOW(), interval '11:33' minute_second),DATE_ADD(NOW(), interval '22:48' minute_second)),
+       (3,1,3,DATE_ADD(NOW(), interval '22:48' minute_second),DATE_ADD(NOW(), interval '39:19' minute_second)),
+       (3,1,4,DATE_ADD(NOW(), interval '39:19' minute_second),DATE_ADD(NOW(), interval '57:09' minute_second)),
+       (4,1,1,DATE_ADD(NOW(), interval '10:20' minute_second),DATE_ADD(NOW(), interval '20:12' minute_second)),
+       (4,1,2,DATE_ADD(NOW(), interval '20:12' minute_second),DATE_ADD(NOW(), interval '49:38' minute_second)),
+       (4,1,3,DATE_ADD(NOW(), interval '49:38' minute_second),DATE_ADD(NOW(), interval '102:21' minute_second)),
+       (4,1,4,DATE_ADD(NOW(), interval '102:21' minute_second),DATE_ADD(NOW(), interval '140:39' minute_second)),
+       (5,1,1,DATE_ADD(NOW(), interval '00:34' minute_second),DATE_ADD(NOW(), interval '1:21' minute_second)),
+       (5,1,2,DATE_ADD(NOW(), interval '1:21' minute_second),null),
+       (6,1,1,DATE_ADD(NOW(), interval '01:02' minute_second),null),
+       (7,1,1,DATE_ADD(NOW(), interval '02:01' minute_second),DATE_ADD(NOW(), interval '27:10' minute_second)),
+       (7,1,2,DATE_ADD(NOW(), interval '27:10' minute_second),DATE_ADD(NOW(), interval '38:26' minute_second)),
+       (7,1,3,DATE_ADD(NOW(), interval '38:26' minute_second),DATE_ADD(NOW(), interval '49:21' minute_second)),
+       (7,1,4,DATE_ADD(NOW(), interval '49:21' minute_second),DATE_ADD(NOW(), interval '83:43' minute_second)),
+       (8,1,1,DATE_ADD(NOW(), interval '09:29' minute_second),DATE_ADD(NOW(), interval '43:22' minute_second)),
+       (8,1,2,DATE_ADD(NOW(), interval '43:22' minute_second),DATE_ADD(NOW(), interval '89:47' minute_second)),
+       (8,1,3,DATE_ADD(NOW(), interval '89:47' minute_second),null),
+       (9,1,1,DATE_ADD(NOW(), interval '12:00' minute_second),DATE_ADD(NOW(), interval '33:33' minute_second)),
+       (9,1,2,DATE_ADD(NOW(), interval '33:33' minute_second),DATE_ADD(NOW(), interval '80:23' minute_second)),
+       (9,1,3,DATE_ADD(NOW(), interval '80:23' minute_second),DATE_ADD(NOW(), interval '139:4O' minute_second)),
+       (9,1,4,DATE_ADD(NOW(), interval '139:40' minute_second),DATE_ADD(NOW(), interval '178:08' minute_second)),
+       (10,1,1,DATE_ADD(NOW(), interval '03:03' minute_second),DATE_ADD(NOW(), interval '21:21' minute_second)),
+       (10,1,2,DATE_ADD(NOW(), interval '21:21' minute_second),DATE_ADD(NOW(), interval '65:34"' minute_second)),
+       (10,1,3,DATE_ADD(NOW(), interval '65:34' minute_second),DATE_ADD(NOW(), interval '92:11' minute_second)),
+       (10,1,4,DATE_ADD(NOW(), interval '92:11' minute_second),DATE_ADD(NOW(), interval '120:00' minute_second)),
+       (11,1,1,DATE_ADD(NOW(), interval '06:56' minute_second),DATE_ADD(NOW(), interval '33:10' minute_second)),
+       (11,1,2,DATE_ADD(NOW(), interval '33:10' minute_second),DATE_ADD(NOW(), interval '55:37' minute_second)),
+       (11,1,3,DATE_ADD(NOW(), interval '55:37' minute_second),DATE_ADD(NOW(), interval '78:39' minute_second)),
+       (11,1,4,DATE_ADD(NOW(), interval '78:39' minute_second),DATE_ADD(NOW(), interval '103:55' minute_second));
 /*!40000 ALTER TABLE user_has_contest
     ENABLE KEYS */;
 UNLOCK TABLES;
