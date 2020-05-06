@@ -73,7 +73,7 @@ class AdminController extends AbstractController
                 $contestManager = new ContestManager();
                 $contestManager->addContest($contest);
                 header('Location: /admin/managecontest');
-                die;
+                die();
             }
         }
 
@@ -84,7 +84,7 @@ class AdminController extends AbstractController
                 $contestManager = new ContestManager();
                 $contestManager->addContest($contest);
                 header('Location: /admin/editcontest');
-                die;
+                die();
             }
         }
 
@@ -114,7 +114,7 @@ class AdminController extends AbstractController
                 $contestManager = new ContestManager();
                 $contestManager->editContest($contest, $id);
                 header('Location: /admin/managecontest');
-                die;
+                die();
             }
         }
 
@@ -122,7 +122,7 @@ class AdminController extends AbstractController
             $contestManager = new ContestManager();
             $contestManager->deleteContest($id);
             header('Location: /admin/managecontest');
-            die;
+            die();
         }
 
         return $this->twig->render('Admin/contest_edit.html.twig', [
@@ -177,53 +177,57 @@ class AdminController extends AbstractController
 
     public function setUserAdmin()
     {
-        $json         = file_get_contents('php://input');
-        $data         = json_decode($json, true);
-        $userManager  = new UserManager();
-        $status       = ($data['status']) ? 1 : 0;
-        $text         = '';
-        $isAdmin      = ($_SESSION['is_admin'] === '1')? true : false;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $json = file_get_contents('php://input');
+            $data = json_decode($json, true);
+            $userManager = new UserManager();
+            $status = ($data['status']) ? 1 : 0;
+            $text = '';
+            $isAdmin = ($_SESSION['is_admin'] === '1') ? true : false;
 
-        if ($isAdmin) {
-            if ($data['status']) {
-                $text = $data['username'] . ' is now admin';
-                $userManager->userSetAdmin($status, $data['user_id']);
+            if ($isAdmin) {
+                if ($data['status']) {
+                    $text = $data['username'] . ' is now admin';
+                    $userManager->userSetAdmin($status, $data['user_id']);
+                } else {
+                    $text = $data['username'] . ' is not admin anymore';
+                    $userManager->userSetAdmin($status, $data['user_id']);
+                }
             } else {
-                $text = $data['username'] . ' is not admin anymore';
-                $userManager->userSetAdmin($status, $data['user_id']);
+                $text = 'You haven\'t got the good rights to do this';
             }
-        } else {
-            $text = 'You haven\'t got the good rights to do this';
+            return $this->twig->render('/Ajaxviews/toast_admin_user.html.twig', [
+                'data' => $text,
+            ]);
         }
-        return $this->twig->render('/Ajaxviews/toast_admin_user.html.twig', [
-            'data' => $text,
-        ]);
     }
 
-    public function setUserActif()
+    public function setUserActive()
     {
-        $json         = file_get_contents('php://input');
-        $data         = json_decode($json, true);
-        $userManager  = new UserManager();
-        $status       = ($data['status']) ? 1 : 0;
-        $text         = '';
-        $isAdmin      = ($_SESSION['is_admin'] === '1')? true : false;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $json = file_get_contents('php://input');
+            $data = json_decode($json, true);
+            $userManager = new UserManager();
+            $status = ($data['status']) ? 1 : 0;
+            $text = '';
+            $isAdmin = ($_SESSION['is_admin'] === '1') ? true : false;
 
-        if ($isAdmin) {
-            if ($data['status']) {
-                $text = $data['username'] . ' is now active';
-                $userManager->userSetActive($status, $data['user_id']);
+            if ($isAdmin) {
+                if ($data['status']) {
+                    $text = $data['username'] . ' is now active';
+                    $userManager->userSetActive($status, $data['user_id']);
+                } else {
+                    $text = $data['username'] . ' is not active anymore';
+                    $userManager->userSetActive($status, $data['user_id']);
+                }
             } else {
-                $text = $data['username'] . ' is not active anymore';
-                $userManager->userSetActive($status, $data['user_id']);
+                $text = 'You haven\'t got the good rights to do this';
             }
-        } else {
-            $text = 'You haven\'t got the good rights to do this';
-        }
 
-        return $this->twig->render('/Ajaxviews/toast_admin_user.html.twig', [
-            'data' => $text,
-        ]);
+            return $this->twig->render('/Ajaxviews/toast_admin_user.html.twig', [
+                'data' => $text,
+            ]);
+        }
     }
 
     // CAMPUS

@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Service\ContestService;
 use Exception;
 
 class ChallengeManager extends AbstractManager
@@ -100,9 +101,15 @@ class ChallengeManager extends AbstractManager
         if (!empty($results)) {
             return $results;
         } else {
-            $firstChallenge = $this->getNextChallengeToPlay(1, $contest);
-            $this->startNextChallenge($firstChallenge, $contest);
-            $this->challengeOnTheWayByUser($contest);
+            // Si le contest n'est pas complet ou fini
+            if (ContestService::isSolutionPossible($contest)) {
+                $firstChallenge = $this->getNextChallengeToPlay(1, $contest);
+                $this->startNextChallenge($firstChallenge, $contest);
+                $this->challengeOnTheWayByUser($contest);
+            } else {
+                header('Location:/contest/results/' . $contest);
+                die();
+            }
         }
     }
 
@@ -155,11 +162,9 @@ class ChallengeManager extends AbstractManager
         $statement->bindValue(':order', $order, \PDO::PARAM_INT);
         $statement->execute();
         $nextChallenge = $statement->fetch();
-        if (!is_null($nextChallenge)) {
-            return $nextChallenge['challenge_id'];
-        } else {
-            return false;
-        }
+        $return=null;
+        $return = (!is_null($nextChallenge)) ? $nextChallenge['challenge_id'] : false;
+        return $return;
     }
 
     /**

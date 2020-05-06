@@ -5,6 +5,7 @@ namespace App\Service;
 
 use App\Model\ChallengeManager;
 use App\Model\ContestHasChallengeManager;
+use App\Model\ContestManager;
 
 class ContestService
 {
@@ -31,42 +32,62 @@ class ContestService
     {
         $challengeManager = new ChallengeManager();
         $challenge = $challengeManager->selectOneById($challenge);
-        if ($solution === $challenge['flag']) {
-            return true;
-        } else {
-            return false;
-        }
+        $return = ($solution === $challenge['flag']) ? true : false;
+        return $return;
     }
 
     public function difficulties(string $difficulty) : string
     {
         $returnStars ='';
-        $lim=0;
+        $limit=0;
         switch ($difficulty) {
             case 'Easy':
-                $lim=1;
+                $limit=1;
                 break;
             case 'Medium':
-                $lim=2;
+                $limit=2;
                 break;
             case 'Hard':
-                $lim=3;
+                $limit=3;
                 break;
             case 'Pro':
-                $lim=4;
+                $limit=4;
                 break;
             case 'Nightmare':
-                $lim=5;
+                $limit=5;
                 break;
             default:
                 break;
         }
-        for ($i=0; $i<$lim; $i++) {
+        for ($i=0; $i<$limit; $i++) {
             $returnStars.='<i class="fa fa-star text-red"></i>';
         }
-        for ($i=$lim; $i<self::NUMBER_OF_DIFFICULTIES; $i++) {
+        for ($i=$limit; $i<self::NUMBER_OF_DIFFICULTIES; $i++) {
             $returnStars.='<i class="fa fa-star text-white"></i>';
         }
         return '<small class="info-challenge-title">Difficulty level</small><br>' . $returnStars;
+    }
+
+    public static function isSolutionPossible(int $contest)
+    {
+        $return = false;
+        $contestManager = new ContestManager();
+        $challengeManager = new ChallengeManager();
+        $theContest = $contestManager->selectOneById($contest);
+        if ($theContest) {
+            $endDate = ContestDate::getContestEndDate($theContest['started_on'], $theContest['duration']);
+            if (!ContestDate::isEnded($endDate) && !ContestService::isContestCompletedByUser($contest, $_SESSION['user_id'])) {
+                $return = true;
+            }
+        }
+        return $return;
+    }
+
+    public static function isContestCompletedByUser(int $contest, int $user): bool
+    {
+        $contestManager = new ContestManager();
+        $challengeNumber = $contestManager->getNumberOfChallengesInContest($contest);
+        $numberPlayed = $contestManager->getNumberFlagsPlayedByUserInContest($user, $contest);
+        return ($challengeNumber === $numberPlayed)? true : false;
     }
 }
