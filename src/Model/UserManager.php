@@ -94,9 +94,12 @@ class UserManager extends AbstractManager
      * Total number of users
      * @return int
      */
-    public function getTotalUsers(): int
+    public function getTotalUsers($excluded = 0): int
     {
         $query     = 'SELECT count(id) AS total FROM ' . self::TABLE;
+        if ($excluded != 0) {
+            $query .= ' WHERE id != ' . $excluded;
+        }
         $statement = $this->pdo->prepare($query);
         $statement->execute();
         $results   = $statement->fetch();
@@ -108,7 +111,11 @@ class UserManager extends AbstractManager
      */
     public function numberOfPages(): int
     {
-        return ceil($this->getTotalUsers()) / self::LIMIT_LIST_USERS;
+        $nbPages = ceil($this->getTotalUsers($_SESSION['user_id'])) / self::LIMIT_LIST_USERS;
+        if (!is_integer($this->getTotalUsers($_SESSION['user_id']) / self::LIMIT_LIST_USERS)) {
+            $nbPages++;
+        }
+        return $nbPages;
     }
 
     /**
@@ -119,11 +126,14 @@ class UserManager extends AbstractManager
      * @param int $page
      * @return array
      */
-    public function selectAllOrderBy(string $orderBy, string $sortOrder, int $page = 1): array
+    public function selectAllOrderBy(string $orderBy, string $sortOrder, int $page = 1, $excluded = 0): array
     {
         $offset = ($page-1) * self::LIMIT_LIST_USERS;
-        $query  = 'SELECT * FROM ' . self::TABLE .
-            ' ORDER BY ' . $orderBy . ' ' . $sortOrder .
+        $query  = 'SELECT * FROM ' . self::TABLE ;
+        if ($excluded != 0) {
+            $query .= ' WHERE id != ' . $excluded;
+        }
+        $query .=   ' ORDER BY ' . $orderBy . ' ' . $sortOrder .
             ' LIMIT ' . self::LIMIT_LIST_USERS . ' OFFSET ' . $offset;
         $statement = $this->pdo->prepare($query);
         $statement->execute();
