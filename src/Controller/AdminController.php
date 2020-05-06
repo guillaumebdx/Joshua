@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Model\ChallengeManager;
 use App\Model\ContestManager;
 use App\Model\CampusManager;
+use App\Model\DifficultyManager;
 use App\Model\SpecialtyManager;
 use App\Model\TypeManager;
 use App\Model\UserManager;
+use App\Service\ChallengeFormControl;
 use App\Service\SpecialtyFormControl;
 use App\Service\CampusFormControl;
 use App\Service\ContestFormControl;
@@ -22,6 +24,36 @@ class AdminController extends AbstractController
 
     // CHALLENGE
 
+    public function manageChallenge()
+    {
+        $challenges     = new ChallengeManager();
+        $challengesList = $challenges->selectAll();
+
+        $difficulties     = new DifficultyManager();
+        $difficultiesList = $difficulties->selectAll();
+
+        $types     = new TypeManager();
+        $typesList = $types->selectAll();
+
+        $challenge = null;
+
+        if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['createChallenge'])) {
+            $challenge = new ChallengeFormControl($_POST);
+            $errors  = $challenge->getErrors();
+            if (count($errors) === 0) {
+                $challengeManager = new ChallengeManager();
+                $challengeManager->addChallenge($challenge);
+                header('Location: /admin/managechallenge');
+                die;
+            }
+        }
+
+        return $this->twig->render('Admin/challenge.html.twig', [
+            'challenges'   => $challengesList,
+            'difficulties' => $difficultiesList,
+            'types'        => $typesList,
+        ]);
+    }
     // CONTEST
 
     public function manageContest()
@@ -115,9 +147,9 @@ class AdminController extends AbstractController
         $isVisible = $object->visible;
         $contestManager = new ContestManager();
 
-        if ($isVisible == 0) {
+        if ($isVisible === 0) {
             $contestManager->displayContestOn($contestId);
-        } elseif ($isVisible == 1) {
+        } elseif ($isVisible === 1) {
             $contestManager->displayContestOff($contestId);
         }
     }

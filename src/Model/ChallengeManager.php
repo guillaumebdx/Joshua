@@ -16,6 +16,11 @@ class ChallengeManager extends AbstractManager
         parent::__construct(self::TABLE);
     }
 
+    public function addChallenge(object $challenge): void
+    {
+
+    }
+
     /**
      * @param int $contest
      * @return array
