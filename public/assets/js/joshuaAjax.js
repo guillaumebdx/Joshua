@@ -50,7 +50,7 @@ class joshuaAjax {
             let data = {
                 'user_id' : user,
                 'username' : username,
-                'is_admin' : e.target.checked
+                'status' : e.target.checked
             };
 
             const request = new Request(url, {

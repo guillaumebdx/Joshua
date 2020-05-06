@@ -39,7 +39,7 @@ class AdminController extends AbstractController
                 $contestManager = new ContestManager();
                 $contestManager->addContest($contest);
                 header('Location: /admin/managecontest');
-                exit;
+                die;
             }
         }
 
@@ -50,7 +50,7 @@ class AdminController extends AbstractController
                 $contestManager = new ContestManager();
                 $contestManager->addContest($contest);
                 header('Location: /admin/editcontest');
-                exit;
+                die;
             }
         }
 
@@ -80,7 +80,7 @@ class AdminController extends AbstractController
                 $contestManager = new ContestManager();
                 $contestManager->editContest($contest, $id);
                 header('Location: /admin/managecontest');
-                exit;
+                die;
             }
         }
 
@@ -88,7 +88,7 @@ class AdminController extends AbstractController
             $contestManager = new ContestManager();
             $contestManager->deleteContest($id);
             header('Location: /admin/managecontest');
-            exit;
+            die;
         }
 
         return $this->twig->render('Admin/contest_edit.html.twig', [
@@ -133,8 +133,7 @@ class AdminController extends AbstractController
     public function manageUsers(int $page = 1)
     {
         $userManager     = new UserManager();
-        $users = $userManager->selectAllOrderBy('lastname', 'ASC', $page);
-
+        $users = $userManager->selectAllOrderBy('lastname', 'ASC', $page, $_SESSION['user_id']);
         return $this->twig->render('Admin/users.html.twig', [
             'users'        => $users,
             'number_pages' => $userManager->numberOfPages(),
@@ -147,11 +146,12 @@ class AdminController extends AbstractController
         $json         = file_get_contents('php://input');
         $data         = json_decode($json, true);
         $userManager  = new UserManager();
-        $status       = ($data['is_admin']) ? 1 : 0;
+        $status       = ($data['status']) ? 1 : 0;
         $text         = '';
+        $isAdmin      = ($_SESSION['is_admin'] === '1')? true : false;
 
-        if ($_SESSION['is_admin'] === 1) {
-            if ($data['is_admin']) {
+        if ($isAdmin) {
+            if ($data['status']) {
                 $text = $data['username'] . ' is now admin';
                 $userManager->userSetAdmin($status, $data['user_id']);
             } else {
@@ -171,11 +171,12 @@ class AdminController extends AbstractController
         $json         = file_get_contents('php://input');
         $data         = json_decode($json, true);
         $userManager  = new UserManager();
-        $status       = ($data['is_active']) ? 1 : 0;
+        $status       = ($data['status']) ? 1 : 0;
         $text         = '';
+        $isAdmin      = ($_SESSION['is_admin'] === '1')? true : false;
 
-        if ($_SESSION['is_admin'] === 1) {
-            if ($data['is_active']) {
+        if ($isAdmin) {
+            if ($data['status']) {
                 $text = $data['username'] . ' is now active';
                 $userManager->userSetActive($status, $data['user_id']);
             } else {
