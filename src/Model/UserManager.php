@@ -111,8 +111,9 @@ class UserManager extends AbstractManager
      */
     public function numberOfPages(): int
     {
-        $nbPages = ceil($this->getTotalUsers($_SESSION['user_id'])) / self::LIMIT_LIST_USERS;
-        if (!is_integer($this->getTotalUsers($_SESSION['user_id']) / self::LIMIT_LIST_USERS)) {
+        $nbPagesPre = $this->getTotalUsers($_SESSION['user_id']) / self::LIMIT_LIST_USERS;
+        $nbPages = ceil($nbPagesPre);
+        if (!is_integer($nbPagesPre)) {
             $nbPages++;
         }
         return $nbPages;
