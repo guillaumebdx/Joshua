@@ -6,10 +6,13 @@ use App\Model\ChallengeManager;
 use App\Model\ContestManager;
 use App\Model\CampusManager;
 use App\Model\SpecialtyManager;
+use App\Model\TypeManager;
 use App\Model\UserManager;
 use App\Service\SpecialtyFormControl;
 use App\Service\CampusFormControl;
 use App\Service\ContestFormControl;
+use Gitonomy\Git\Admin;
+use App\Service\TypeFormControl;
 
 class AdminController extends AbstractController
 {
@@ -233,5 +236,36 @@ class AdminController extends AbstractController
 
         ];
         return $this->twig->render('Admin/specialty.html.twig', $result);
+    }
+
+    // TYPES
+
+    public function addType()
+    {
+        $typeManager = new TypeManager();
+        $errors      = [];
+        $type        = null;
+        $types       = $typeManager->selectAll();
+        $typeExist  = 0;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $type   = new TypeFormControl($_POST);
+            $errors = $type->getErrors();
+            if (count($errors) === 0) {
+                if (!$typeManager->typeExists($type)) {
+                    $typeManager->insertType($type);
+                    $types       = $typeManager->selectAll();
+                } else {
+                    $typeExist = 1;
+                }
+            }
+        }
+        $result=[
+            'errors' => $errors,
+            'type'   => $type,
+            'types'  => $types,
+            'type_exist' => $typeExist,
+        ];
+        return $this->twig->render('Admin/type.html.twig', $result);
     }
 }

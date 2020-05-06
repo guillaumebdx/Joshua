@@ -72,7 +72,7 @@ ul {
 }
 
 .list-specialty {
-    height: 150px;
+    height: auto;
     width:42%;
     line-height: normal;
 }
