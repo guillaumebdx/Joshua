@@ -91,7 +91,14 @@ class ChallengeManager extends AbstractManager
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':contest', $contest, \PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetch();
+        $results = $statement->fetch();
+        if (!empty($results)) {
+            return $results;
+        } else {
+            $firstChallenge = $this->getNextChallengeToPlay(1, $contest);
+            $this->startNextChallenge($firstChallenge, $contest);
+            $this->challengeOnTheWayByUser($contest);
+        }
     }
 
 
