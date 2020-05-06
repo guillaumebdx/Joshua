@@ -11,7 +11,6 @@ use App\Model\UserManager;
 use App\Service\SpecialtyFormControl;
 use App\Service\CampusFormControl;
 use App\Service\ContestFormControl;
-use Gitonomy\Git\Admin;
 use App\Service\TypeFormControl;
 
 class AdminController extends AbstractController
