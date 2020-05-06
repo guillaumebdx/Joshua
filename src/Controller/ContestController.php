@@ -34,37 +34,40 @@ class ContestController extends AbstractController
             if ($theContest) {
                 $contestDate = new ContestDate();
                 $endDate = $contestDate->getContestEndDate($theContest['started_on'], $theContest['duration']);
+                if (!empty($endDate)) {
+                    // USER //
+                    $user = $userManager->selectOneById($_SESSION['user_id']);
+                    $github = $user['github'];
 
-                // USER //
-                $user = $userManager->selectOneById($_SESSION['user_id']);
-                $github = $user['github'];
+                    //CHALLENGES
+                    $challengesList = $contestService->listChallengesWithSuccess($contest);
+                    $challengeOnTheWay = $challengeManager->challengeOnTheWayByUser($contest);
+                    if ($challengeOnTheWay && !ContestDate::isEnded($endDate)) {
+                        $difficulty = $contestService->difficulties($challengeOnTheWay['difficulty']);
 
-                //CHALLENGES
-                $challengesList = $contestService->listChallengesWithSuccess($contest);
-                $challengeOnTheWay = $challengeManager->challengeOnTheWayByUser($contest);
-
-                if ($challengeOnTheWay && !ContestDate::isEnded($endDate)) {
-                    $difficulty = $contestService->difficulties($challengeOnTheWay['difficulty']);
-
-                    //RENDER
-                    return $this->twig->render('Contests/play.html.twig', [
-                        'contest' => $theContest,
-                        'github' => $github,
-                        'challenges' => $challengesList,
-                        'challengeOnTheWay' => $challengeOnTheWay,
-                        'difficulty' => $difficulty,
-                        'ended' => false,
-                        'open' => true,
-                        'end_date' => $endDate,
-                    ]);
+                        //RENDER
+                        return $this->twig->render('Contests/play.html.twig', [
+                            'contest' => $theContest,
+                            'github' => $github,
+                            'challenges' => $challengesList,
+                            'challengeOnTheWay' => $challengeOnTheWay,
+                            'difficulty' => $difficulty,
+                            'ended' => false,
+                            'open' => true,
+                            'end_date' => $endDate,
+                        ]);
+                    } else {
+                        return $this->twig->render('Contests/play.html.twig', [
+                            'contest' => $theContest,
+                            'github' => $github,
+                            'challenges' => $challengesList,
+                            'ended' => true,
+                            'end_date' => $endDate,
+                        ]);
+                    }
                 } else {
-                    return $this->twig->render('Contests/play.html.twig', [
-                        'contest' => $theContest,
-                        'github' => $github,
-                        'challenges' => $challengesList,
-                        'ended' => true,
-                        'end_date' => $endDate,
-                    ]);
+                    header('Location:/');
+                    die;
                 }
             } else {
                 header('Location:/joshua/page404');
@@ -80,7 +83,7 @@ class ContestController extends AbstractController
     {
         $contestManager=new ContestManager();
         $theContest = $contestManager->selectOneById($contest);
-        if ($theContest) {
+        if ($theContest && !is_null($theContest['started_on'])) {
             $endDate = ContestDate::getContestEndDate($theContest['started_on'], $theContest['duration']);
 
             return $this->twig->render('Contests/results.html.twig', [
