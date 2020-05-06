@@ -40,6 +40,7 @@ class UserController extends AbstractController
                 $idUser            = $newUser->addUser($_POST);
                 UserConnection::openConnection($idUser);
                 header('location: /user/confirmuser/' . $idUser);
+                die();
             } else {
                 $campuses        = new CampusManager();
                 $campusesList    = $campuses->selectAll();
@@ -55,6 +56,7 @@ class UserController extends AbstractController
             }
         } else {
             header('location:/');
+            die();
         }
     }
 
@@ -127,6 +129,7 @@ class UserController extends AbstractController
                 $userManager->updateUser($_POST);
                 UserConnection::openConnection($_SESSION['user_id']);
                 header('location:/user/profile/' . $_SESSION['user_id']);
+                die();
             } else {
                 $campuses        = new CampusManager();
                 $campusesList    = $campuses->selectAll();
@@ -141,6 +144,7 @@ class UserController extends AbstractController
             }
         } else {
             header('location:/');
+            die();
         }
     }
 
@@ -150,5 +154,6 @@ class UserController extends AbstractController
         session_destroy();
         unset($_SESSION);
         header('location:/');
+        die();
     }
 }
