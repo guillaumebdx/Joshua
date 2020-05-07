@@ -10,13 +10,15 @@ class Ranking
     public static function getRankingContest(int $contest): array
     {
         $contestManager = new ContestManager();
-        $ranking = $contestManager->getContestPalmares($contest);
+        $ranking        = $contestManager->getContestPalmares($contest);
+        $nbChallenges   = $contestManager->getNumberOfChallengesInContest($contest);
 
         foreach ($ranking as $userId => $userRanking) {
             $userManager = new UserManager();
             $user = $userManager->selectOneById($userId);
-            $ranking[$userId]['pseudo'] = $user['pseudo'];
-            $ranking[$userId]['total_time'] = ContestDate::getDurationInHoursAndMinutes($userRanking['total_time']);
+            $ranking[$userId]['pseudo']       = $user['pseudo'];
+            $ranking[$userId]['total_time']   = ContestDate::getDurationInHoursAndMinutes($userRanking['total_time']);
+            $ranking[$userId]['nbChallenges'] = $nbChallenges;
         }
 
         return $ranking;

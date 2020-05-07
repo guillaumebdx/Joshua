@@ -37,8 +37,12 @@ class ContestDate
         $duration['hours'] = $contestDuration->days * self::HOURS_IN_DAY + $contestDuration->h;
         $duration['minutes'] = $contestDuration->i;
 
+        if (strlen((string)$duration['minutes']) === 1) {
+            $duration['minutes'] = 0 . $duration['minutes'];
+        }
+
         if ($duration['hours'] === 0) {
-            $result = $duration['minutes'] . 'm';
+            $result = $duration['minutes'] . 'min';
         } else {
             $result = $duration['hours'] . 'h' . $duration['minutes'] . 'm';
         }

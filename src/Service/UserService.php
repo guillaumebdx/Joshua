@@ -17,7 +17,7 @@ class UserService
         $medals   = ['', 'gold', 'silver', 'bronze'];
         return [
             'rank' => $rank,
-            'medal' => $medals[$userRank],
+            'medal' => (isset($medals[$userRank]) ? $medals[$userRank] : '') ,
             'flags_succeed' => $palmares[$_SESSION['user_id']]['flags_succeed'],
         ];
     }

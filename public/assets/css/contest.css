@@ -111,7 +111,7 @@
 }
 
 .ranking li {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     padding : 3px 0;
     list-style: none;
     position:relative;
@@ -139,10 +139,6 @@
 
 .ranking li.third::before {
     background:url('/assets/images/bronze-flag.svg') no-repeat center center;
-}
-
-.ranking li .score {
-    float: right;
 }
 
 .badge-success {
