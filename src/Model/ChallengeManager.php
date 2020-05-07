@@ -121,7 +121,11 @@ class ChallengeManager extends AbstractManager
         $statement->bindValue(':challenge', $challenge, \PDO::PARAM_INT);
         $statement->execute();
         $time = $statement->fetch();
-        return $time['time'];
+        if ($time) {
+            return $time['time'];
+        } else {
+            return '00:00:00';
+        }
     }
 
     /**

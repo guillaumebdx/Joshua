@@ -102,9 +102,11 @@
                                         You succeeded {{ contest.resume.challenges_played }} flags out of {{ contest.resume.number_of_challenges }}<br>
                                         <b>You were ranked {{ contest.resume.user_rank }} * {{ contest.resume.medal }}</b>
                                     </div>
+                                    {% if (contest.resume.medal != '') %}
                                     <div class="col-2">
                                         <img src="/assets/images/medals/{{ contest.resume.medal }}-medal.svg">
                                     </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
