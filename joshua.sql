@@ -391,17 +391,17 @@ CREATE TABLE user_has_contest
     started_on   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     ended_on     DATETIME          DEFAULT NULL,
     PRIMARY KEY (user_id, contest_id, challenge_id),
-    KEY fk_user_has_contest_contest_idx (contest_id),
     KEY fk_user_has_contest_user_idx (user_id),
+    KEY fk_user_has_contest_contest_idx (contest_id),
     KEY fk_user_has_contest_challenge_idx (challenge_id),
+    CONSTRAINT fk_user_has_contest_user FOREIGN KEY (user_id)
+        REFERENCES user (id)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT fk_user_has_contest_challenge FOREIGN KEY (challenge_id)
         REFERENCES challenge (id)
         ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT fk_user_has_contest_contest FOREIGN KEY (contest_id)
         REFERENCES contest (id)
-        ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT fk_user_has_contest_user FOREIGN KEY (user_id)
-        REFERENCES user (id)
         ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE = INNODB
   DEFAULT CHARSET = UTF8MB4
@@ -456,6 +456,89 @@ VALUES (1,1,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '05:17' minut
 /*!40000 ALTER TABLE user_has_contest
     ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for story
+--
+
+DROP TABLE IF EXISTS story;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE story
+(
+    user_id      INT      NOT NULL,
+    contest_id   INT      NOT NULL,
+    challenge_id INT      NOT NULL,
+    success      TINYINT  NOT NULL,
+    added_on     DATETIME DEFAULT CURRENT_TIMESTAMP,
+    KEY fk_story_user_idx (user_id),
+    KEY fk_story_contest_idx (contest_id),
+    KEY fk_story_challenge_idx (challenge_id),
+    CONSTRAINT fk_story_user FOREIGN KEY (user_id)
+        REFERENCES user (id)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_story_contest FOREIGN KEY (contest_id)
+        REFERENCES contest (id)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_story_challenge FOREIGN KEY (challenge_id)
+        REFERENCES challenge (id)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE = INNODB
+  DEFAULT CHARSET = UTF8MB4
+  COLLATE = UTF8MB4_GENERAL_CI;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table user_has_contest
+--
+
+LOCK TABLES story WRITE;
+/*!40000 ALTER TABLE story
+    DISABLE KEYS */;
+INSERT INTO story
+VALUES (1,1,1,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '10:21' minute_second)),
+       (1,1,2,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '18:56' minute_second)),
+       (1,1,3,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '29:19' minute_second)),
+       (1,1,4,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '53:02' minute_second)),
+       (2,1,1,0,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '08:39' minute_second)),
+       (2,1,1,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '08:45' minute_second)),
+       (2,1,2,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '14:43' minute_second)),
+       (3,1,1,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '11:33' minute_second)),
+       (3,1,2,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '22:48' minute_second)),
+       (3,1,3,0,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '38:56' minute_second)),
+       (3,1,3,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '39:19' minute_second)),
+       (3,1,4,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '57:09' minute_second)),
+       (4,1,1,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '20:12' minute_second)),
+       (4,1,2,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '49:38' minute_second)),
+       (4,1,3,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '102:21' minute_second)),
+       (4,1,4,0,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '119:26' minute_second)),
+       (4,1,4,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '140:39' minute_second)),
+       (5,1,1,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '1:21' minute_second)),
+       (7,1,1,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '27:10' minute_second)),
+       (7,1,2,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '38:26' minute_second)),
+       (7,1,3,0,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '44:09' minute_second)),
+       (7,1,3,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '49:21' minute_second)),
+       (7,1,4,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '83:43' minute_second)),
+       (8,1,1,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '43:22' minute_second)),
+       (8,1,2,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '89:47' minute_second)),
+       (9,1,1,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '33:33' minute_second)),
+       (9,1,2,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '80:23' minute_second)),
+       (9,1,3,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '139:4O' minute_second)),
+       (9,1,4,0,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '156:22' minute_second)),
+       (9,1,4,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '178:08' minute_second)),
+       (10,1,1,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '21:21' minute_second)),
+       (10,1,2,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '65:34"' minute_second)),
+       (10,1,3,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '92:11' minute_second)),
+       (10,1,4,0,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '119:55' minute_second)),
+       (10,1,4,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '120:00' minute_second)),
+       (11,1,1,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '33:10' minute_second)),
+       (11,1,2,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '55:37' minute_second)),
+       (11,1,3,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '78:39' minute_second)),
+       (11,1,4,1,DATE_ADD(DATE_ADD(NOW(), interval -1 hour), interval '103:55' minute_second));
+/*!40000 ALTER TABLE story
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
