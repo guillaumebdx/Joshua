@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use mysql_xdevapi\TableSelect;
+use App\Service\TypeFormControl;
 
 class TypeManager extends AbstractManager
 {
@@ -17,10 +18,10 @@ class TypeManager extends AbstractManager
     }
 
     /**
-     * @param object $type
+     * @param TypeFormControl $type
      * @return void
      */
-    public function insertType(object $type): void
+    public function insertType(TypeFormControl $type): void
     {
         $query = 'INSERT INTO ' . self::TABLE . ' (title) VALUES (:title)';
 
@@ -28,17 +29,20 @@ class TypeManager extends AbstractManager
         $statement->bindValue(':title', $type->getProperty('title'), \PDO::PARAM_STR);
         $statement->execute();
     }
-    public function typeExists(object $type): bool
+
+    /**
+     * @param TypeFormControl $type
+     * @return bool
+     */
+    public function typeExists(TypeFormControl $type): bool
     {
         $type  = trim($type->getProperty('title'));
         $query = 'SELECT * FROM ' . self::TABLE . ' WHERE title = :title';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':title', $type, \PDO::PARAM_STR);
         $statement->execute();
-        if ($statement->fetch()) {
-            return true;
-        } else {
-            return false;
-        }
+        $results = $statement->fetchAll();
+        $return = (!empty($results)) ? true : false;
+        return $return;
     }
 }

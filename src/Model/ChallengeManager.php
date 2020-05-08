@@ -93,8 +93,9 @@ class ChallengeManager extends AbstractManager
         $statement->bindValue(':contest', $contest, \PDO::PARAM_INT);
         $statement->bindValue(':challenge', $challenge, \PDO::PARAM_INT);
         $statement->execute();
-        $result = $statement->fetch();
-        if ($result) {
+        $result = $statement->fetchAll();
+        if (!empty($result[0])) {
+            $result = $result[0];
             if (is_null($result['ended_on']) && !is_null($result['started_on'])) {
                 return 'doing';
             } elseif (!is_null($result['ended_on']) && !is_null($result['started_on'])) {
@@ -120,13 +121,11 @@ class ChallengeManager extends AbstractManager
         $statement->bindValue(':contest', $contest, \PDO::PARAM_INT);
         $statement->bindValue(':challenge', $challenge, \PDO::PARAM_INT);
         $statement->execute();
-        $time = $statement->fetch();
-        if ($time) {
-            return $time['time'];
-        } else {
-            return '00:00:00';
-        }
+        $time = $statement->fetchAll();
+        $return = (!empty($time)) ? $time[0]['time'] : '00:00:00';
+        return $return;
     }
+
 
     /**
      * @param int $contest
@@ -147,9 +146,9 @@ class ChallengeManager extends AbstractManager
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':contest', $contest, \PDO::PARAM_INT);
         $statement->execute();
-        $results = $statement->fetch();
-        if (!empty($results)) {
-            return $results;
+        $results = $statement->fetchAll();
+        if (!empty($results[0])) {
+            return $results[0];
         } else {
             // Si le contest n'est pas complet ou fini
             if (!ContestService::isSolutionPossible($contest)) {
@@ -215,9 +214,9 @@ class ChallengeManager extends AbstractManager
         $statement->bindValue(':contest', $contest, \PDO::PARAM_INT);
         $statement->bindValue(':order', $order, \PDO::PARAM_INT);
         $statement->execute();
-        $nextChallenge = $statement->fetch();
+        $nextChallenge = $statement->fetchAll();
         $return=null;
-        $return = (!is_null($nextChallenge)) ? $nextChallenge['challenge_id'] : false;
+        $return = (!empty($nextChallenge)) ? $nextChallenge[0]['challenge_id'] : false;
         return $return;
     }
 

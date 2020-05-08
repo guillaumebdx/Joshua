@@ -14,7 +14,6 @@ class ContestController extends AbstractController
 {
     public function play(int $contest)
     {
-        // TODO AJOUTER SI CONTEST EXIST et si contest Contest is active et si pas terminé
 
         if (isset($_SESSION['user_id']) && $_SESSION['user_id']!='') {
             $contestService=new ContestService();

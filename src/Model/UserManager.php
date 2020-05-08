@@ -102,8 +102,8 @@ class UserManager extends AbstractManager
         }
         $statement = $this->pdo->prepare($query);
         $statement->execute();
-        $results   = $statement->fetch();
-        return $results['total'];
+        $results   = $statement->fetchAll();
+        return $results[0]['total'];
     }
 
     /**
