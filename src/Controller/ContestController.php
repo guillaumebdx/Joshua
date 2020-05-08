@@ -106,10 +106,10 @@ class ContestController extends AbstractController
                 } else {
                     $return['message'] = 'end';
                 }
-                $storyManager->setHistory ($_SESSION['user_id'], $json->contest_id, $json->challenge_id, 1);
+                $storyManager->setHistory($_SESSION['user_id'], $json->contest_id, $json->challenge_id, 1);
             } else {
                 $return['message'] = 'error';
-                $storyManager->setHistory ($_SESSION['user_id'], $json->contest_id, $json->challenge_id, 0);
+                $storyManager->setHistory($_SESSION['user_id'], $json->contest_id, $json->challenge_id, 0);
             }
             return json_encode($return);
         } else {
@@ -137,6 +137,5 @@ class ContestController extends AbstractController
             return $this->twig->render('Components/_console.html.twig', [
                 'solutions' => $postSolution,
             ]);
-
     }
 }

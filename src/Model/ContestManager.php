@@ -279,8 +279,11 @@ class ContestManager extends AbstractManager
         $statement = $this->pdo->prepare($query);
         $statement->execute();
         $activeContests = $statement->fetchAll();
-        foreach ($activeContests as $key=>$contest) {
-            $activeContests[$key]['end_date'] = ContestDate::getContestEndDate($contest['started_on'], $contest['duration']);
+        foreach ($activeContests as $key => $contest) {
+            $activeContests[$key]['end_date'] = ContestDate::getContestEndDate(
+                $contest['started_on'],
+                $contest['duration']
+            );
         }
         return $activeContests;
     }

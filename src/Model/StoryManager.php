@@ -3,7 +3,6 @@
 
 namespace App\Model;
 
-
 class StoryManager extends AbstractManager
 {
     const TABLE = 'story';
@@ -28,7 +27,7 @@ class StoryManager extends AbstractManager
         return $statement->fetchAll();
     }
 
-    public function setHistory (int $userId, int $contestId, int $challengeId, int $success): void
+    public function setHistory(int $userId, int $contestId, int $challengeId, int $success): void
     {
         $query = 'INSERT INTO ' . self::TABLE .
             ' (user_id, contest_id, challenge_id, success, added_on)' .
@@ -41,5 +40,4 @@ class StoryManager extends AbstractManager
         $statement->bindValue(':now', date('Y-m-d H:i:s'), \PDO::PARAM_STR);
         $statement->execute();
     }
-
 }
