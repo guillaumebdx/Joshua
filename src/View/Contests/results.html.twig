@@ -32,7 +32,8 @@
     let timer = new contestTimer({% if end_date %}'{{ end_date }}'{% else %} '2020-05-20 17:18:00' {% endif %},
         'contest-timer',
         function() {
-            window.location.href = '/contest/results/{{ contest.id }}';
+            location.reload();
+            return false;
         });
 </script>
 {% endblock %}

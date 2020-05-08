@@ -11,6 +11,21 @@
         opacity: 0;
     }
 }
+@keyframes flashing-red-white {
+    0% {
+        color: white;
+    }
+    49% {
+        color: white;
+    }
+    50% {
+        color:var(--josh-red);
+    }
+
+    100% {
+        color:var(--josh-red);
+    }
+}
 
 /* MAIN ADMIN PAGE */
 

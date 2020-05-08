@@ -30,4 +30,13 @@ class SpecialtyManager extends AbstractManager
             return (int)$this->pdo->lastInsertId();
         }
     }
+
+    public function getTotalNumberOfSpecialties(): int
+    {
+        $query = 'SELECT count(*) as total FROM ' . self::TABLE;
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+        $result = $statement->fetch();
+        return $result['total'];
+    }
 }

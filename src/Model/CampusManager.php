@@ -43,4 +43,13 @@ class CampusManager extends AbstractManager
         $statement = $this->pdo->query($query);
         return $statement->fetchAll();
     }
+
+    public function getTotalNumberOfCampus(): int
+    {
+        $query = 'SELECT count(*) as total FROM ' . self::TABLE;
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+        $result = $statement->fetch();
+        return $result['total'];
+    }
 }

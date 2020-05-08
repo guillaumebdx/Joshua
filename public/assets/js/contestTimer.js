@@ -11,7 +11,6 @@ class contestTimer {
         this.target=document.getElementById(target);
         this.intervalTime = 1000;
         this.end = new Date(endTime);
-        console.log(this.end)
         this.contestTimer = null;
         this.show(this.formatDiffTime(this.diffTime()));
         this.start();

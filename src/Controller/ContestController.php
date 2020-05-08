@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Model\ChallengeManager;
 use App\Model\ContestManager;
+use App\Model\StoryManager;
 use App\Model\UserManager;
 use App\Service\ContestDate;
 use App\Service\ContestService;
@@ -94,6 +95,7 @@ class ContestController extends AbstractController
             $solutionUsed = $json->flagSolution;
             $challengeSolution = $challengeManager->getChallengeSolution($json->challenge_id);
             $return = [];
+            $storyManager = new StoryManager();
             if ($solutionUsed === $challengeSolution) {
                 $challengeManager->registerChallengeSuccess($json->challenge_id, $json->contest_id);
                 $nextFlagOrder = $json->challenge_id + 1;
@@ -104,8 +106,10 @@ class ContestController extends AbstractController
                 } else {
                     $return['message'] = 'end';
                 }
+                $storyManager->setHistory ($_SESSION['user_id'], $json->contest_id, $json->challenge_id, 1);
             } else {
                 $return['message'] = 'error';
+                $storyManager->setHistory ($_SESSION['user_id'], $json->contest_id, $json->challenge_id, 0);
             }
             return json_encode($return);
         } else {
@@ -123,5 +127,16 @@ class ContestController extends AbstractController
                 'rank_users' => Ranking::getRankingContest($contestId),
             ]);
         }
+    }
+
+    public function getHistoryOfContest($contestId)
+    {
+        $contestId=intval($contestId);
+        $storyManager = new StoryManager();
+        $postSolution = $storyManager->getHistory($contestId);
+            return $this->twig->render('Components/_console.html.twig', [
+                'solutions' => $postSolution,
+            ]);
+
     }
 }
