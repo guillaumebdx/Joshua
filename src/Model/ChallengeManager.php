@@ -236,4 +236,13 @@ class ChallengeManager extends AbstractManager
         $statement->bindValue(':startdate', date('Y-m-d H:i:s'), \PDO::PARAM_STR);
         $statement->execute();
     }
+
+    public function getTotalCountChallenges(): int
+    {
+        $query = 'SELECT count(*) as total FROM ' . self::TABLE;
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+        $result = $statement->fetch();
+        return $result['total'];
+    }
 }

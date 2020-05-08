@@ -3,27 +3,124 @@
 {% block title %}Game Master{% endblock %}
 
 {% block content %}
-    <div class="container-fluid">
+    <div class="container">
         <div class="row d-flex justify-content-around">
-            <h1 class="col-12 text-center admin_title">Welcome, Game Master</h1>
-            <div>
-                <a class="admin_button btn btn-danger" href="/admin/managechallenge">CHALLENGES</a>
-            </div>
-            <div>
-                <a class="admin_button btn btn-danger" href="/admin/addType">CHALLENGE TYPES</a>
-            </div>
-            <div>
-                <a class="admin_button btn btn-danger" href="/admin/managecontest">CONTESTS</a>
-            </div>
-            <div>
-                <a class="admin_button btn btn-danger" href="/admin/manageusers">USERS</a>
-            </div>
-            <div>
-                <a class="admin_button btn btn-danger" href="/admin/addcampus">CAMPUS</a>
-            </div>
-            <div>
-                <a class="admin_button btn btn-danger" href="/admin/addSpecialty">SPECIALTY</a>
+            <h1>Admin dashboard</h1>
+        </div>
+        <div class="row d-flex justify-content-around card-deck">
+                <div class="card dashboard-card ">
+                    <h5 class="card-header">Challenges</h5>
+                    <div class="card-body">
+                        <p>
+                            <span class="number text-red">{{ total_challenges }}</span> challenges.
+                        </p>
+                        <div class="form-group">
+                            <a class="btn btn-dark" href="/admin/managechallenge"><i class="fas fa-plus"></i> Add Challenges</a>
+                        </div>
+                        <div class="form-group">
+                            <select id="challenge-list" class="custom-select">
+                                <option value="1" readonly>Choose a challenge</option>
+                                {% for challenge in challenges %}
+                                <option value="{{challenge.id}}">{{challenge.name}}</option>
+                                {% endfor %}
+                            </select>
+                            <a class="btn btn-dark" href="#" id="edit-challenge-btn"><i class="fas fa-edit"></i> Edit</a><br>
+                        </div>
+                        <div class="form-group">
+                        <a class="btn btn-dark" href="/admin/addType"><i class="fas fa-folder"></i> Types</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card dashboard-card ">
+                    <h5 class="card-header">Contests</h5>
+                    <div class="card-body">
+                        <p>
+                            <span class="number text-red">{{ total_contests }}</span> contests.
+                        </p>
+                        <div class="form-group">
+                            <a class="btn btn-dark" href="/admin/managecontest"><i class="fas fa-plus"></i> Add Contest</a>
+                        </div>
+                        <div class="form-group">
+                            <select id="contest-list" class="custom-select">
+                                <option value="1">Choose a contest</option>
+                                {% for contest in contests %}
+                                    <option value="{{contest.id}}">{{contest.name}}</option>
+                                {% endfor %}
+                            </select>
+                            <a class="btn btn-dark" href="#" id="edit-contest-btn"><i class="fas fa-edit"></i> Edit</a><br>
+                        </div>
+                        {% if active_contests %}
+                        <span class="text-red">Contests on fire</span>
+                        {% endif %}
+                        <p>
+                        {% for active_contest in active_contests %}
+                            <a class="btn btn-dark console-opener" href="#" id="console-contest-{{active_contest.id}}" data-contest="{{active_contest.id}}" data-end="{{active_contest.end_date}}">
+                                <i class="fas fa-circle flash"></i> {{active_contest.name}}</a>
+                            <br>
+                        {% endfor %}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card dashboard-card ">
+                    <h5 class="card-header">Users</h5>
+                    <div class="card-body">
+                        <p>
+                            <span class="number text-red">{{ total_users }}</span> users.
+                        </p>
+                        <div class="form-group">
+                            <a class="btn btn-dark" href="/admin/manageusers"><i class="fas fa-user-cog"></i> Manage users</a><br>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="card dashboard-card ">
+                <h5 class="card-header">Wild Campuses</h5>
+                <div class="card-body">
+                    <p>
+                        <span class="number text-red">{{ total_campuses }}</span> campuses.
+                    </p>
+                    <p>
+                        <span class="number text-red">{{ total_specialties }}</span> specialties.
+                    </p>
+                    <div class="form-group">
+                        <a class="btn btn-dark" href="/admin/addcampus"><i class="fas fa-graduation-cap"></i> campuses</a><br>
+                    </div>
+                    <div class="form-group">
+                        <a class="btn btn-dark" href="/admin/addSpecialty"><i class="fab fa-codepen"></i> specialties</a><br>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
+
+    <div class="console d-flex flex-row hide" id="console">
+        <a  href="#" class="close-console" aria-label="Close" id="console-closer">
+            <i class="fas fa-window-close"></i>
+        </a>
+        <div class="story" >
+            <h2>Follow what's happening ... </h2>
+            <div id="story">
+                {% include 'Components/_console.html.twig' %}
+            </div>
+        </div>
+        <div class="timer-column">
+            <div id="timer"></div>
+        </div>
+        <div class="ranking-console">
+            <img src="/assets/images/podium.svg" width="30"><br> <b>Ranking on fire</b>
+            <div id="ranking">
+                {% include 'Components/_ranking.html.twig' %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascript %}
+<script src="/assets/js/joshuaAjax.js"></script>
+<script src="/assets/js/contestTimer.js"></script>
+<script src="/assets/js/console.js"></script>
+<script src="/assets/js/dashboard.js"></script>
 {% endblock %}

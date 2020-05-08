@@ -19,7 +19,34 @@ class AdminController extends AbstractController
 {
     public function index()
     {
-        return $this->twig->render('Admin/admin.html.twig');
+        $challengeManager = new ChallengeManager();
+        $challenges = $challengeManager->selectAll();
+        $numberOfChallenges = count($challenges);
+
+        $contestManager = new ContestManager();
+        $contests = $contestManager->selectAll();
+        $numberOfContests = count($contests);
+        $activeContests = $contestManager->getActiveContests();
+
+        $userManager = new UserManager();
+        $totalUsers = $userManager->getTotalUsers();
+
+        $campusManager = new CampusManager();
+        $totalCampuses = $campusManager->getTotalNumberOfCampus();
+
+        $specialtyManager  = new SpecialtyManager();
+        $totalSpecialties = $specialtyManager->getTotalNumberOfSpecialties();
+
+        return $this->twig->render('Admin/admin.html.twig', [
+            'total_challenges'    => $numberOfChallenges,
+            'challenges'          => $challenges,
+            'contests'            => $contests,
+            'total_contests'      => $numberOfContests,
+            'active_contests'     => $activeContests,
+            'total_users'         => $totalUsers,
+            'total_campuses'      => $totalCampuses,
+            'total_specialties'   => $totalSpecialties,
+        ]);
     }
 
     // CHALLENGE

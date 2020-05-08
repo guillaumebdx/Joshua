@@ -1,0 +1,15 @@
+{% for solution in solutions %}
+<p>
+    <span class="{% if (solution.success == 1) %} text-green {%  else %} text-red {% endif %}">
+        <i class="fas fa-chevron-circle-right"></i>
+    </span>
+    {{solution.added_on | date("H:i")}} - {{solution.pseudo}} post a
+   {% if solution.success == 1 %}
+        <span class="text-green">good</span>
+    {% else %}
+        <span class="text-red">wrong</span>
+    {% endif %}
+    solution<br>
+    ~ challenge : {{solution.challenge}}
+</p>
+{% endfor %}

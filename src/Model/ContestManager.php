@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Service\ContestDate;
 use \Exception;
 
 class ContestManager extends AbstractManager
@@ -38,6 +39,15 @@ class ContestManager extends AbstractManager
         }
 
         return $this->pdo->query($query)->fetchAll();
+    }
+
+    public function getTotalNumberOfContest(): int
+    {
+        $query = 'SELECT count(*) as total FROM ' . self::TABLE;
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+        $result = $statement->fetch();
+        return $result['total'];
     }
 
     /**
@@ -257,9 +267,28 @@ class ContestManager extends AbstractManager
      */
     public function setContestActive(string $contestId): void
     {
-        $query = 'UPDATE ' . self::TABLE . ' SET is_active = 1, started_on = now() WHERE id = :id';
+        $query = 'UPDATE ' . self::TABLE .
+            ' SET is_active = 1, started_on = now()' .
+            ' WHERE id = :id';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':id', $contestId, \PDO::PARAM_INT);
         $statement->execute();
+    }
+
+    public function getActiveContests(): array
+    {
+        $query = 'SELECT * FROM ' . self::TABLE .
+            ' WHERE is_active = 1 ' .
+            ' AND TIMEDIFF(NOW(), started_on) < SEC_TO_TIME(duration * 60)';
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+        $activeContests = $statement->fetchAll();
+        foreach ($activeContests as $key => $contest) {
+            $activeContests[$key]['end_date'] = ContestDate::getContestEndDate(
+                $contest['started_on'],
+                $contest['duration']
+            );
+        }
+        return $activeContests;
     }
 }
