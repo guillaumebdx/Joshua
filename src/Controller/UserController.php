@@ -75,7 +75,7 @@ class UserController extends AbstractController
         $userId = $_SESSION['user_id'];
         $userService = new UserService();
         $contestManager = new ContestManager();
-        $userContests   = $contestManager->getContestsPlayedByUser($_SESSION['user_id'], 5);
+        $userContests   = $contestManager->getContestsPlayedByUser($userId, 5);
 
         $limit = count($userContests);
         for ($i = 0; $i < $limit; $i++) {
@@ -91,7 +91,7 @@ class UserController extends AbstractController
         }
 
         $user = new UserManager();
-        $userCreated = $user->selectOneById($_SESSION['user_id']);
+        $userCreated = $user->selectOneById($userId);
 
         return $this->twig->render('User/user_profile.html.twig', [
             'user'     => $userCreated,

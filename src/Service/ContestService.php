@@ -13,11 +13,11 @@ class ContestService
 
     public function listChallengesWithSuccess(int $contest) :array
     {
-        $listOfChallenges=[];
+        $listOfChallenges = [];
         $challengeManager = new ChallengeManager();
         $challengesList = $challengeManager->getChallengesByContest($contest);
         foreach ($challengesList as $challenge) {
-            $listOfChallenges[] =[
+            $listOfChallenges[] = [
                 'id' => $challenge['challenge_id'],
                 'name' => $challenge['name'],
                 'order' => $challenge['order_challenge'],

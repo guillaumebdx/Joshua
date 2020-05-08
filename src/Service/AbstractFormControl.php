@@ -109,7 +109,7 @@ abstract class AbstractFormControl
             $this->errors['error_' . $key] = 'Please enter a ' . $word . ', thank you.';
         } elseif (strlen($value) > self::MAX_CHARACTERS_PSEUDO) {
             $this->errors['error_' . $key] = 'Must be a maximum of 26 characters. Current : ' . strlen($value);
-        } elseif (!preg_match('/^([a-zA-Z0-9-_]{2,36})$/', $value)) {
+        } elseif (!preg_match('/^([a-zA-Z0-9-_]{2,26})$/', $value)) {
             $this->errors['error_' . $key] = 'Special characters are prohibited.';
         }
 

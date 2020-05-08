@@ -27,22 +27,23 @@ class JoshuaController extends AbstractController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $connectUser = new IndexFormControl($_POST);
-            $login = $connectUser->getProperty('email');
+            $login = $connectUser->getProperty('pseudo');
             $password = $connectUser->getProperty('password');
             if (count($connectUser->getErrors()) === 0) {
                 $userManager = new UserManager();
-                $user = $userManager->selectOneByEmail($login);
+                $user = $userManager->selectOneByPseudo($login);
                 if ($user) {
-                    if ($login === $user['email']) {
+                    if ($login === $user['pseudo']) {
                         if (password_verify($password, $user['password'])) {
                             UserConnection::openConnection($user['id']);
                             header('Location: joshua/home');
+                            exit();
                         } else {
                             $error = 'Invalid password !';
                         }
                     }
                 } else {
-                    $error = 'This email doesn\'t exist !';
+                    $error = 'This pseudo doesn\'t exist !';
                 }
             }
         }
@@ -82,7 +83,7 @@ class JoshuaController extends AbstractController
     public function oldContests()
     {
         $contestManager = new ContestManager();
-        $oldContests = $contestManager->selectAll(2);
+        $oldContests = $contestManager->selectAll(ContestManager::ENDED);
 
         $nbContests = count($oldContests);
         for ($i = 0; $i < $nbContests; $i++) {
