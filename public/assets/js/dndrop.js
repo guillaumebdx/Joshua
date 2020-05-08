@@ -13,7 +13,13 @@ class DragAndDrop {
         this.dropZone           = null;
         this.origin             = null;
         this.draggableClassName = null;
-
+        this.hoverElement       = null;
+        this.list               = null;
+        this.listIndex          = null;
+        this.nextElement        = null;
+        this.numberOfNodesByElement = 2;
+        this.yPre               = null;
+        this.direction          = null;
     }
 
 // Initialisation
@@ -22,7 +28,6 @@ class DragAndDrop {
         this.dropZone           = params.dropZone;
         this.origin             = params.origin;
         this.draggableClassName = params.draggableClassName;
-
         this.dragableElements   = document.getElementsByClassName(this.draggableClassName);
         this.addDestinationAttributes();
         this.addOriginAttributes();
@@ -47,32 +52,54 @@ class DragAndDrop {
         }
     }
 
-// Organize items when they return in Origin Zone
-    sortDivsInOrigin() {
-        let elems = this.origin.querySelectorAll('.'+this.draggableClassName);
-        let elemsSortToShow = new Array();
-        for (let i=0; i<elems.length ; i++) {
-            elemsSortToShow[elems[i].id] = elems[i];
-        }
-        return(elemsSortToShow);
-    }
 
 // Dragging functions
-    onDragStart(ev) {
-        this.dragAbleElement = ev.target;
+    onDragStart(e) {
+        this.dragAbleElement = e.target;
         this.originOfElement = this.dragAbleElement.parentElement;
+        this.list = this.originOfElement.childNodes;
     }
 
-    onDrop(ev) {
-
+    onDrop() {
     }
 
-    onOriginOver(ev) {
-        ev.preventDefault();
+    onDestinationOver(e) {
+        e.preventDefault();
     }
 
-    onDropBack(ev) {
-        ev.preventDefault();
+    onOriginOver(e) {
+        this.hoverElement=e;
+        this.mouseDirection(e)
+        console.log(this.direction);
+        this.getIdInNodesList (e.target);
+        e.preventDefault();
+    }
 
+    onDropBack(e) {
+        e.preventDefault();
+        if (this.direction === 'top') {
+            this.originOfElement.insertBefore(this.dragAbleElement, this.originOfElement.childNodes[this.listIndex]);
+        }
+        else {
+            this.originOfElement.insertBefore(this.dragAbleElement, this.originOfElement.childNodes[this.nextElement]);
+        }
+    }
+
+    getIdInNodesList (e) {
+        this.originOfElement.childNodes.forEach((val, index)=> {
+            if (val == e) {
+                this.listIndex   = index;
+                this.nextElement = index + this.numberOfNodesByElement;
+            }
+        });
+    }
+
+    mouseDirection (e) {
+        if (e.pageY < this.yPre) {
+            this.direction = "top"
+        } else if (e.pageY > this.yPre) {
+            this.direction = "bottom"
+        }
+        this.yPre = e.pageY;
     }
 }

@@ -78,6 +78,10 @@ table.adminusers tr td {
 
 /* CONTEST */
 
+.draggable:hover {
+    cursor : move;
+}
+
 .existing_challenge {
     font-family: var(--josh-major-font);
     font-size: 0.8rem;

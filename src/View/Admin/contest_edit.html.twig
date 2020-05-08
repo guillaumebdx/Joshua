@@ -11,14 +11,14 @@
         </div>
         <div class="row">
             <div class="col-4 offset-1">
-                <div class="text-center pb-3">
+                <div class=" pb-3">
                     <h2>Select challenges</h2>
                 </div>
                 <div class="row list-container overflow-auto">
-                    <ul class="list-group col-12">
+                    <ul class="list-group col-12" id="challenge-list">
                         {% for challenge in challenges|reverse %}
-                            <li class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2">
-                                <p class="mb-0 existing_challenge pb-1"><i class="fa fa-flag"></i> {{ challenge.name }}</p>
+                            <li id="challenge-id{{ challenge.id }}" class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2 draggable">
+                                <i class="fa fa-flag"></i> {{ challenge.name }}
                             </li>
                         {% endfor %}
                     </ul>
@@ -26,8 +26,8 @@
             </div>
             <div class="col-4 offset-2">
                 <form action="" method="post">
-                    <div class="row d-flex justify-content-center">
-                        <div class="text-center pb-3">
+                    <div class="row d-flex">
+                        <div class="pb-3">
                             <h2>Modify your contest</h2>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                             <input type="url" class="form-control" placeholder="Paste here the url of the image" aria-describedby="basic-addon1" name="image" value="{{ contest.image }}">
                         </div>
                     </div>
-                    <div class="row d-flex justify-content-center">
+                    <div class="row d-flex ">
                         <div class="form-group">
                             <button type="submit" name="saveContest" class="align-self-center btn btn-dark text-white">Save your contest <i class="fa fa-save"></i></button>
                             <button type="button" name="deleteContest" class="align-self-center btn btn-danger text-white" data-toggle="modal" data-target="#confirmDeletion">Delete <i class="fa fa-trash"></i></button>
@@ -105,4 +105,18 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascript %}
+<script src="/assets/js/dndrop.js"></script>
+    <script>
+    let challenge = new DragAndDrop ();
+    challenge.init({
+        instance           : 'challenge',
+        draggableClassName : 'draggable',
+        origin             : document.getElementById('challenge-list'),
+        dropZone           : document.getElementById('challenge-list'),
+    });
+</script>
+
 {% endblock %}
