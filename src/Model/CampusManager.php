@@ -6,6 +6,9 @@ class CampusManager extends AbstractManager
 {
     const TABLE = 'campus';
 
+    /**
+     * CampusManager constructor.
+     */
     public function __construct()
     {
         parent::__construct(self::TABLE);
@@ -19,6 +22,10 @@ class CampusManager extends AbstractManager
         return $this->pdo->query('SELECT * FROM ' . self::TABLE . ' WHERE id != 0')->fetchAll();
     }
 
+    /**
+     * @param object $campus
+     * @return int
+     */
     public function insertCampus(object $campus)
     {
         // prepared request
@@ -34,6 +41,13 @@ class CampusManager extends AbstractManager
         }
     }
 
+    /**
+     * @param string $order1
+     * @param string $sort1
+     * @param string $order2
+     * @param string $sort2
+     * @return array
+     */
     public function getAllCampusOrderBy(string $order1, string $sort1 = 'ASC', string $order2 = '', string $sort2 = 'ASC'): array
     {
         $query = 'SELECT * FROM ' . self::TABLE . ' WHERE id != 0 ORDER BY ' . $order1 . ' ' . $sort1;
@@ -44,6 +58,9 @@ class CampusManager extends AbstractManager
         return $statement->fetchAll();
     }
 
+    /**
+     * @return int
+     */
     public function getTotalNumberOfCampus(): int
     {
         $query = 'SELECT count(*) as total FROM ' . self::TABLE;

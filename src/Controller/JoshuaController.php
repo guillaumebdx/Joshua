@@ -63,14 +63,13 @@ class JoshuaController extends AbstractController
     public function home()
     {
         $contestManager = new ContestManager();
-        $visibleContests = $contestManager->getVisibleContests();
-
+        $visibleContests = $contestManager->selectAll(ContestManager::NOT_ENDED, true);
 
         $nbContests = count($visibleContests);
         for ($i = 0; $i < $nbContests; $i++) {
-            $visibleContests[$i]['active'] = (bool)$visibleContests[$i]['active'];
+            $visibleContests[$i]['is_active'] = (bool)$visibleContests[$i]['is_active'];
 
-            $beginning = $visibleContests[$i]['beginning'];
+            $beginning = $visibleContests[$i]['started_on'];
             $duration = $visibleContests[$i]['duration'];
 
             $visibleContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration, 1);

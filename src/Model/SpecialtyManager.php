@@ -31,6 +31,9 @@ class SpecialtyManager extends AbstractManager
         }
     }
 
+    /**
+     * @return int
+     */
     public function getTotalNumberOfSpecialties(): int
     {
         $query = 'SELECT count(*) as total FROM ' . self::TABLE;

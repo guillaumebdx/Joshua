@@ -132,6 +132,10 @@ class ChallengeManager extends AbstractManager
      * @return array|null
      */
     // TODO verify data
+    /**
+     * @param int $contest
+     * @return array|null
+     */
     public function challengeOnTheWayByUser($contest)
     {
         $query = 'SELECT c.name, c.description, c.url, c.id, t.title AS type, d.title AS difficulty,' .
@@ -158,6 +162,10 @@ class ChallengeManager extends AbstractManager
         }
     }
 
+    /**
+     * @param int $contest
+     * @return array
+     */
     public function startFirstChallenge(int $contest): array
     {
 
@@ -237,6 +245,9 @@ class ChallengeManager extends AbstractManager
         $statement->execute();
     }
 
+    /**
+     * @return int
+     */
     public function getTotalCountChallenges(): int
     {
         $query = 'SELECT count(*) as total FROM ' . self::TABLE;

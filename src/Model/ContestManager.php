@@ -9,7 +9,8 @@ class ContestManager extends AbstractManager
 {
     const TABLE     = 'contest';
     const NOT_ENDED = 1;
-    const ENDED     = 2;
+    const STARTED   = 2;
+    const ENDED     = 3;
 
     /**
      *  Initializes this class.
@@ -22,25 +23,37 @@ class ContestManager extends AbstractManager
     /**
      * @param int|null $status
      * Don't add anything for all,
-     * add ContestManager::NOT_ENDED for all contest visible and started,
+     * add ContestManager::NOT_ENDED for all contest not started and started,
+     * add ContestManager::STARTED for all contest started,
      * add ContestManager::ENDED for all finished contest.
+     * @param bool|null $isVisible
+     * parameter used only for ContestManager::NOT_ENDED to refine the search to contest visible.
      * @return array
      */
-    public function selectAll(int $status = null): array
+    public function selectAll(int $status = null, bool $isVisible = null): array
     {
-        $query = 'SELECT c.id, c.is_visible, c.is_active, c.name, c.image, c.description, c.duration, c.created_on,' .
-            ' c.campus_id, ca.city AS campus, ca.flag FROM ' . self::TABLE . ' c' .
-            ' LEFT JOIN ' . CampusManager::TABLE . ' ca ON ca.id = campus_id';
+        $query = 'SELECT c.id, c.is_visible, c.is_active, c.name, c.image, c.description, c.duration, c.campus_id,' .
+            ' ca.city AS campus, ca.flag, c.created_on, c.started_on' .
+            ' FROM ' . self::TABLE . ' c' .
+            ' JOIN ' . CampusManager::TABLE . ' ca ON ca.id = campus_id';
 
         if ($status === self::NOT_ENDED) {
-            $query .= ' WHERE started_on IS NULL OR NOW() < DATE_ADD(started_on,interval duration minute)';
+            $query .= ' WHERE (started_on IS NULL OR NOW() < DATE_ADD(c.started_on,interval c.duration minute))';
+            if ($isVisible === true) {
+                $query .= ' AND c.is_visible = 1';
+            }
+        } elseif ($status === self::STARTED) {
+            $query .= ' WHERE started_on IS NOT NULL AND NOW() < DATE_ADD(c.started_on,interval c.duration minute)';
         } elseif ($status === self::ENDED) {
-            $query .= ' WHERE NOW() > DATE_ADD(started_on,interval duration minute)';
+            $query .= ' WHERE NOW() > DATE_ADD(c.started_on,interval c.duration minute)';
         }
 
         return $this->pdo->query($query)->fetchAll();
     }
 
+    /**
+     * @return int
+     */
     public function getTotalNumberOfContest(): int
     {
         $query = 'SELECT count(*) as total FROM ' . self::TABLE;
@@ -52,6 +65,7 @@ class ContestManager extends AbstractManager
 
     /**
      * @param object $contest
+     * @return int
      */
     public function addContest(object $contest): int
     {
@@ -119,20 +133,6 @@ class ContestManager extends AbstractManager
         $query = 'DELETE FROM ' . self::TABLE . ' WHERE id = ' . $id;
         $statement = $this->pdo->prepare($query);
         $statement->execute();
-    }
-
-    /**
-     * @return array
-     */
-    public function getVisibleContests(): array
-    {
-        $query = 'SELECT c.id, c.is_active AS active, c.name, c.image, c.description, ca.city AS campus, ca.flag,' .
-            ' c.duration, c.started_on AS beginning FROM ' . self::TABLE . ' c' .
-            ' LEFT JOIN ' . CampusManager::TABLE . ' ca ON ca.id = c.campus_id' .
-            ' WHERE c.is_visible = 1' .
-            ' AND ( c.started_on IS NULL OR NOW() < DATE_ADD( c.started_on,interval c.duration minute))';
-
-        return $this->pdo->query($query)->fetchAll();
     }
 
     /**
