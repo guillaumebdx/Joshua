@@ -62,10 +62,6 @@ class ContestDate
     {
         $now = new DateTime(date('Y-m-d H:i:s'));
         $endDate = new DateTime($endDate);
-        if ($endDate <= $now) {
-            return true;
-        } else {
-            return false;
-        }
+        return ($endDate <= $now) ? true : false;
     }
 }
