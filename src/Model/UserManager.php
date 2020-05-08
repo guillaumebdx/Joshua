@@ -20,6 +20,10 @@ class UserManager extends AbstractManager
         parent::__construct(self::TABLE);
     }
 
+    /**
+     * @param int $id
+     * @return array
+     */
     public function selectOneById(int $id): array
     {
         $query = 'SELECT u.id, is_admin, is_active, u.lastname, u.firstname, u.pseudo, u.github, u.email, u.password,'
