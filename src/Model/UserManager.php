@@ -20,6 +20,21 @@ class UserManager extends AbstractManager
         parent::__construct(self::TABLE);
     }
 
+    public function selectOneById(int $id): array
+    {
+        $query = 'SELECT u.id, is_admin, is_active, u.lastname, u.firstname, u.pseudo, u.github, u.email, u.password,'
+            . ' u.specialty_id, s.title AS specialty, u.campus_id, c.city AS campus, u.created_on, u.updated_on'
+            . ' FROM ' . self::TABLE . ' u'
+            . ' JOIN ' . SpecialtyManager::TABLE . ' s ON s.id = u.specialty_id'
+            . ' JOIN ' . CampusManager::TABLE . ' c ON c.id = u.campus_id'
+            . ' WHERE u.id = :id';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':id', $id, \PDO::PARAM_STR);
+        $statement->execute();
+
+        return $statement->fetch();
+    }
+
     /**
      * @param array $data
      * @return int
@@ -77,21 +92,22 @@ class UserManager extends AbstractManager
     }
 
     /**
-     * @param string $email
-     * @return array
+     * @param string $pseudo
+     * @return mixed
      */
-    public function selectOneByEmail(string $email): array
+    public function selectOneByPseudo(string $pseudo)
     {
-        $query     = 'SELECT * FROM ' . self::TABLE . ' WHERE email=:email';
+        $query     = 'SELECT * FROM ' . self::TABLE . ' WHERE pseudo=:pseudo';
         $statement = $this->pdo->prepare($query);
-        $statement->bindValue(':email', $email, \PDO::PARAM_STR);
-        $statement->execute();
-
-        return $statement->fetch();
+        $statement->bindValue(':pseudo', $pseudo, \PDO::PARAM_STR);
+        if ($statement->execute()) {
+            return $statement->fetch();
+        }
     }
 
     /**
      * Total number of users
+     * @param int $excluded
      * @return int
      */
     public function getTotalUsers($excluded = 0): int

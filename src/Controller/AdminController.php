@@ -101,7 +101,7 @@ class AdminController extends AbstractController
         $campusesList = $campuses->selectAll();
 
         $contests     = new ContestManager();
-        $contestsList = $contests->selectAll(1);
+        $contestsList = $contests->selectAll(ContestManager::NOT_ENDED);
 
         $contest      = null;
 

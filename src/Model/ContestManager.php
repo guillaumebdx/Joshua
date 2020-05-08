@@ -6,7 +6,9 @@ use \Exception;
 
 class ContestManager extends AbstractManager
 {
-    const TABLE = 'contest';
+    const TABLE     = 'contest';
+    const NOT_ENDED = 1;
+    const ENDED     = 2;
 
     /**
      *  Initializes this class.
@@ -18,7 +20,9 @@ class ContestManager extends AbstractManager
 
     /**
      * @param int|null $status
-     * Don't add anything for all, add 1 for not ended, add 2 for ended
+     * Don't add anything for all,
+     * add ContestManager::NOT_ENDED for all contest visible and started,
+     * add ContestManager::ENDED for all finished contest.
      * @return array
      */
     public function selectAll(int $status = null): array
@@ -27,9 +31,9 @@ class ContestManager extends AbstractManager
             ' c.campus_id, ca.city AS campus, ca.flag FROM ' . self::TABLE . ' c' .
             ' LEFT JOIN ' . CampusManager::TABLE . ' ca ON ca.id = campus_id';
 
-        if ($status === 1) {
+        if ($status === self::NOT_ENDED) {
             $query .= ' WHERE started_on IS NULL OR NOW() < DATE_ADD(started_on,interval duration minute)';
-        } elseif ($status === 2) {
+        } elseif ($status === self::ENDED) {
             $query .= ' WHERE NOW() > DATE_ADD(started_on,interval duration minute)';
         }
 
