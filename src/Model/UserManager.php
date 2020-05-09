@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use \Exception;
+use Exception;
 
 class UserManager extends AbstractManager
 {
@@ -184,7 +184,7 @@ class UserManager extends AbstractManager
 
     /**
      * <p>Set a user active or not.</p>
-     * @param int $status
+     * @param bool $status
      * <p>Status of user :</p>
      * <ul><li>Set user active : <b>UserManager::ACTIVE</b></li>
      * <li>Set user not active : <b>UserManager::NOT_ACTIVE</b></li></ul>

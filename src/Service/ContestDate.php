@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use DateTime;
-use DateTimeZone;
 
 class ContestDate
 {

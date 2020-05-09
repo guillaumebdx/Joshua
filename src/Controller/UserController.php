@@ -5,13 +5,13 @@ namespace App\Controller;
 
 use App\Model\CampusManager;
 use App\Model\ContestHasChallengeManager;
+use App\Model\ContestManager;
 use App\Model\SpecialtyManager;
 use App\Model\UserManager;
-use App\Model\ContestManager;
 use App\Service\Ranking;
 use App\Service\UserConnection;
-use FormControl\UserFormControl;
 use FormControl\UserEditFormControl;
+use FormControl\UserFormControl;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;

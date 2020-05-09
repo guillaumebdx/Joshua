@@ -3,8 +3,8 @@
 namespace App\Model;
 
 use App\Service\ContestDate;
+use Exception;
 use FormControl\ContestFormControl;
-use \Exception;
 
 class ContestManager extends AbstractManager
 {

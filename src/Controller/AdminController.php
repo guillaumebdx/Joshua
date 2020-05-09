@@ -2,18 +2,18 @@
 
 namespace App\Controller;
 
+use App\Model\CampusManager;
 use App\Model\ChallengeManager;
 use App\Model\ContestManager;
-use App\Model\CampusManager;
 use App\Model\DifficultyManager;
 use App\Model\SpecialtyManager;
 use App\Model\TypeManager;
 use App\Model\UserManager;
-use FormControl\ChallengeFormControl;
-use FormControl\SpecialtyFormControl;
-use FormControl\ContestFormControl;
-use FormControl\TypeFormControl;
 use FormControl\CampusFormControl;
+use FormControl\ChallengeFormControl;
+use FormControl\ContestFormControl;
+use FormControl\SpecialtyFormControl;
+use FormControl\TypeFormControl;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;

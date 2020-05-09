@@ -34,8 +34,7 @@ class ContestService
     {
         $challengeManager = new ChallengeManager();
         $challenge = $challengeManager->selectOneById($challenge);
-        $return = ($solution === $challenge['flag']) ? true : false;
-        return $return;
+        return $solution === $challenge['flag'];
     }
 
     public function difficulties(string $difficulty) : string
