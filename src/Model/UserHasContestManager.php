@@ -157,5 +157,4 @@ class UserHasContestManager extends AbstractManager
         }
         return $ranking;
     }
-
 }
