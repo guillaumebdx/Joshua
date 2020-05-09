@@ -2,21 +2,30 @@
 
 namespace App\Controller;
 
+use App\Model\CampusManager;
 use App\Model\ChallengeManager;
 use App\Model\ContestManager;
-use App\Model\CampusManager;
 use App\Model\DifficultyManager;
 use App\Model\SpecialtyManager;
 use App\Model\TypeManager;
 use App\Model\UserManager;
-use App\Service\ChallengeFormControl;
-use App\Service\SpecialtyFormControl;
-use App\Service\CampusFormControl;
-use App\Service\ContestFormControl;
-use App\Service\TypeFormControl;
+use FormControl\CampusFormControl;
+use FormControl\ChallengeFormControl;
+use FormControl\ContestFormControl;
+use FormControl\SpecialtyFormControl;
+use FormControl\TypeFormControl;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class AdminController extends AbstractController
 {
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function index()
     {
         $challengeManager = new ChallengeManager();
@@ -51,6 +60,12 @@ class AdminController extends AbstractController
 
     // CHALLENGE
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function manageChallenge()
     {
         $challenges     = new ChallengeManager();
@@ -83,7 +98,14 @@ class AdminController extends AbstractController
         ]);
     }
 
-    public function editChallenge($id)
+    /**
+     * @param int $id
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function editChallenge(int $id)
     {
         $difficulties     = new DifficultyManager();
         $difficultiesList = $difficulties->selectAll();
@@ -122,6 +144,12 @@ class AdminController extends AbstractController
 
     // CONTEST
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function manageContest()
     {
         $campuses     = new CampusManager();
@@ -161,7 +189,14 @@ class AdminController extends AbstractController
         ]);
     }
 
-    public function editContest($id)
+    /**
+     * @param int $id
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function editContest(int $id)
     {
         $campuses     = new CampusManager();
         $campusesList = $campuses->selectAll();
@@ -198,6 +233,9 @@ class AdminController extends AbstractController
         ]);
     }
 
+    /**
+     * @param string $contestId
+     */
     public function setContestActive(string $contestId)
     {
         $contestManager = new ContestManager();
@@ -205,6 +243,9 @@ class AdminController extends AbstractController
         header('Location: /admin/managecontest');
     }
 
+    /**
+     *
+     */
     public function displayContest()
     {
         $json       = file_get_contents('php://input');
@@ -214,9 +255,9 @@ class AdminController extends AbstractController
         $contestManager = new ContestManager();
 
         if ($isVisible === 0) {
-            $contestManager->displayContestOn($contestId);
+            $contestManager->displayOnForContest($contestId);
         } elseif ($isVisible === 1) {
-            $contestManager->displayContestOff($contestId);
+            $contestManager->displayOffForContest($contestId);
         }
     }
 
@@ -226,9 +267,9 @@ class AdminController extends AbstractController
      * Take an integer as input to manage pagination
      * @param int $page Default 1
      * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function manageUsers(int $page = 1)
     {
@@ -241,15 +282,20 @@ class AdminController extends AbstractController
         ]);
     }
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function setUserAdmin()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $json = file_get_contents('php://input');
             $data = json_decode($json, true);
             $userManager = new UserManager();
-            $status = ($data['status']) ? 1 : 0;
-            $text = '';
-            $isAdmin = ($_SESSION['is_admin'] === '1') ? true : false;
+            $status = ($data['status']) ? UserManager::ADMIN : UserManager::NOT_ADMIN;
+            $isAdmin = $_SESSION['is_admin'] === true;
 
             if ($isAdmin) {
                 if ($data['status']) {
@@ -268,15 +314,20 @@ class AdminController extends AbstractController
         }
     }
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function setUserActive()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $json = file_get_contents('php://input');
             $data = json_decode($json, true);
             $userManager = new UserManager();
-            $status = ($data['status']) ? 1 : 0;
-            $text = '';
-            $isAdmin = ($_SESSION['is_admin'] === '1') ? true : false;
+            $status = ($data['status']) ? UserManager::ACTIVE : UserManager::NOT_ACTIVE;
+            $isAdmin = $_SESSION['is_admin'] === true;
 
             if ($isAdmin) {
                 if ($data['status']) {
@@ -300,9 +351,9 @@ class AdminController extends AbstractController
 
     /**
      * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function addCampus()
     {
@@ -330,6 +381,12 @@ class AdminController extends AbstractController
 
     // LANGUAGES
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function addSpecialty()
     {
         $specialtyManager = new SpecialtyManager();
@@ -356,6 +413,12 @@ class AdminController extends AbstractController
 
     // TYPES
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function addType()
     {
         $typeManager = new TypeManager();

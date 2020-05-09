@@ -2,15 +2,14 @@
 
 namespace App\Model;
 
-use mysql_xdevapi\TableSelect;
-use App\Service\TypeFormControl;
+use FormControl\TypeFormControl;
 
 class TypeManager extends AbstractManager
 {
     const TABLE = 'type';
 
     /**
-     * TypeManager constructor.
+     * <p>TypeManager constructor.</p>
      */
     public function __construct()
     {
@@ -18,6 +17,7 @@ class TypeManager extends AbstractManager
     }
 
     /**
+     * <p>Insert a new type.</p>
      * @param TypeFormControl $type
      * @return void
      */
@@ -31,6 +31,7 @@ class TypeManager extends AbstractManager
     }
 
     /**
+     * <p>Verify if a type exist.</p>
      * @param TypeFormControl $type
      * @return bool
      */
@@ -42,7 +43,6 @@ class TypeManager extends AbstractManager
         $statement->bindValue(':title', $type, \PDO::PARAM_STR);
         $statement->execute();
         $results = $statement->fetchAll();
-        $return = (!empty($results)) ? true : false;
-        return $return;
+        return !empty($results);
     }
 }

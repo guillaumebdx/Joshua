@@ -5,12 +5,11 @@ namespace App\Controller;
 use App\Model\ContestManager;
 use App\Model\UserManager;
 use App\Service\ContestDate;
-use App\Service\IndexFormControl;
-use App\Service\Ranking;
+use App\Service\UserConnection;
+use FormControl\IndexFormControl;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use App\Service\UserConnection;
 
 class JoshuaController extends AbstractController
 {
@@ -63,7 +62,7 @@ class JoshuaController extends AbstractController
     public function home()
     {
         $contestManager = new ContestManager();
-        $visibleContests = $contestManager->selectAll(ContestManager::NOT_ENDED, true);
+        $visibleContests = $contestManager->selectAll(ContestManager::NOT_ENDED, ContestManager::ONLY_VISIBLE);
 
         $nbContests = count($visibleContests);
         for ($i = 0; $i < $nbContests; $i++) {
@@ -72,13 +71,19 @@ class JoshuaController extends AbstractController
             $beginning = $visibleContests[$i]['started_on'];
             $duration = $visibleContests[$i]['duration'];
 
-            $visibleContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration, 1);
+            $visibleContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration, ContestDate::ARRAY);
             $visibleContests[$i]['end_date'] = ContestDate::getContestEndDate($beginning, $duration);
         }
 
         return $this->twig->render('Home/home.html.twig', ['contests' => $visibleContests]);
     }
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function oldContests()
     {
         $contestManager = new ContestManager();
@@ -87,7 +92,7 @@ class JoshuaController extends AbstractController
         $nbContests = count($oldContests);
         for ($i = 0; $i < $nbContests; $i++) {
             $duration = $oldContests[$i]['duration'];
-            $oldContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration, 1);
+            $oldContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration, ContestDate::ARRAY);
         }
 
         return $this->twig->render('Home/old_contests.html.twig', ['contests' => $oldContests]);

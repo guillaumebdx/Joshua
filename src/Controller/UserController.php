@@ -4,17 +4,26 @@
 namespace App\Controller;
 
 use App\Model\CampusManager;
+use App\Model\ContestHasChallengeManager;
+use App\Model\ContestManager;
 use App\Model\SpecialtyManager;
 use App\Model\UserManager;
-use App\Service\UserFormControl;
-use App\Service\UserEditFormControl;
+use App\Service\Ranking;
 use App\Service\UserConnection;
-
-use App\Model\ContestManager;
-use App\Service\UserService;
+use FormControl\UserEditFormControl;
+use FormControl\UserFormControl;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class UserController extends AbstractController
 {
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function register()
     {
         $campuses        = new CampusManager();
@@ -28,6 +37,12 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function insertUser()
     {
         if (count($_POST) > 0 && isset($_POST['registerUser'])) {
@@ -37,6 +52,7 @@ class UserController extends AbstractController
             if (count($formData['errors']) === 0) {
                 $newUser           = new UserManager();
                 $_POST['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+                // TODO SEND OBJECT FORM CONTROL
                 $idUser            = $newUser->addUser($_POST);
                 UserConnection::openConnection($idUser);
                 header('location: /user/confirmuser/' . $idUser);
@@ -60,6 +76,13 @@ class UserController extends AbstractController
         }
     }
 
+    /**
+     * @param int $idUser
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function confirmUser(int $idUser)
     {
         $user        = new UserManager();
@@ -70,23 +93,29 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function profile()
     {
         $userId = $_SESSION['user_id'];
-        $userService = new UserService();
         $contestManager = new ContestManager();
         $userContests   = $contestManager->getContestsPlayedByUser($userId, 5);
 
+        $contestHasChallengeManager = new ContestHasChallengeManager();
         $limit = count($userContests);
         for ($i = 0; $i < $limit; $i++) {
             $contestId = $userContests[$i]['id'];
-            $palmares = $userService->formatUserRankingInContest($contestId);
+            $ranking = Ranking::formatUserRankingInContest($contestId);
             $userContests[$i]['resume'] = [
                 'started_on'           => $contestManager->getUserContestStartTime($userId, $contestId),
-                'challenges_played'    => $palmares['flags_succeed'],
-                'number_of_challenges' => $contestManager->getNumberOfChallengesInContest($contestId),
-                'user_rank'            => $palmares['rank'],
-                'medal'                => $palmares['medal'],
+                'challenges_played'    => $ranking['flags_succeed'],
+                'number_of_challenges' => $contestHasChallengeManager->getNumberOfChallengesInContest($contestId),
+                'user_rank'            => $ranking['rank'],
+                'medal'                => $ranking['medal'],
             ];
         }
 
@@ -99,6 +128,12 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function edit()
     {
         $user            = new UserManager();
@@ -115,6 +150,12 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function editUser()
     {
         if (count($_POST) > 0 && isset($_POST['updateUser'])) {

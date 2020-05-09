@@ -6,6 +6,7 @@ namespace App\Service;
 use App\Model\ChallengeManager;
 use App\Model\ContestHasChallengeManager;
 use App\Model\ContestManager;
+use App\Model\UserHasContestManager;
 
 class ContestService
 {
@@ -16,13 +17,14 @@ class ContestService
         $listOfChallenges = [];
         $challengeManager = new ChallengeManager();
         $challengesList = $challengeManager->getChallengesByContest($contest);
+        $userHasContestManager = new UserHasContestManager();
         foreach ($challengesList as $challenge) {
             $listOfChallenges[] = [
                 'id' => $challenge['challenge_id'],
                 'name' => $challenge['name'],
                 'order' => $challenge['order_challenge'],
-                'status' => $challengeManager->challengeStatus($challenge['challenge_id'], $contest),
-                'time' => $challengeManager->challengeTimeToSucceedByUser($challenge['challenge_id'], $contest),
+                'status' => $userHasContestManager->challengeStatus($challenge['challenge_id'], $contest),
+                'time' => $userHasContestManager->challengeTimeToSucceedByUser($challenge['challenge_id'], $contest),
             ];
         }
         return $listOfChallenges;
@@ -32,8 +34,7 @@ class ContestService
     {
         $challengeManager = new ChallengeManager();
         $challenge = $challengeManager->selectOneById($challenge);
-        $return = ($solution === $challenge['flag']) ? true : false;
-        return $return;
+        return $solution === $challenge['flag'];
     }
 
     public function difficulties(string $difficulty) : string
@@ -72,7 +73,6 @@ class ContestService
     {
         $return = false;
         $contestManager = new ContestManager();
-        $challengeManager = new ChallengeManager();
         $theContest = $contestManager->selectOneById($contest);
         if ($theContest) {
             $endDate = ContestDate::getContestEndDate($theContest['started_on'], $theContest['duration']);
@@ -85,9 +85,10 @@ class ContestService
 
     public static function isContestCompletedByUser(int $contest, int $user): bool
     {
-        $contestManager = new ContestManager();
-        $challengeNumber = $contestManager->getNumberOfChallengesInContest($contest);
-        $numberPlayed = $contestManager->getNumberFlagsPlayedByUserInContest($user, $contest);
-        return ($challengeNumber === $numberPlayed)? true : false;
+        $contestHasChallengeManager = new ContestHasChallengeManager();
+        $userHasContestManager = new UserHasContestManager();
+        $challengeNumber = $contestHasChallengeManager->getNumberOfChallengesInContest($contest);
+        $numberPlayed = $userHasContestManager->getNumberFlagsPlayedByUserInContest($user, $contest);
+        return $challengeNumber === $numberPlayed;
     }
 }

@@ -4,15 +4,27 @@
 namespace App\Controller;
 
 use App\Model\ChallengeManager;
+use App\Model\ContestHasChallengeManager;
 use App\Model\ContestManager;
 use App\Model\StoryManager;
+use App\Model\UserHasContestManager;
 use App\Model\UserManager;
 use App\Service\ContestDate;
 use App\Service\ContestService;
 use App\Service\Ranking;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class ContestController extends AbstractController
 {
+    /**
+     * @param int $contest
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function play(int $contest)
     {
 
@@ -52,7 +64,7 @@ class ContestController extends AbstractController
                         'ended' => $ended,
                         'open' => $opened,
                         'end_date' => $endDate,
-                        'rank_users' => Ranking::getRankingContest($contest),
+                        'rank_users' => Ranking::formatRankingContest($contest),
                     ]);
                 } else {
                     header('Location:/');
@@ -68,6 +80,13 @@ class ContestController extends AbstractController
         }
     }
 
+    /**
+     * @param int $contest
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function results(int $contest)
     {
         $contestManager=new ContestManager();
@@ -86,6 +105,10 @@ class ContestController extends AbstractController
         }
     }
 
+    /**
+     * @return false|string
+     * @throws \Exception
+     */
     public function sendSolution()
     {
         $data = file_get_contents('php://input');
@@ -97,11 +120,13 @@ class ContestController extends AbstractController
             $return = [];
             $storyManager = new StoryManager();
             if ($solutionUsed === $challengeSolution) {
-                $challengeManager->registerChallengeSuccess($json->challenge_id, $json->contest_id);
+                $userHasContestManager = new UserHasContestManager();
+                $userHasContestManager->registerChallengeSuccess($json->challenge_id, $json->contest_id);
                 $nextFlagOrder = $json->challenge_id + 1;
-                $nextChallenge = $challengeManager->getNextChallengeToPlay($nextFlagOrder, $json->contest_id);
+                $contestHasChallengeManager = new ContestHasChallengeManager();
+                $nextChallenge = $contestHasChallengeManager->getNextChallengeToPlay($nextFlagOrder, $json->contest_id);
                 if ($nextChallenge) {
-                    $challengeManager->startNextChallenge($nextChallenge, $json->contest_id);
+                    $userHasContestManager->startNextChallenge($nextChallenge, $json->contest_id);
                     $return['message'] = 'success';
                 } else {
                     $return['message'] = 'end';
@@ -118,24 +143,38 @@ class ContestController extends AbstractController
         }
     }
 
+    /**
+     * @param int $contestId
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function getRankingInContest(int $contestId)
     {
         $contestManager = new ContestManager();
         $contest = $contestManager->selectOneById($contestId);
         if ($contest) {
             return $this->twig->render('Components/_ranking.html.twig', [
-                'rank_users' => Ranking::getRankingContest($contestId),
+                'rank_users' => Ranking::formatRankingContest($contestId),
             ]);
         }
     }
 
-    public function getHistoryOfContest($contestId)
+    /**
+     * @param int $contestId
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function getHistoryOfContest(int $contestId)
     {
         $contestId=intval($contestId);
         $storyManager = new StoryManager();
         $postSolution = $storyManager->getHistory($contestId);
-            return $this->twig->render('Components/_console.html.twig', [
-                'solutions' => $postSolution,
-            ]);
+        return $this->twig->render('Components/_console.html.twig', [
+            'solutions' => $postSolution,
+        ]);
     }
 }
