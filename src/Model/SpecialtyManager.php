@@ -7,7 +7,7 @@ class SpecialtyManager extends AbstractManager
     const TABLE = 'specialty';
 
     /**
-     * SpecialtyManager constructor.
+     * <p>SpecialtyManager constructor.</p>
      */
     public function __construct()
     {
@@ -15,6 +15,7 @@ class SpecialtyManager extends AbstractManager
     }
 
     /**
+     * <p>Insert a new specialty.</p>
      * @param object $specialty
      * @return int
      */
@@ -32,6 +33,7 @@ class SpecialtyManager extends AbstractManager
     }
 
     /**
+     * <p>Get the number of specialty.</p>
      * @return int
      */
     public function getTotalNumberOfSpecialties(): int

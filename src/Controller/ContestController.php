@@ -4,8 +4,10 @@
 namespace App\Controller;
 
 use App\Model\ChallengeManager;
+use App\Model\ContestHasChallengeManager;
 use App\Model\ContestManager;
 use App\Model\StoryManager;
+use App\Model\UserHasContestManager;
 use App\Model\UserManager;
 use App\Service\ContestDate;
 use App\Service\ContestService;
@@ -52,7 +54,7 @@ class ContestController extends AbstractController
                         'ended' => $ended,
                         'open' => $opened,
                         'end_date' => $endDate,
-                        'rank_users' => Ranking::getRankingContest($contest),
+                        'rank_users' => Ranking::formatRankingContest($contest),
                     ]);
                 } else {
                     header('Location:/');
@@ -97,11 +99,13 @@ class ContestController extends AbstractController
             $return = [];
             $storyManager = new StoryManager();
             if ($solutionUsed === $challengeSolution) {
-                $challengeManager->registerChallengeSuccess($json->challenge_id, $json->contest_id);
+                $userHasContestManager = new UserHasContestManager();
+                $userHasContestManager->registerChallengeSuccess($json->challenge_id, $json->contest_id);
                 $nextFlagOrder = $json->challenge_id + 1;
-                $nextChallenge = $challengeManager->getNextChallengeToPlay($nextFlagOrder, $json->contest_id);
+                $contestHasChallengeManager = new ContestHasChallengeManager();
+                $nextChallenge = $contestHasChallengeManager->getNextChallengeToPlay($nextFlagOrder, $json->contest_id);
                 if ($nextChallenge) {
-                    $challengeManager->startNextChallenge($nextChallenge, $json->contest_id);
+                    $userHasContestManager->startNextChallenge($nextChallenge, $json->contest_id);
                     $return['message'] = 'success';
                 } else {
                     $return['message'] = 'end';
@@ -124,7 +128,7 @@ class ContestController extends AbstractController
         $contest = $contestManager->selectOneById($contestId);
         if ($contest) {
             return $this->twig->render('Components/_ranking.html.twig', [
-                'rank_users' => Ranking::getRankingContest($contestId),
+                'rank_users' => Ranking::formatRankingContest($contestId),
             ]);
         }
     }

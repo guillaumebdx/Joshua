@@ -63,7 +63,7 @@ class JoshuaController extends AbstractController
     public function home()
     {
         $contestManager = new ContestManager();
-        $visibleContests = $contestManager->selectAll(ContestManager::NOT_ENDED, true);
+        $visibleContests = $contestManager->selectAll(ContestManager::NOT_ENDED, ContestManager::ONLY_VISIBLE);
 
         $nbContests = count($visibleContests);
         for ($i = 0; $i < $nbContests; $i++) {
@@ -72,7 +72,7 @@ class JoshuaController extends AbstractController
             $beginning = $visibleContests[$i]['started_on'];
             $duration = $visibleContests[$i]['duration'];
 
-            $visibleContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration, 1);
+            $visibleContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration, ContestDate::ARRAY);
             $visibleContests[$i]['end_date'] = ContestDate::getContestEndDate($beginning, $duration);
         }
 
@@ -87,7 +87,7 @@ class JoshuaController extends AbstractController
         $nbContests = count($oldContests);
         for ($i = 0; $i < $nbContests; $i++) {
             $duration = $oldContests[$i]['duration'];
-            $oldContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration, 1);
+            $oldContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration, ContestDate::ARRAY);
         }
 
         return $this->twig->render('Home/old_contests.html.twig', ['contests' => $oldContests]);

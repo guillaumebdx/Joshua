@@ -2,16 +2,18 @@
 
 namespace App\Service;
 
-use App\Model\ContestManager;
+use App\Model\ContestHasChallengeManager;
+use App\Model\UserHasContestManager;
 use App\Model\UserManager;
 
 class Ranking
 {
-    public static function getRankingContest(int $contest): array
+    public static function formatRankingContest(int $contest): array
     {
-        $contestManager = new ContestManager();
-        $ranking        = $contestManager->getContestPalmares($contest);
-        $nbChallenges   = $contestManager->getNumberOfChallengesInContest($contest);
+        $userHasContestManager = new UserHasContestManager();
+        $contestHasChallengeManager = new ContestHasChallengeManager();
+        $ranking        = $userHasContestManager->getContestRanking($contest);
+        $nbChallenges   = $contestHasChallengeManager->getNumberOfChallengesInContest($contest);
 
         foreach ($ranking as $userId => $userRanking) {
             $userManager = new UserManager();
@@ -22,5 +24,20 @@ class Ranking
         }
 
         return $ranking;
+    }
+
+    public static function formatUserRankingInContest(int $contest): array
+    {
+        $userHasContestManager = new UserHasContestManager();
+        $ranking = $userHasContestManager->getContestRanking($contest);
+        $suffix = ['', 'st', 'nd', 'rd'];
+        $userRank = array_search($_SESSION['user_id'], array_keys($ranking)) + 1;
+        $rank = ($userRank <= 3) ? $userRank . $suffix[$userRank] : $userRank . 'th';
+        $medals = ['', 'gold', 'silver', 'bronze'];
+        return [
+            'rank' => $rank,
+            'medal' => (isset($medals[$userRank]) ? $medals[$userRank] : ''),
+            'flags_succeed' => $ranking[$_SESSION['user_id']]['flags_succeed'],
+        ];
     }
 }

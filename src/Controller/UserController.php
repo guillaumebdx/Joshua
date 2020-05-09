@@ -4,8 +4,10 @@
 namespace App\Controller;
 
 use App\Model\CampusManager;
+use App\Model\ContestHasChallengeManager;
 use App\Model\SpecialtyManager;
 use App\Model\UserManager;
+use App\Service\Ranking;
 use App\Service\UserFormControl;
 use App\Service\UserEditFormControl;
 use App\Service\UserConnection;
@@ -37,6 +39,7 @@ class UserController extends AbstractController
             if (count($formData['errors']) === 0) {
                 $newUser           = new UserManager();
                 $_POST['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+                // TODO SEND OBJECT FORM CONTROL
                 $idUser            = $newUser->addUser($_POST);
                 UserConnection::openConnection($idUser);
                 header('location: /user/confirmuser/' . $idUser);
@@ -73,20 +76,20 @@ class UserController extends AbstractController
     public function profile()
     {
         $userId = $_SESSION['user_id'];
-        $userService = new UserService();
         $contestManager = new ContestManager();
         $userContests   = $contestManager->getContestsPlayedByUser($userId, 5);
 
+        $contestHasChallengeManager = new ContestHasChallengeManager();
         $limit = count($userContests);
         for ($i = 0; $i < $limit; $i++) {
             $contestId = $userContests[$i]['id'];
-            $palmares = $userService->formatUserRankingInContest($contestId);
+            $ranking = Ranking::formatUserRankingInContest($contestId);
             $userContests[$i]['resume'] = [
                 'started_on'           => $contestManager->getUserContestStartTime($userId, $contestId),
-                'challenges_played'    => $palmares['flags_succeed'],
-                'number_of_challenges' => $contestManager->getNumberOfChallengesInContest($contestId),
-                'user_rank'            => $palmares['rank'],
-                'medal'                => $palmares['medal'],
+                'challenges_played'    => $ranking['flags_succeed'],
+                'number_of_challenges' => $contestHasChallengeManager->getNumberOfChallengesInContest($contestId),
+                'user_rank'            => $ranking['rank'],
+                'medal'                => $ranking['medal'],
             ];
         }
 

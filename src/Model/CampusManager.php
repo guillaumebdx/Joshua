@@ -2,12 +2,14 @@
 
 namespace App\Model;
 
+use App\Service\CampusFormControl;
+
 class CampusManager extends AbstractManager
 {
     const TABLE = 'campus';
 
     /**
-     * CampusManager constructor.
+     * <p>CampusManager constructor.</p>
      */
     public function __construct()
     {
@@ -15,6 +17,7 @@ class CampusManager extends AbstractManager
     }
 
     /**
+     * <p>Select All campuses without tuple id = 0 -> 'all campus'</p>
      * @return array
      */
     public function selectAll(): array
@@ -23,12 +26,11 @@ class CampusManager extends AbstractManager
     }
 
     /**
-     * @param object $campus
-     * @return int
+     * <p>Insert a new campus</p>
+     * @param CampusFormControl $campus
      */
-    public function insertCampus(object $campus)
+    public function insertCampus(CampusFormControl $campus)
     {
-        // prepared request
         $query = 'INSERT INTO ' . self::TABLE . ' (city, country, flag) VALUES (:city, :country, :flag)';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':country', $campus->getProperty('country'), \PDO::PARAM_STR);
@@ -36,16 +38,15 @@ class CampusManager extends AbstractManager
         $flag = strtolower($campus->getProperty('country') . '.svg');
         $statement->bindValue(':flag', $flag, \PDO::PARAM_STR);
 
-        if ($statement->execute()) {
-            return (int)$this->pdo->lastInsertId();
-        }
+        $statement->execute();
     }
 
     /**
+     * <p>Get all campus by order.</p>
      * @param string $order1
      * @param string $sort1
-     * @param string $order2
-     * @param string $sort2
+     * @param string $order2 [optional]
+     * @param string $sort2 [optional]
      * @return array
      */
     public function getAllCampusOrderBy(string $order1, string $sort1 = 'ASC', string $order2 = '', string $sort2 = 'ASC'): array
@@ -59,11 +60,12 @@ class CampusManager extends AbstractManager
     }
 
     /**
+     * <p>Get the number of campus.</p>
      * @return int
      */
     public function getTotalNumberOfCampus(): int
     {
-        $query = 'SELECT count(*) as total FROM ' . self::TABLE;
+        $query = 'SELECT count(*) AS total FROM ' . self::TABLE;
         $statement = $this->pdo->prepare($query);
         $statement->execute();
         $result = $statement->fetch();

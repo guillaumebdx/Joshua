@@ -6,14 +6,15 @@ use \Exception;
 
 class UserManager extends AbstractManager
 {
-    /**
-     * @const table name
-     */
     const TABLE = 'user';
     const LIMIT_LIST_USERS = 4;
+    const NOT_ADMIN = false;
+    const ADMIN = true;
+    const NOT_ACTIVE = false;
+    const ACTIVE = true;
 
     /**
-     * UserManager constructor.
+     * <p>UserManager constructor.</p>
      */
     public function __construct()
     {
@@ -21,6 +22,7 @@ class UserManager extends AbstractManager
     }
 
     /**
+     * <p>Select one user by a id, add campus and specialty.</p>
      * @param int $id
      * @return array
      */
@@ -40,6 +42,7 @@ class UserManager extends AbstractManager
     }
 
     /**
+     * <p>Insert a new user.</p>
      * @param array $data
      * @return int
      * @throws Exception
@@ -68,6 +71,7 @@ class UserManager extends AbstractManager
     }
 
     /**
+     * <p>Edit a existing user.</p>
      * @param array $data
      */
     public function updateUser(array $data): void
@@ -96,6 +100,7 @@ class UserManager extends AbstractManager
     }
 
     /**
+     * <p>Select a user compared to a pseudo.</p>
      * @param string $pseudo
      * @return mixed
      */
@@ -110,8 +115,8 @@ class UserManager extends AbstractManager
     }
 
     /**
-     * Total number of users
-     * @param int $excluded
+     * <p>Get the number of user.</p>
+     * @param int $excluded [optional]<br>
      * @return int
      */
     public function getTotalUsers($excluded = 0): int
@@ -128,20 +133,21 @@ class UserManager extends AbstractManager
 
     /**
      * @return int
+     * TODO IN SERVICE
      */
     public function numberOfPages(): int
     {
         $nbPagesPre = $this->getTotalUsers($_SESSION['user_id']) / self::LIMIT_LIST_USERS;
-        $nbPages = ceil($nbPagesPre);
-        return $nbPages;
+        return ceil($nbPagesPre);
     }
 
     /**
-     * Field to sort on
      * @param string $orderBy
-     * Sort order : ASC or DESC
+     * <p>Field to sort on</p>
      * @param string $sortOrder
-     * @param int $page
+     * <p>Sort order : ASC or DESC</p>
+     * @param int $page [optional]<br>
+     * @param int $excluded [optional]<br>
      * @return array
      */
     public function selectAllOrderBy(string $orderBy, string $sortOrder, int $page = 1, $excluded = 0): array
@@ -159,12 +165,15 @@ class UserManager extends AbstractManager
     }
 
     /**
-     * Status of user : Admin = 1 / no-admin = 0
-     * @param int $status
-     * The user ID
+     * <p>Set a user admin or not.</p>
+     * @param bool $status
+     * <p>Status of user :</p>
+     * <ul><li>Set user admin : <b>UserManager::ADMIN</b></li>
+     * <li>Set user not admin : <b>UserManager::NOT_ADMIN</b></li></ul>
      * @param int $user
+     * <p>The user ID</p>
      */
-    public function userSetAdmin(int $status, int $user): void
+    public function userSetAdmin(bool $status, int $user): void
     {
         $query = 'UPDATE ' . self::TABLE . ' SET is_admin = :status WHERE id = :user';
         $statement = $this->pdo->prepare($query);
@@ -174,7 +183,11 @@ class UserManager extends AbstractManager
     }
 
     /**
+     * <p>Set a user active or not.</p>
      * @param int $status
+     * <p>Status of user :</p>
+     * <ul><li>Set user active : <b>UserManager::ACTIVE</b></li>
+     * <li>Set user not active : <b>UserManager::NOT_ACTIVE</b></li></ul>
      * @param int $user
      */
     public function userSetActive(int $status, int $user): void

@@ -8,6 +8,8 @@ use DateTimeZone;
 class ContestDate
 {
     const HOURS_IN_DAY = 24;
+    const STRING = 0;
+    const ARRAY = 1;
 
     public static function getContestEndDate(?string $startedOn, string $duration): ?string
     {
@@ -23,11 +25,11 @@ class ContestDate
 
     /**
      * @param int $minutes
-     * Default string, if you want a array put 1;
      * @param int $format
+     * Default string, if you want a array put ContestDate::ARRAY.
      * @return mixed
      */
-    public static function getDurationInHoursAndMinutes(int $minutes, int $format = 0)
+    public static function getDurationInHoursAndMinutes(int $minutes, int $format = self::STRING)
     {
         $date1 = new DateTime('00:00:00');
         $date2 = new DateTime('00:00:00');
@@ -47,7 +49,7 @@ class ContestDate
             $result = $duration['hours'] . 'h' . $duration['minutes'] . 'm';
         }
 
-        if ($format === 1) {
+        if ($format === self::ARRAY) {
             $result = $duration;
         }
 

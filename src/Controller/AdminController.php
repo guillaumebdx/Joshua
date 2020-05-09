@@ -14,6 +14,9 @@ use App\Service\SpecialtyFormControl;
 use App\Service\CampusFormControl;
 use App\Service\ContestFormControl;
 use App\Service\TypeFormControl;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class AdminController extends AbstractController
 {
@@ -214,9 +217,9 @@ class AdminController extends AbstractController
         $contestManager = new ContestManager();
 
         if ($isVisible === 0) {
-            $contestManager->displayContestOn($contestId);
+            $contestManager->displayOnForContest($contestId);
         } elseif ($isVisible === 1) {
-            $contestManager->displayContestOff($contestId);
+            $contestManager->displayOffForContest($contestId);
         }
     }
 
@@ -226,9 +229,9 @@ class AdminController extends AbstractController
      * Take an integer as input to manage pagination
      * @param int $page Default 1
      * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function manageUsers(int $page = 1)
     {
@@ -247,9 +250,8 @@ class AdminController extends AbstractController
             $json = file_get_contents('php://input');
             $data = json_decode($json, true);
             $userManager = new UserManager();
-            $status = ($data['status']) ? 1 : 0;
-            $text = '';
-            $isAdmin = ($_SESSION['is_admin'] === '1') ? true : false;
+            $status = ($data['status']) ? UserManager::ADMIN : UserManager::NOT_ADMIN;
+            $isAdmin = $_SESSION['is_admin'] === true;
 
             if ($isAdmin) {
                 if ($data['status']) {
@@ -274,9 +276,8 @@ class AdminController extends AbstractController
             $json = file_get_contents('php://input');
             $data = json_decode($json, true);
             $userManager = new UserManager();
-            $status = ($data['status']) ? 1 : 0;
-            $text = '';
-            $isAdmin = ($_SESSION['is_admin'] === '1') ? true : false;
+            $status = ($data['status']) ? UserManager::ACTIVE : UserManager::NOT_ACTIVE;
+            $isAdmin = $_SESSION['is_admin'] === true;
 
             if ($isAdmin) {
                 if ($data['status']) {
@@ -300,9 +301,9 @@ class AdminController extends AbstractController
 
     /**
      * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function addCampus()
     {
