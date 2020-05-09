@@ -190,7 +190,7 @@ class UserManager extends AbstractManager
      * <li>Set user not active : <b>UserManager::NOT_ACTIVE</b></li></ul>
      * @param int $user
      */
-    public function userSetActive(int $status, int $user): void
+    public function userSetActive(bool $status, int $user): void
     {
         $query = 'UPDATE ' . self::TABLE . ' SET is_active = :status WHERE id = :user';
         $statement = $this->pdo->prepare($query);

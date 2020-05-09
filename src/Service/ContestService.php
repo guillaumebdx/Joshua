@@ -74,7 +74,6 @@ class ContestService
     {
         $return = false;
         $contestManager = new ContestManager();
-        $challengeManager = new ChallengeManager();
         $theContest = $contestManager->selectOneById($contest);
         if ($theContest) {
             $endDate = ContestDate::getContestEndDate($theContest['started_on'], $theContest['duration']);
