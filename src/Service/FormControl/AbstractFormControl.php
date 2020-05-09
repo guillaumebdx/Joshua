@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace FormControl;
 
 abstract class AbstractFormControl
 {

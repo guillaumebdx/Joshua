@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use App\Service\TypeFormControl;
+use FormControl\TypeFormControl;
 
 class TypeManager extends AbstractManager
 {

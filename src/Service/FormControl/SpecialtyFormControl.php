@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service;
+namespace FormControl;
 
 class SpecialtyFormControl extends AbstractFormControl
 {

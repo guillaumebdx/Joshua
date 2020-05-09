@@ -2,8 +2,8 @@
 
 namespace App\Model;
 
-use App\Service\ChallengeFormControl;
 use App\Service\ContestService;
+use FormControl\ChallengeFormControl;
 
 class ChallengeManager extends AbstractManager
 {

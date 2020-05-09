@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use App\Service\CampusFormControl;
+use FormControl\CampusFormControl;
 
 class CampusManager extends AbstractManager
 {

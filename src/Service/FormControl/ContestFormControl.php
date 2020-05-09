@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service;
+namespace FormControl;
 
 class ContestFormControl extends AbstractFormControl
 {
@@ -14,9 +14,9 @@ class ContestFormControl extends AbstractFormControl
     {
         $this->verifyDescription($data['description'], 'description');
         $this->verifyContestName($data['name'], 'name', 'name')
-             ->verifyInteger($data['duration'], 'duration')
-             ->verifyIfCampusIs0($data['campus'])
-             ->verifyIfEmptyUrl($data['image']);
+            ->verifyInteger($data['duration'], 'duration')
+            ->verifyIfCampusIs0($data['campus'])
+            ->verifyIfEmptyUrl($data['image']);
     }
 
     /**

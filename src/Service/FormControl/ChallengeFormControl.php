@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service;
+namespace FormControl;
 
 class ChallengeFormControl extends AbstractFormControl
 {
@@ -13,10 +13,10 @@ class ChallengeFormControl extends AbstractFormControl
     public function __construct(array $data)
     {
         $this->verifyDescription($data['description'], 'description')
-             ->verifySelected($data['difficulty'], 'difficulty')
-             ->verifySelected($data['type'], 'type')
-             ->verifyUrl($data['url'], 'url')
-             ->verifyFlag($data['flag'], 'flag');
+            ->verifySelected($data['difficulty'], 'difficulty')
+            ->verifySelected($data['type'], 'type')
+            ->verifyUrl($data['url'], 'url')
+            ->verifyFlag($data['flag'], 'flag');
         $this->verifyChallengeName($data['name'], 'name', 'name');
     }
 

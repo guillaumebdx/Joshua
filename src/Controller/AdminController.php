@@ -9,17 +9,23 @@ use App\Model\DifficultyManager;
 use App\Model\SpecialtyManager;
 use App\Model\TypeManager;
 use App\Model\UserManager;
-use App\Service\ChallengeFormControl;
-use App\Service\SpecialtyFormControl;
-use App\Service\CampusFormControl;
-use App\Service\ContestFormControl;
-use App\Service\TypeFormControl;
+use FormControl\ChallengeFormControl;
+use FormControl\SpecialtyFormControl;
+use FormControl\ContestFormControl;
+use FormControl\TypeFormControl;
+use FormControl\CampusFormControl;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 class AdminController extends AbstractController
 {
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function index()
     {
         $challengeManager = new ChallengeManager();
@@ -54,6 +60,12 @@ class AdminController extends AbstractController
 
     // CHALLENGE
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function manageChallenge()
     {
         $challenges     = new ChallengeManager();
@@ -86,7 +98,14 @@ class AdminController extends AbstractController
         ]);
     }
 
-    public function editChallenge($id)
+    /**
+     * @param int $id
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function editChallenge(int $id)
     {
         $difficulties     = new DifficultyManager();
         $difficultiesList = $difficulties->selectAll();
@@ -125,6 +144,12 @@ class AdminController extends AbstractController
 
     // CONTEST
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function manageContest()
     {
         $campuses     = new CampusManager();
@@ -164,7 +189,14 @@ class AdminController extends AbstractController
         ]);
     }
 
-    public function editContest($id)
+    /**
+     * @param int $id
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function editContest(int $id)
     {
         $campuses     = new CampusManager();
         $campusesList = $campuses->selectAll();
@@ -201,6 +233,9 @@ class AdminController extends AbstractController
         ]);
     }
 
+    /**
+     * @param string $contestId
+     */
     public function setContestActive(string $contestId)
     {
         $contestManager = new ContestManager();
@@ -208,6 +243,9 @@ class AdminController extends AbstractController
         header('Location: /admin/managecontest');
     }
 
+    /**
+     *
+     */
     public function displayContest()
     {
         $json       = file_get_contents('php://input');
@@ -244,6 +282,12 @@ class AdminController extends AbstractController
         ]);
     }
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function setUserAdmin()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -270,6 +314,12 @@ class AdminController extends AbstractController
         }
     }
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function setUserActive()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -331,6 +381,12 @@ class AdminController extends AbstractController
 
     // LANGUAGES
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function addSpecialty()
     {
         $specialtyManager = new SpecialtyManager();
@@ -357,6 +413,12 @@ class AdminController extends AbstractController
 
     // TYPES
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function addType()
     {
         $typeManager = new TypeManager();

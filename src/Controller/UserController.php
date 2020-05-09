@@ -7,16 +7,23 @@ use App\Model\CampusManager;
 use App\Model\ContestHasChallengeManager;
 use App\Model\SpecialtyManager;
 use App\Model\UserManager;
-use App\Service\Ranking;
-use App\Service\UserFormControl;
-use App\Service\UserEditFormControl;
-use App\Service\UserConnection;
-
 use App\Model\ContestManager;
-use App\Service\UserService;
+use App\Service\Ranking;
+use App\Service\UserConnection;
+use FormControl\UserFormControl;
+use FormControl\UserEditFormControl;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class UserController extends AbstractController
 {
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function register()
     {
         $campuses        = new CampusManager();
@@ -30,6 +37,12 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function insertUser()
     {
         if (count($_POST) > 0 && isset($_POST['registerUser'])) {
@@ -63,6 +76,13 @@ class UserController extends AbstractController
         }
     }
 
+    /**
+     * @param int $idUser
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function confirmUser(int $idUser)
     {
         $user        = new UserManager();
@@ -73,6 +93,12 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function profile()
     {
         $userId = $_SESSION['user_id'];
@@ -102,6 +128,12 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function edit()
     {
         $user            = new UserManager();
@@ -118,6 +150,12 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function editUser()
     {
         if (count($_POST) > 0 && isset($_POST['updateUser'])) {

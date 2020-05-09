@@ -12,9 +12,19 @@ use App\Model\UserManager;
 use App\Service\ContestDate;
 use App\Service\ContestService;
 use App\Service\Ranking;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class ContestController extends AbstractController
 {
+    /**
+     * @param int $contest
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function play(int $contest)
     {
 
@@ -70,6 +80,13 @@ class ContestController extends AbstractController
         }
     }
 
+    /**
+     * @param int $contest
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function results(int $contest)
     {
         $contestManager=new ContestManager();
@@ -88,6 +105,10 @@ class ContestController extends AbstractController
         }
     }
 
+    /**
+     * @return false|string
+     * @throws \Exception
+     */
     public function sendSolution()
     {
         $data = file_get_contents('php://input');
@@ -122,6 +143,13 @@ class ContestController extends AbstractController
         }
     }
 
+    /**
+     * @param int $contestId
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function getRankingInContest(int $contestId)
     {
         $contestManager = new ContestManager();
@@ -133,13 +161,20 @@ class ContestController extends AbstractController
         }
     }
 
-    public function getHistoryOfContest($contestId)
+    /**
+     * @param int $contestId
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function getHistoryOfContest(int $contestId)
     {
         $contestId=intval($contestId);
         $storyManager = new StoryManager();
         $postSolution = $storyManager->getHistory($contestId);
-            return $this->twig->render('Components/_console.html.twig', [
-                'solutions' => $postSolution,
-            ]);
+        return $this->twig->render('Components/_console.html.twig', [
+            'solutions' => $postSolution,
+        ]);
     }
 }
