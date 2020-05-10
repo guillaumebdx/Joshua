@@ -92,6 +92,10 @@ table.adminusers tr td {
     height:40px;
     animation:flashing-item 0.5s ease-in-out;
 }
+.list-order-number {
+    color:var( --josh-red);
+    margin-right:3px;
+}
 
 .existing_challenge {
     font-family: var(--josh-major-font);

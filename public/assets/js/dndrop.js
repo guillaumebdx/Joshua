@@ -99,6 +99,7 @@ class DragAndDrop {
         }
         this.removeSpacer();
         this.getList();
+        this.addNumbers();
     }
 
     getIdInNodesList (e) {
@@ -139,7 +140,20 @@ class DragAndDrop {
                 listOrderedItems.push(e.dataset.challenge);
             }
         });
-        console.log(listOrderedItems);
+        return listOrderedItems;
+    }
+
+    addNumbers() {
+        let i = 0;
+        this.originOfElement.childNodes.forEach((e) =>{
+                if (e.nodeName =='LI') {
+                    i++;
+                    let htmlForNumber = '<span class="list-order-number">' + i + '</span> ';
+                    let html = e.innerHTML;
+                    let htmlToKeep = html.split('<i ');
+                    e.innerHTML = htmlForNumber + '<i ' + htmlToKeep[1];
+                }
+            });
     }
 
 }
