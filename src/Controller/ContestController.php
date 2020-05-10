@@ -11,7 +11,9 @@ use App\Model\UserHasContestManager;
 use App\Model\UserManager;
 use App\Service\ContestDate;
 use App\Service\ContestService;
+use App\Service\Dispatch;
 use App\Service\Ranking;
+use Exception;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -67,16 +69,13 @@ class ContestController extends AbstractController
                         'rank_users' => Ranking::formatRankingContest($contest),
                     ]);
                 } else {
-                    header('Location:/');
-                    die();
+                    Dispatch::toUrl('/');
                 }
             } else {
-                header('Location:/');
-                die();
+                Dispatch::toUrl('/');
             }
         } else {
-            header('Location:/');
-            die();
+            Dispatch::toUrl('/');
         }
     }
 
@@ -100,14 +99,13 @@ class ContestController extends AbstractController
                 'end_date' => $endDate,
             ]);
         } else {
-            header('Location:/joshua/page404');
-            die();
+            Dispatch::toUrl('/joshua/page404');
         }
     }
 
     /**
      * @return false|string
-     * @throws \Exception
+     * @throws Exception
      */
     public function sendSolution()
     {
@@ -120,13 +118,13 @@ class ContestController extends AbstractController
             $return = [];
             $storyManager = new StoryManager();
             if ($solutionUsed === $challengeSolution) {
-                $userHasContestManager = new UserHasContestManager();
-                $userHasContestManager->registerChallengeSuccess($json->challenge_id, $json->contest_id);
+                $playerManager = new UserHasContestManager();
+                $playerManager->registerChallengeSuccess($json->challenge_id, $json->contest_id);
                 $nextFlagOrder = $json->challenge_id + 1;
-                $contestHasChallengeManager = new ContestHasChallengeManager();
-                $nextChallenge = $contestHasChallengeManager->getNextChallengeToPlay($nextFlagOrder, $json->contest_id);
+                $challengesInContest = new ContestHasChallengeManager();
+                $nextChallenge = $challengesInContest->getNextChallengeToPlay($nextFlagOrder, $json->contest_id);
                 if ($nextChallenge) {
-                    $userHasContestManager->startNextChallenge($nextChallenge, $json->contest_id);
+                    $playerManager->startNextChallenge($nextChallenge, $json->contest_id);
                     $return['message'] = 'success';
                 } else {
                     $return['message'] = 'end';
@@ -138,8 +136,7 @@ class ContestController extends AbstractController
             }
             return json_encode($return);
         } else {
-            header('Location:/');
-            die();
+            Dispatch::toUrl('/');
         }
     }
 
@@ -170,7 +167,7 @@ class ContestController extends AbstractController
      */
     public function getHistoryOfContest(int $contestId)
     {
-        $contestId=intval($contestId);
+        $contestId = intval($contestId);
         $storyManager = new StoryManager();
         $postSolution = $storyManager->getHistory($contestId);
         return $this->twig->render('Components/_console.html.twig', [

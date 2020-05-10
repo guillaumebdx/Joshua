@@ -10,10 +10,10 @@ class Ranking
 {
     public static function formatRankingContest(int $contest): array
     {
-        $userHasContestManager = new UserHasContestManager();
-        $contestHasChallengeManager = new ContestHasChallengeManager();
-        $ranking        = $userHasContestManager->getContestRanking($contest);
-        $nbChallenges   = $contestHasChallengeManager->getNumberOfChallengesInContest($contest);
+        $playerManager = new UserHasContestManager();
+        $challengesInContest = new ContestHasChallengeManager();
+        $ranking        = $playerManager->getContestRanking($contest);
+        $nbChallenges   = $challengesInContest->getNumberOfChallengesInContest($contest);
 
         foreach ($ranking as $userId => $userRanking) {
             $userManager = new UserManager();
@@ -28,8 +28,8 @@ class Ranking
 
     public static function formatUserRankingInContest(int $contest): array
     {
-        $userHasContestManager = new UserHasContestManager();
-        $ranking = $userHasContestManager->getContestRanking($contest);
+        $playerManager = new UserHasContestManager();
+        $ranking = $playerManager->getContestRanking($contest);
         $suffix = ['', 'st', 'nd', 'rd'];
         $userRank = array_search($_SESSION['user_id'], array_keys($ranking)) + 1;
         $rank = ($userRank <= 3) ? $userRank . $suffix[$userRank] : $userRank . 'th';

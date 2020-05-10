@@ -17,14 +17,14 @@ class ContestService
         $listOfChallenges = [];
         $challengeManager = new ChallengeManager();
         $challengesList = $challengeManager->getChallengesByContest($contest);
-        $userHasContestManager = new UserHasContestManager();
+        $playerManager = new UserHasContestManager();
         foreach ($challengesList as $challenge) {
             $listOfChallenges[] = [
                 'id' => $challenge['challenge_id'],
                 'name' => $challenge['name'],
                 'order' => $challenge['order_challenge'],
-                'status' => $userHasContestManager->challengeStatus($challenge['challenge_id'], $contest),
-                'time' => $userHasContestManager->challengeTimeToSucceedByUser($challenge['challenge_id'], $contest),
+                'status' => $playerManager->challengeStatus($challenge['challenge_id'], $contest),
+                'time' => $playerManager->challengeTimeToSucceedByUser($challenge['challenge_id'], $contest),
             ];
         }
         return $listOfChallenges;
@@ -85,10 +85,10 @@ class ContestService
 
     public static function isContestCompletedByUser(int $contest, int $user): bool
     {
-        $contestHasChallengeManager = new ContestHasChallengeManager();
-        $userHasContestManager = new UserHasContestManager();
-        $challengeNumber = $contestHasChallengeManager->getNumberOfChallengesInContest($contest);
-        $numberPlayed = $userHasContestManager->getNumberFlagsPlayedByUserInContest($user, $contest);
+        $challengesInContest = new ContestHasChallengeManager();
+        $playerManager = new UserHasContestManager();
+        $challengeNumber = $challengesInContest->getNumberOfChallengesInContest($contest);
+        $numberPlayed = $playerManager->getNumberFlagsPlayedByUserInContest($user, $contest);
         return $challengeNumber === $numberPlayed;
     }
 }

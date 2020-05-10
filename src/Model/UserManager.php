@@ -95,7 +95,6 @@ class UserManager extends AbstractManager
         }
         $statement->bindValue(':specialty', $data['specialty'], \PDO::PARAM_INT);
         $statement->bindValue(':campus', $data['campus'], \PDO::PARAM_INT);
-
         $statement->execute();
     }
 

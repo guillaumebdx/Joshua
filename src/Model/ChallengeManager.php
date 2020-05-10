@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\Service\ContestService;
+use App\Service\Dispatch;
 use FormControl\ChallengeFormControl;
 
 class ChallengeManager extends AbstractManager
@@ -108,10 +109,8 @@ class ChallengeManager extends AbstractManager
         if (!empty($results[0])) {
             return $results[0];
         } else {
-            // If the contest is finished or not.
             if (!ContestService::isSolutionPossible($contest)) {
-                header('Location:/contest/results/' . $contest);
-                die();
+                Dispatch::toUrl('/contest/results/' . $contest);
             }
         }
     }
@@ -124,10 +123,10 @@ class ChallengeManager extends AbstractManager
      */
     public function startFirstChallenge(int $contest): array
     {
-        $contestHasChallengeManager = new ContestHasChallengeManager();
-        $firstChallenge = $contestHasChallengeManager->getNextChallengeToPlay(1, $contest);
-        $userHasContestManager = new UserHasContestManager();
-        $userHasContestManager->startNextChallenge($firstChallenge, $contest);
+        $challengesInContest = new ContestHasChallengeManager();
+        $firstChallenge = $challengesInContest->getNextChallengeToPlay(1, $contest);
+        $playerManager = new UserHasContestManager();
+        $playerManager->startNextChallenge($firstChallenge, $contest);
         return $this->challengeOnTheWayByUser($contest);
     }
 
