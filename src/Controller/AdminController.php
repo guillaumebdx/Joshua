@@ -164,7 +164,7 @@ class AdminController extends AbstractController
             if (count($errors) === 0) {
                 $contestManager = new ContestManager();
                 $contestManager->addContest($contest);
-                Dispatch::toUrl('/admin/managechallenge');
+                Dispatch::toUrl('/admin/managecontest');
             }
         }
 
