@@ -13,8 +13,7 @@ class Dispatch
         $test2 = !in_array($_SERVER['REQUEST_URI'], self::ALLOWED_URL_FOR_NOT_REGISTERED_USER);
 
         if ($test1 && $test2) {
-            header('Location: /');
-            exit;
+            self::toUrl('/');
         }
     }
 
@@ -23,8 +22,7 @@ class Dispatch
         $test1 = in_array($_SERVER['REQUEST_URI'], self::NOT_ALLOWED_URL_FOR_REGISTERED_USER);
         $test2 = isset($_SESSION['pseudo']);
         if ($test1 && $test2) {
-            header('Location: /joshua/home');
-            exit;
+            self::toUrl('/joshua/home');
         }
     }
 
@@ -34,16 +32,7 @@ class Dispatch
         $test2 = (isset($_SESSION['is_admin']) ? $_SESSION['is_admin'] : false) === false;
 
         if ($test1 && $test2) {
-            header('Location: /');
-            exit;
-        }
-    }
-
-    public static function isSolutionPossible(bool $isPossible): void
-    {
-        if (!$isPossible) {
-            header('Location:/contest/results/' . $contest);
-            exit;
+            self::toUrl('/');
         }
     }
 

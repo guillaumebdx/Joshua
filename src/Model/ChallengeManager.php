@@ -109,7 +109,9 @@ class ChallengeManager extends AbstractManager
         if (!empty($results[0])) {
             return $results[0];
         } else {
-            Dispatch::isSolutionPossible(ContestService::isSolutionPossible($contest));
+            if (!ContestService::isSolutionPossible($contest)) {
+                Dispatch::toUrl('/contest/results/' . $contest);
+            }
         }
     }
 
@@ -121,10 +123,10 @@ class ChallengeManager extends AbstractManager
      */
     public function startFirstChallenge(int $contest): array
     {
-        $contestHasChallengeManager = new ContestHasChallengeManager();
-        $firstChallenge = $contestHasChallengeManager->getNextChallengeToPlay(1, $contest);
-        $userHasContestManager = new UserHasContestManager();
-        $userHasContestManager->startNextChallenge($firstChallenge, $contest);
+        $challengesInContest = new ContestHasChallengeManager();
+        $firstChallenge = $challengesInContest->getNextChallengeToPlay(1, $contest);
+        $playerManager = new UserHasContestManager();
+        $playerManager->startNextChallenge($firstChallenge, $contest);
         return $this->challengeOnTheWayByUser($contest);
     }
 

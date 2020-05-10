@@ -120,8 +120,8 @@ class ContestController extends AbstractController
                 $playerManager = new UserHasContestManager();
                 $playerManager->registerChallengeSuccess($json->challenge_id, $json->contest_id);
                 $nextFlagOrder = $json->challenge_id + 1;
-                $challengeInContext = new ContestHasChallengeManager();
-                $nextChallenge = $challengeInContext->getNextChallengeToPlay($nextFlagOrder, $json->contest_id);
+                $challengesInContest = new ContestHasChallengeManager();
+                $nextChallenge = $challengesInContest->getNextChallengeToPlay($nextFlagOrder, $json->contest_id);
                 if ($nextChallenge) {
                     $playerManager->startNextChallenge($nextChallenge, $json->contest_id);
                     $return['message'] = 'success';
