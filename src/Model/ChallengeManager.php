@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\Service\ContestService;
+use App\Service\Dispatch;
 use FormControl\ChallengeFormControl;
 
 class ChallengeManager extends AbstractManager
@@ -108,11 +109,7 @@ class ChallengeManager extends AbstractManager
         if (!empty($results[0])) {
             return $results[0];
         } else {
-            // If the contest is finished or not.
-            if (!ContestService::isSolutionPossible($contest)) {
-                header('Location:/contest/results/' . $contest);
-                die();
-            }
+            Dispatch::isSolutionPossible(ContestService::isSolutionPossible($contest));
         }
     }
 

@@ -9,6 +9,7 @@ use App\Model\DifficultyManager;
 use App\Model\SpecialtyManager;
 use App\Model\TypeManager;
 use App\Model\UserManager;
+use App\Service\Dispatch;
 use FormControl\CampusFormControl;
 use FormControl\ChallengeFormControl;
 use FormControl\ContestFormControl;
@@ -85,8 +86,7 @@ class AdminController extends AbstractController
             if (count($errors) === 0) {
                 $challengeManager = new ChallengeManager();
                 $challengeManager->addChallenge($challenge);
-                header('Location: /admin/managechallenge');
-                die();
+                Dispatch::toUrl('/admin/managechallenge');
             }
         }
 
@@ -123,16 +123,14 @@ class AdminController extends AbstractController
             if (count($errors) === 0) {
                 $challengeManager = new ChallengeManager();
                 $challengeManager->editChallenge($challenge, $id);
-                header('Location: /admin/managechallenge');
-                die();
+                Dispatch::toUrl('/admin/managechallenge');
             }
         }
 
         if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['deleteChallenge'])) {
             $challengeManager = new ChallengeManager();
             $challengeManager->deleteChallenge($id);
-            header('Location: /admin/managechallenge');
-            die();
+            Dispatch::toUrl('/admin/managechallenge');
         }
 
         return $this->twig->render('Admin/challenge_edit.html.twig', [
@@ -166,8 +164,7 @@ class AdminController extends AbstractController
             if (count($errors) === 0) {
                 $contestManager = new ContestManager();
                 $contestManager->addContest($contest);
-                header('Location: /admin/managecontest');
-                die();
+                Dispatch::toUrl('/admin/managechallenge');
             }
         }
 
@@ -177,8 +174,7 @@ class AdminController extends AbstractController
             if (count($errors) === 0) {
                 $contestManager = new ContestManager();
                 $contestId = $contestManager->addContest($contest);
-                header('Location: /admin/editcontest/' . $contestId);
-                die();
+                Dispatch::toUrl('/admin/editcontest/' . $contestId);
             }
         }
 
@@ -214,16 +210,14 @@ class AdminController extends AbstractController
             if (count($errors) === 0) {
                 $contestManager = new ContestManager();
                 $contestManager->editContest($contest, $id);
-                header('Location: /admin/managecontest');
-                die();
+                Dispatch::toUrl('/admin/managecontest');
             }
         }
 
         if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['deleteContest'])) {
             $contestManager = new ContestManager();
             $contestManager->deleteContest($id);
-            header('Location: /admin/managecontest');
-            die();
+            Dispatch::toUrl('/admin/managecontest');
         }
 
         return $this->twig->render('Admin/contest_edit.html.twig', [
@@ -240,7 +234,7 @@ class AdminController extends AbstractController
     {
         $contestManager = new ContestManager();
         $contestManager->setContestActive($contestId);
-        header('Location: /admin/managecontest');
+        Dispatch::toUrl('/admin/managecontest');
     }
 
     /**
@@ -368,7 +362,7 @@ class AdminController extends AbstractController
             $errors = $campus->getErrors();
             if (count($errors) === 0) {
                 $campusManager->insertCampus($campus);
-                header('Location: /admin/addCampus');
+                Dispatch::toUrl('/admin/addCampus');
             }
         }
         $result=[
@@ -399,7 +393,7 @@ class AdminController extends AbstractController
             $errors    = $specialty->getErrors();
             if (count($errors) === 0) {
                 $specialtyManager->insertSpecialty($specialty);
-                header('Location: /admin/addSpecialty');
+                Dispatch::toUrl('/admin/addSpecialty');
             }
         }
         $result=[

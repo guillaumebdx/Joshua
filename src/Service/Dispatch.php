@@ -38,4 +38,18 @@ class Dispatch
             exit;
         }
     }
+
+    public static function isSolutionPossible(bool $isPossible): void
+    {
+        if (!$isPossible) {
+            header('Location:/contest/results/' . $contest);
+            exit;
+        }
+    }
+
+    public static function toUrl(string $url): void
+    {
+            header('Location:' . $url);
+            exit;
+    }
 }
