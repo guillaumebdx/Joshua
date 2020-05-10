@@ -17,7 +17,7 @@
                 <div class="row list-container overflow-auto">
                     <ul class="list-group col-12" id="challenge-list">
                         {% for challenge in challenges|reverse %}
-                            <li id="challenge-id{{ challenge.id }}" class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2 draggable">
+                            <li id="challenge-id{{ challenge.id }}" data-challenge="{{ challenge.id }}" class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2 draggable">
                                 <i class="fa fa-flag"></i> {{ challenge.name }}
                             </li>
                         {% endfor %}

@@ -20,6 +20,14 @@ class DragAndDrop {
         this.numberOfNodesByElement = 2;
         this.yPre               = null;
         this.direction          = null;
+        this.spacer             = document.createElement("li");
+        this.initSpacer();
+
+    }
+
+    initSpacer() {
+        this.spacer.classList.add('list-group-item');
+        this.spacer.classList.add('spacer');
     }
 
 // Initialisation
@@ -58,6 +66,7 @@ class DragAndDrop {
         this.dragAbleElement = e.target;
         this.originOfElement = this.dragAbleElement.parentElement;
         this.list = this.originOfElement.childNodes;
+        this.dragAbleElement.style.opacity = 0.1;
     }
 
     onDrop() {
@@ -68,11 +77,16 @@ class DragAndDrop {
     }
 
     onOriginOver(e) {
+        e.preventDefault();
         this.hoverElement=e;
         this.mouseDirection(e)
-        console.log(this.direction);
         this.getIdInNodesList (e.target);
-        e.preventDefault();
+        if (e.target == this.spacer) {
+            console.log('todo');
+        }
+        if (e.target != this.spacer && e.target.nodeName != 'ul') {
+            this.insertSpacer();
+        }
     }
 
     onDropBack(e) {
@@ -83,6 +97,8 @@ class DragAndDrop {
         else {
             this.originOfElement.insertBefore(this.dragAbleElement, this.originOfElement.childNodes[this.nextElement]);
         }
+        this.removeSpacer();
+        this.getList();
     }
 
     getIdInNodesList (e) {
@@ -102,4 +118,28 @@ class DragAndDrop {
         }
         this.yPre = e.pageY;
     }
+
+    insertSpacer() {
+        if (this.direction === 'top') {
+            this.originOfElement.insertBefore(this.spacer, this.originOfElement.childNodes[this.listIndex]);
+        }
+        else {
+            this.originOfElement.insertBefore(this.spacer, this.originOfElement.childNodes[this.nextElement]);
+        }
+    }
+    removeSpacer() {
+            this.spacer.remove();
+            this.dragAbleElement.style.opacity = 1;
+    }
+
+    getList() {
+        let listOrderedItems = [];
+        this.originOfElement.childNodes.forEach((e) =>{
+            if (e.dataset != null) {
+                listOrderedItems.push(e.dataset.challenge);
+            }
+        });
+        console.log(listOrderedItems);
+    }
+
 }
