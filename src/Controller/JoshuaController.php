@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Model\ContestManager;
 use App\Model\UserManager;
 use App\Service\ContestDate;
+use App\Service\Dispatch;
 use App\Service\UserConnection;
 use FormControl\IndexFormControl;
 use Twig\Error\LoaderError;
@@ -35,8 +36,7 @@ class JoshuaController extends AbstractController
                     if ($login === $user['pseudo']) {
                         if (password_verify($password, $user['password'])) {
                             UserConnection::openConnection($user['id']);
-                            header('Location: joshua/home');
-                            exit();
+                            Dispatch::toUrl('/joshua/home');
                         } else {
                             $error = 'Invalid password !';
                         }

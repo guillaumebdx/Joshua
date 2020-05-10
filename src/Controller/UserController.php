@@ -8,6 +8,7 @@ use App\Model\ContestHasChallengeManager;
 use App\Model\ContestManager;
 use App\Model\SpecialtyManager;
 use App\Model\UserManager;
+use App\Service\Dispatch;
 use App\Service\Ranking;
 use App\Service\UserConnection;
 use FormControl\UserEditFormControl;
@@ -55,8 +56,7 @@ class UserController extends AbstractController
                 // TODO SEND OBJECT FORM CONTROL
                 $idUser            = $newUser->addUser($_POST);
                 UserConnection::openConnection($idUser);
-                header('location: /user/confirmuser/' . $idUser);
-                die();
+                Dispatch::toUrl('/user/confirmuser/' . $idUser);
             } else {
                 $campuses        = new CampusManager();
                 $campusesList    = $campuses->selectAll();
@@ -71,8 +71,7 @@ class UserController extends AbstractController
                 ]);
             }
         } else {
-            header('location:/');
-            die();
+            Dispatch::toUrl('/');
         }
     }
 
@@ -105,7 +104,7 @@ class UserController extends AbstractController
         $contestManager = new ContestManager();
         $userContests   = $contestManager->getContestsPlayedByUser($userId, 5);
 
-        $contestHasChallengeManager = new ContestHasChallengeManager();
+        $challengesInContext = new ContestHasChallengeManager();
         $limit = count($userContests);
         for ($i = 0; $i < $limit; $i++) {
             $contestId = $userContests[$i]['id'];
@@ -113,7 +112,7 @@ class UserController extends AbstractController
             $userContests[$i]['resume'] = [
                 'started_on'           => $contestManager->getUserContestStartTime($userId, $contestId),
                 'challenges_played'    => $ranking['flags_succeed'],
-                'number_of_challenges' => $contestHasChallengeManager->getNumberOfChallengesInContest($contestId),
+                'number_of_challenges' => $challengesInContext->getNumberOfChallengesInContest($contestId),
                 'user_rank'            => $ranking['rank'],
                 'medal'                => $ranking['medal'],
             ];
@@ -169,8 +168,7 @@ class UserController extends AbstractController
                 }
                 $userManager->updateUser($_POST);
                 UserConnection::openConnection($_SESSION['user_id']);
-                header('location:/user/profile/' . $_SESSION['user_id']);
-                die();
+                Dispatch::toUrl('/user/profile/' . $_SESSION['user_id']);
             } else {
                 $campuses        = new CampusManager();
                 $campusesList    = $campuses->selectAll();
@@ -184,8 +182,7 @@ class UserController extends AbstractController
                 ]);
             }
         } else {
-            header('location:/');
-            die();
+            Dispatch::toUrl('/');
         }
     }
 
@@ -194,7 +191,6 @@ class UserController extends AbstractController
         $_SESSION = array();
         session_destroy();
         unset($_SESSION);
-        header('location:/');
-        die();
+        Dispatch::toUrl('/');
     }
 }
