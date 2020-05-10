@@ -104,7 +104,7 @@ class UserController extends AbstractController
         $contestManager = new ContestManager();
         $userContests   = $contestManager->getContestsPlayedByUser($userId, 5);
 
-        $challengesInContext = new ContestHasChallengeManager();
+        $challengesInContest = new ContestHasChallengeManager();
         $limit = count($userContests);
         for ($i = 0; $i < $limit; $i++) {
             $contestId = $userContests[$i]['id'];
@@ -112,7 +112,7 @@ class UserController extends AbstractController
             $userContests[$i]['resume'] = [
                 'started_on'           => $contestManager->getUserContestStartTime($userId, $contestId),
                 'challenges_played'    => $ranking['flags_succeed'],
-                'number_of_challenges' => $challengesInContext->getNumberOfChallengesInContest($contestId),
+                'number_of_challenges' => $challengesInContest->getNumberOfChallengesInContest($contestId),
                 'user_rank'            => $ranking['rank'],
                 'medal'                => $ranking['medal'],
             ];

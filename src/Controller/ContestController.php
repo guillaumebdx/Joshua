@@ -13,6 +13,7 @@ use App\Service\ContestDate;
 use App\Service\ContestService;
 use App\Service\Dispatch;
 use App\Service\Ranking;
+use Exception;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -104,7 +105,7 @@ class ContestController extends AbstractController
 
     /**
      * @return false|string
-     * @throws \Exception
+     * @throws Exception
      */
     public function sendSolution()
     {
@@ -166,7 +167,7 @@ class ContestController extends AbstractController
      */
     public function getHistoryOfContest(int $contestId)
     {
-        $contestId=intval($contestId);
+        $contestId = intval($contestId);
         $storyManager = new StoryManager();
         $postSolution = $storyManager->getHistory($contestId);
         return $this->twig->render('Components/_console.html.twig', [

@@ -38,7 +38,7 @@ class Dispatch
 
     public static function toUrl(string $url): void
     {
-            header('Location:' . $url);
-            exit;
+        header('Location:' . $url);
+        exit;
     }
 }
