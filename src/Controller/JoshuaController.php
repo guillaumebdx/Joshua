@@ -27,19 +27,19 @@ class JoshuaController extends AbstractController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $connectUser = new IndexFormControl($_POST);
-            $login = $connectUser->getProperty('pseudo');
-            $password = $connectUser->getProperty('password');
+            $login       = $connectUser->getProperty('pseudo');
+            $password    = $connectUser->getProperty('password');
+
             if (count($connectUser->getErrors()) === 0) {
                 $userManager = new UserManager();
-                $user = $userManager->selectOneByPseudo($login);
-                if ($user) {
-                    if ($login === $user['pseudo']) {
-                        if (password_verify($password, $user['password'])) {
-                            UserConnection::openConnection($user['id']);
-                            Dispatch::toUrl('/joshua/home');
-                        } else {
-                            $error = 'Invalid password !';
-                        }
+                $user        = $userManager->selectOneByPseudo($login);
+
+                if ($user && $login === $user['pseudo']) {
+                    if (password_verify($password, $user['password'])) {
+                        UserConnection::openConnection($user['id']);
+                        Dispatch::toUrl('/joshua/home');
+                    } else {
+                        $error = 'Invalid password !';
                     }
                 } else {
                     $error = 'This pseudo doesn\'t exist !';
@@ -69,9 +69,10 @@ class JoshuaController extends AbstractController
             $visibleContests[$i]['is_active'] = (bool)$visibleContests[$i]['is_active'];
 
             $beginning = $visibleContests[$i]['started_on'];
-            $duration = $visibleContests[$i]['duration'];
+            $duration  = $visibleContests[$i]['duration'];
 
-            $visibleContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration, ContestDate::ARRAY);
+            $formattedDuration = ContestDate::getDurationInHoursAndMinutes($duration, ContestDate::ARRAY);
+            $visibleContests[$i]['formatted_duration'] = $formattedDuration;
             $visibleContests[$i]['end_date'] = ContestDate::getContestEndDate($beginning, $duration);
         }
 
@@ -87,12 +88,13 @@ class JoshuaController extends AbstractController
     public function oldContests()
     {
         $contestManager = new ContestManager();
-        $oldContests = $contestManager->selectAll(ContestManager::ENDED);
+        $oldContests    = $contestManager->selectAll(ContestManager::ENDED);
+        $nbContests     = count($oldContests);
 
-        $nbContests = count($oldContests);
         for ($i = 0; $i < $nbContests; $i++) {
-            $duration = $oldContests[$i]['duration'];
-            $oldContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration, ContestDate::ARRAY);
+            $duration          = $oldContests[$i]['duration'];
+            $formattedDuration = ContestDate::getDurationInHoursAndMinutes($duration, ContestDate::ARRAY);
+            $oldContests[$i]['formatted_duration'] = $formattedDuration;
         }
 
         return $this->twig->render('Home/old_contests.html.twig', ['contests' => $oldContests]);

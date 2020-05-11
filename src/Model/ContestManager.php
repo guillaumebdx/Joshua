@@ -169,7 +169,8 @@ class ContestManager extends AbstractManager
     }
 
     /**
-     * <p>Get the date and time (format : aaaa-mm-jj H:i:s) of when the user as started his first challenge in this contest.</p>
+     * <p>Get the date and time (format : aaaa-mm-jj H:i:s) of when the user as started his
+     * first challenge in this contest.</p>
      * @param int $user
      * <p>The user ID.</p>
      * @param int $contest
@@ -205,22 +206,5 @@ class ContestManager extends AbstractManager
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':id', $contestId, \PDO::PARAM_INT);
         $statement->execute();
-    }
-
-    public function getActiveContests(): array
-    {
-        $query = 'SELECT * FROM ' . self::TABLE .
-            ' WHERE is_active = 1 ' .
-            ' AND TIMEDIFF(NOW(), started_on) < SEC_TO_TIME(duration * 60)';
-        $statement = $this->pdo->prepare($query);
-        $statement->execute();
-        $activeContests = $statement->fetchAll();
-        foreach ($activeContests as $key => $contest) {
-            $activeContests[$key]['end_date'] = ContestDate::getContestEndDate(
-                $contest['started_on'],
-                $contest['duration']
-            );
-        }
-        return $activeContests;
     }
 }

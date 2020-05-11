@@ -10,13 +10,13 @@ class Ranking
 {
     public static function formatRankingContest(int $contest): array
     {
-        $playerManager = new UserHasContestManager();
+        $playerManager       = new UserHasContestManager();
         $challengesInContest = new ContestHasChallengeManager();
-        $ranking        = $playerManager->getContestRanking($contest);
-        $nbChallenges   = $challengesInContest->getNumberOfChallengesInContest($contest);
+        $ranking             = $playerManager->getContestRanking($contest);
+        $nbChallenges        = $challengesInContest->getNumberOfChallengesInContest($contest);
         foreach ($ranking as $userId => $userRanking) {
-            $userManager = new UserManager();
-            $user = $userManager->selectOneById($userId);
+            $userManager     = new UserManager();
+            $user            = $userManager->selectOneById($userId);
             $ranking[$userId]['pseudo']       = $user['pseudo'];
             $ranking[$userId]['total_time']   = ContestDate::getDurationInHoursAndMinutes($userRanking['total_time']);
             $ranking[$userId]['nbChallenges'] = $nbChallenges;
@@ -28,14 +28,14 @@ class Ranking
     public static function formatUserRankingInContest(int $contest): array
     {
         $playerManager = new UserHasContestManager();
-        $ranking = $playerManager->getContestRanking($contest);
-        $suffix = ['', 'st', 'nd', 'rd'];
-        $userRank = array_search($_SESSION['user_id'], array_keys($ranking)) + 1;
-        $rank = ($userRank <= 3) ? $userRank . $suffix[$userRank] : $userRank . 'th';
-        $medals = ['', 'gold', 'silver', 'bronze'];
+        $ranking       = $playerManager->getContestRanking($contest);
+        $suffix        = ['', 'st', 'nd', 'rd'];
+        $userRank      = array_search($_SESSION['user_id'], array_keys($ranking)) + 1;
+        $rank          = ($userRank <= 3) ? $userRank . $suffix[$userRank] : $userRank . 'th';
+        $medals        = ['', 'gold', 'silver', 'bronze'];
         return [
-            'rank' => $rank,
-            'medal' => (isset($medals[$userRank]) ? $medals[$userRank] : ''),
+            'rank'          => $rank,
+            'medal'         => (isset($medals[$userRank]) ? $medals[$userRank] : ''),
             'flags_succeed' => $ranking[$_SESSION['user_id']]['flags_succeed'],
         ];
     }
