@@ -7,40 +7,57 @@ use App\Model\ChallengeManager;
 use App\Model\ContestHasChallengeManager;
 use App\Model\ContestManager;
 use App\Model\UserHasContestManager;
+use Exception;
 
 class ContestService
 {
     const NUMBER_OF_DIFFICULTIES = 5;
 
-    public function listChallengesWithSuccess(int $contest) :array
+    /**
+     * </p>Start contest with the first challenge.</p>
+     * @param int $contest
+     * @return array
+     */
+    public function startFirstChallenge(int $contest): array
+    {
+        $challengesInContest = new ContestHasChallengeManager();
+        $playerManager       = new UserHasContestManager();
+        $challengeManager    = new ChallengeManager();
+        $firstChallenge      = $challengesInContest->getNextChallengeToPlay(1, $contest);
+        $playerManager->startNextChallenge($firstChallenge, $contest);
+        return $challengeManager->challengeOnTheWayByUser($contest);
+    }
+
+    /**
+     * @param int $contest
+     * @return array
+     */
+    public function listChallengesWithSuccess(int $contest): array
     {
         $listOfChallenges = [];
         $challengeManager = new ChallengeManager();
-        $challengesList = $challengeManager->getChallengesByContest($contest);
-        $playerManager = new UserHasContestManager();
+        $challengesList   = $challengeManager->getChallengesByContest($contest);
+        $playerManager    = new UserHasContestManager();
         foreach ($challengesList as $challenge) {
             $listOfChallenges[] = [
-                'id' => $challenge['challenge_id'],
-                'name' => $challenge['name'],
-                'order' => $challenge['order_challenge'],
+                'id'     => $challenge['challenge_id'],
+                'name'   => $challenge['name'],
+                'order'  => $challenge['order_challenge'],
                 'status' => $playerManager->challengeStatus($challenge['challenge_id'], $contest),
-                'time' => $playerManager->challengeTimeToSucceedByUser($challenge['challenge_id'], $contest),
+                'time'   => $playerManager->challengeTimeToSucceedByUser($challenge['challenge_id'], $contest),
             ];
         }
         return $listOfChallenges;
     }
 
-    public function testChallengeSolution(int $challenge, string $solution) :bool
+    /**
+     * @param string $difficulty
+     * @return string
+     */
+    public function difficulties(string $difficulty): string
     {
-        $challengeManager = new ChallengeManager();
-        $challenge = $challengeManager->selectOneById($challenge);
-        return $solution === $challenge['flag'];
-    }
-
-    public function difficulties(string $difficulty) : string
-    {
-        $returnStars ='';
-        $limit=0;
+        $returnStars = '';
+        $limit = 0;
         switch ($difficulty) {
             case 'Easy':
                 $limit=1;
@@ -61,28 +78,42 @@ class ContestService
                 break;
         }
         for ($i=0; $i<$limit; $i++) {
-            $returnStars.='<i class="fa fa-star text-red"></i>';
+            $returnStars .= '<i class="fa fa-star text-red"></i>';
         }
         for ($i=$limit; $i<self::NUMBER_OF_DIFFICULTIES; $i++) {
-            $returnStars.='<i class="fa fa-star text-white"></i>';
+            $returnStars .= '<i class="fa fa-star text-white"></i>';
         }
         return '<small class="info-challenge-title">Difficulty level</small><br>' . $returnStars;
     }
 
-    public static function isSolutionPossible(int $contest)
+    /**
+     * @param int $contest
+     * @return bool
+     * @throws Exception
+     */
+    public static function isSolutionPossible(int $contest): bool
     {
-        $return = false;
+        $return         = false;
         $contestManager = new ContestManager();
-        $theContest = $contestManager->selectOneById($contest);
+        $theContest     = $contestManager->selectOneById($contest);
+
         if ($theContest) {
             $endDate = ContestDate::getContestEndDate($theContest['started_on'], $theContest['duration']);
-            if (!ContestDate::isEnded($endDate) && !ContestService::isContestCompletedByUser($contest, $_SESSION['user_id'])) {
+
+            if (!ContestDate::isEnded($endDate) &&
+                !ContestService::isContestCompletedByUser($contest, $_SESSION['user_id'])) {
                 $return = true;
             }
         }
         return $return;
     }
 
+    /**
+     * @param int $contest
+     * @param int $user
+     * @return bool
+     * @throws Exception
+     */
     public static function isContestCompletedByUser(int $contest, int $user): bool
     {
         $challengesInContest = new ContestHasChallengeManager();

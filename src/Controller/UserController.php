@@ -11,6 +11,7 @@ use App\Model\UserManager;
 use App\Service\Dispatch;
 use App\Service\Ranking;
 use App\Service\UserConnection;
+use Exception;
 use FormControl\UserEditFormControl;
 use FormControl\UserFormControl;
 use Twig\Error\LoaderError;
@@ -87,9 +88,7 @@ class UserController extends AbstractController
         $user        = new UserManager();
         $userCreated = $user->selectOneById($idUser);
 
-        return $this->twig->render('User/user_confirm.html.twig', [
-            'user' => $userCreated,
-        ]);
+        return $this->twig->render('User/user_confirm.html.twig', ['user' => $userCreated]);
     }
 
     /**
@@ -97,10 +96,11 @@ class UserController extends AbstractController
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
+     * @throws Exception
      */
     public function profile()
     {
-        $userId = $_SESSION['user_id'];
+        $userId         = $_SESSION['user_id'];
         $contestManager = new ContestManager();
         $userContests   = $contestManager->getContestsPlayedByUser($userId, 5);
 
@@ -118,7 +118,7 @@ class UserController extends AbstractController
             ];
         }
 
-        $user = new UserManager();
+        $user        = new UserManager();
         $userCreated = $user->selectOneById($userId);
 
         return $this->twig->render('User/user_profile.html.twig', [

@@ -2,12 +2,12 @@
 
 namespace App\Model;
 
+use App\Service\UserPaginator;
 use Exception;
 
 class UserManager extends AbstractManager
 {
     const TABLE = 'user';
-    const LIMIT_LIST_USERS = 4;
     const NOT_ADMIN = false;
     const ADMIN = true;
     const NOT_ACTIVE = false;
@@ -131,16 +131,6 @@ class UserManager extends AbstractManager
     }
 
     /**
-     * @return int
-     * TODO IN SERVICE
-     */
-    public function numberOfPages(): int
-    {
-        $nbPagesPre = $this->getTotalUsers($_SESSION['user_id']) / self::LIMIT_LIST_USERS;
-        return ceil($nbPagesPre);
-    }
-
-    /**
      * @param string $orderBy
      * <p>Field to sort on</p>
      * @param string $sortOrder
@@ -151,13 +141,13 @@ class UserManager extends AbstractManager
      */
     public function selectAllOrderBy(string $orderBy, string $sortOrder, int $page = 1, $excluded = 0): array
     {
-        $offset = ($page-1) * self::LIMIT_LIST_USERS;
+        $offset = ($page-1) * UserPaginator::LIMIT_LIST_USERS;
         $query  = 'SELECT * FROM ' . self::TABLE ;
         if ($excluded != 0) {
             $query .= ' WHERE id != ' . $excluded;
         }
         $query .=   ' ORDER BY ' . $orderBy . ' ' . $sortOrder .
-            ' LIMIT ' . self::LIMIT_LIST_USERS . ' OFFSET ' . $offset;
+            ' LIMIT ' . UserPaginator::LIMIT_LIST_USERS . ' OFFSET ' . $offset;
         $statement = $this->pdo->prepare($query);
         $statement->execute();
         return $statement->fetchAll();

@@ -9,7 +9,10 @@ use App\Model\DifficultyManager;
 use App\Model\SpecialtyManager;
 use App\Model\TypeManager;
 use App\Model\UserManager;
+use App\Service\ContestDate;
 use App\Service\Dispatch;
+use App\Service\UserPaginator;
+use Exception;
 use FormControl\CampusFormControl;
 use FormControl\ChallengeFormControl;
 use FormControl\ContestFormControl;
@@ -26,26 +29,28 @@ class AdminController extends AbstractController
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
+     * @throws Exception
      */
     public function index()
     {
-        $challengeManager = new ChallengeManager();
-        $challenges = $challengeManager->selectAll();
+        $challengeManager   = new ChallengeManager();
+        $challenges         = $challengeManager->selectAll();
         $numberOfChallenges = count($challenges);
 
-        $contestManager = new ContestManager();
-        $contests = $contestManager->selectAll();
+        $contestManager   = new ContestManager();
+        $contests         = $contestManager->selectAll(ContestManager::NOT_ENDED);
         $numberOfContests = count($contests);
-        $activeContests = $contestManager->getActiveContests();
+        $activeContests   = $contestManager->selectAll(ContestManager::STARTED);
+        $activeContests   = ContestDate::getContestsEndDateInArray($activeContests);
 
         $userManager = new UserManager();
-        $totalUsers = $userManager->getTotalUsers();
+        $totalUsers  = $userManager->getTotalUsers();
 
         $campusManager = new CampusManager();
         $totalCampuses = $campusManager->getTotalNumberOfCampus();
 
         $specialtyManager  = new SpecialtyManager();
-        $totalSpecialties = $specialtyManager->getTotalNumberOfSpecialties();
+        $totalSpecialties  = $specialtyManager->getTotalNumberOfSpecialties();
 
         return $this->twig->render('Admin/admin.html.twig', [
             'total_challenges'    => $numberOfChallenges,
@@ -82,7 +87,7 @@ class AdminController extends AbstractController
 
         if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['createChallenge'])) {
             $challenge = new ChallengeFormControl($_POST);
-            $errors  = $challenge->getErrors();
+            $errors    = $challenge->getErrors();
             if (count($errors) === 0) {
                 $challengeManager = new ChallengeManager();
                 $challengeManager->addChallenge($challenge);
@@ -118,7 +123,7 @@ class AdminController extends AbstractController
 
         if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['saveChallenge'])) {
             $challenge = new ChallengeFormControl($_POST);
-            $errors  = $challenge->getErrors();
+            $errors    = $challenge->getErrors();
 
             if (count($errors) === 0) {
                 $challengeManager = new ChallengeManager();
@@ -173,7 +178,7 @@ class AdminController extends AbstractController
             $errors  = $contest->getErrors();
             if (count($errors) === 0) {
                 $contestManager = new ContestManager();
-                $contestId = $contestManager->addContest($contest);
+                $contestId      = $contestManager->addContest($contest);
                 Dispatch::toUrl('/admin/editcontest/' . $contestId);
             }
         }
@@ -242,10 +247,10 @@ class AdminController extends AbstractController
      */
     public function displayContest()
     {
-        $json       = file_get_contents('php://input');
-        $object     = json_decode($json);
-        $contestId = $object->id;
-        $isVisible = $object->visible;
+        $json           = file_get_contents('php://input');
+        $object         = json_decode($json);
+        $contestId      = $object->id;
+        $isVisible      = $object->visible;
         $contestManager = new ContestManager();
 
         if ($isVisible === 0) {
@@ -267,11 +272,11 @@ class AdminController extends AbstractController
      */
     public function manageUsers(int $page = 1)
     {
-        $userManager     = new UserManager();
-        $users = $userManager->selectAllOrderBy('lastname', 'ASC', $page, $_SESSION['user_id']);
+        $userManager = new UserManager();
+        $users       = $userManager->selectAllOrderBy('lastname', 'ASC', $page, $_SESSION['user_id']);
         return $this->twig->render('Admin/users.html.twig', [
             'users'        => $users,
-            'number_pages' => $userManager->numberOfPages(),
+            'number_pages' => UserPaginator::numberOfPages($userManager),
             'is_page'      => $page
         ]);
     }
@@ -285,11 +290,11 @@ class AdminController extends AbstractController
     public function setUserAdmin()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $json = file_get_contents('php://input');
-            $data = json_decode($json, true);
+            $json        = file_get_contents('php://input');
+            $data        = json_decode($json, true);
             $userManager = new UserManager();
-            $status = ($data['status']) ? UserManager::ADMIN : UserManager::NOT_ADMIN;
-            $isAdmin = $_SESSION['is_admin'] === true;
+            $status      = ($data['status']) ? UserManager::ADMIN : UserManager::NOT_ADMIN;
+            $isAdmin     = $_SESSION['is_admin'] === true;
 
             if ($isAdmin) {
                 if ($data['status']) {
@@ -317,11 +322,11 @@ class AdminController extends AbstractController
     public function setUserActive()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $json = file_get_contents('php://input');
-            $data = json_decode($json, true);
+            $json        = file_get_contents('php://input');
+            $data        = json_decode($json, true);
             $userManager = new UserManager();
-            $status = ($data['status']) ? UserManager::ACTIVE : UserManager::NOT_ACTIVE;
-            $isAdmin = $_SESSION['is_admin'] === true;
+            $status      = ($data['status']) ? UserManager::ACTIVE : UserManager::NOT_ACTIVE;
+            $isAdmin     = $_SESSION['is_admin'] === true;
 
             if ($isAdmin) {
                 if ($data['status']) {
@@ -366,9 +371,9 @@ class AdminController extends AbstractController
             }
         }
         $result=[
-            'errors'=>$errors,
-            'campus'=>$campus,
-            'campuses'=>$campuses,
+            'errors'  => $errors,
+            'campus'  => $campus,
+            'campuses'=> $campuses,
         ];
         return $this->twig->render('Admin/campus.html.twig', $result);
     }
@@ -419,7 +424,7 @@ class AdminController extends AbstractController
         $errors      = [];
         $type        = null;
         $types       = $typeManager->selectAll();
-        $typeExist  = 0;
+        $typeExist   = 0;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $type   = new TypeFormControl($_POST);
@@ -427,16 +432,16 @@ class AdminController extends AbstractController
             if (count($errors) === 0) {
                 if (!$typeManager->typeExists($type)) {
                     $typeManager->insertType($type);
-                    $types       = $typeManager->selectAll();
+                    $types = $typeManager->selectAll();
                 } else {
                     $typeExist = 1;
                 }
             }
         }
         $result=[
-            'errors' => $errors,
-            'type'   => $type,
-            'types'  => $types,
+            'errors'     => $errors,
+            'type'       => $type,
+            'types'      => $types,
             'type_exist' => $typeExist,
         ];
         return $this->twig->render('Admin/type.html.twig', $result);

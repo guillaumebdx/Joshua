@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use DateTime;
+use Exception;
 
 class ContestDate
 {
@@ -10,6 +11,12 @@ class ContestDate
     const STRING = 0;
     const ARRAY = 1;
 
+    /**
+     * @param string|null $startedOn
+     * @param string $duration
+     * @return string|null
+     * @throws Exception
+     */
     public static function getContestEndDate(?string $startedOn, string $duration): ?string
     {
         if (isset($startedOn)) {
@@ -20,6 +27,19 @@ class ContestDate
             $result = '';
         }
         return $result;
+    }
+
+    /**
+     * @param array $contests
+     * @return array
+     * @throws Exception
+     */
+    public static function getContestsEndDateInArray(array $contests): array
+    {
+        foreach ($contests as $key => $contest) {
+            $contests[$key]['end_date'] = self::getContestEndDate($contest['started_on'], $contest['duration']);
+        }
+        return $contests;
     }
 
     /**
@@ -58,11 +78,12 @@ class ContestDate
     /**
      * @param string $endDate
      * @return bool
+     * @throws Exception
      */
     public static function isEnded(string $endDate): bool
     {
         $now = new DateTime(date('Y-m-d H:i:s'));
         $endDate = new DateTime($endDate);
-        return ($endDate <= $now) ? true : false;
+        return $endDate <= $now;
     }
 }

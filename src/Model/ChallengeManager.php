@@ -116,21 +116,6 @@ class ChallengeManager extends AbstractManager
     }
 
     /**
-     * </p>Start contest with the first challenge.</p>
-     * @param int $contest
-     * @return array
-     * TODO -> IN SERVICE
-     */
-    public function startFirstChallenge(int $contest): array
-    {
-        $challengesInContest = new ContestHasChallengeManager();
-        $firstChallenge = $challengesInContest->getNextChallengeToPlay(1, $contest);
-        $playerManager = new UserHasContestManager();
-        $playerManager->startNextChallenge($firstChallenge, $contest);
-        return $this->challengeOnTheWayByUser($contest);
-    }
-
-    /**
      * <p>Get the solution of a challenge</p>
      * @param int $challenge
      * @return string
