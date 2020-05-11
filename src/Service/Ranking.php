@@ -14,7 +14,6 @@ class Ranking
         $challengesInContest = new ContestHasChallengeManager();
         $ranking        = $playerManager->getContestRanking($contest);
         $nbChallenges   = $challengesInContest->getNumberOfChallengesInContest($contest);
-
         foreach ($ranking as $userId => $userRanking) {
             $userManager = new UserManager();
             $user = $userManager->selectOneById($userId);

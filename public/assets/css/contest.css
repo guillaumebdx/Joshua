@@ -160,3 +160,64 @@
 }
 
 /* END CONTEST */
+
+/* RESULTS */
+.podium img {
+    width:20%;
+}
+
+.players-ranking {
+    margin-top:50px;
+    margin-bottom:50px;
+}
+
+.player-ranking {
+    margin-bottom:7px;
+}
+
+.player-place {
+    display:inline-block;
+    width:30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    vertical-align: middle;
+    background: #000;
+}
+
+.podium-list {
+    margin-top:30px;
+}
+.ranking-second {
+    padding-top:30px;
+}
+.ranking-third {
+    padding-top: 30px;
+}
+
+.ranking-first .rank-number {
+    color:#fec200;
+    font-size:2rem;
+}
+
+.ranking-second .rank-number {
+    color:#999999;
+    font-size:1.6rem;
+}
+
+.ranking-third .rank-number {
+    color:#be894a;
+    font-size:1.6rem;
+}
+
+.rank-winner {
+    border-top:1px solid #fff;
+    border-bottom:1px solid #fff;
+    padding:5px 10px 3px 10px;
+    text-transform: uppercase;
+}
+
+.player-resume {
+    margin-top:5px;
+    font-size: 0.9rem;
+}
