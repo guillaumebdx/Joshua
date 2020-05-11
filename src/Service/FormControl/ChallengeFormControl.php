@@ -20,7 +20,8 @@ class ChallengeFormControl extends AbstractFormControl
         $this->verifyChallengeName($data['name'], 'name', 'name');
     }
 
-    public function verifyChallengeName(string $value, string $propertyName, string $key)
+    // TODO VERIFY IF ABSTRACT CAN DO IT WITH MINOR CHANGE
+    public function verifyChallengeName(string $value, string $propertyName, string $key): ChallengeFormControl
     {
         $this->$propertyName = $value;
         $word = str_replace('_', ' ', $key);

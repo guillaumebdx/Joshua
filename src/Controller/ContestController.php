@@ -35,7 +35,7 @@ class ContestController extends AbstractController
             $challengeManager = new ChallengeManager();
 
             $theContest = $contestManager->selectOneById($contest);
-            $endDate = ContestDate::getContestEndDate($theContest['started_on'], $theContest['duration']);
+            $endDate    = ContestDate::getContestEndDate($theContest['started_on'], $theContest['duration']);
 
             if ($theContest && !empty($endDate)) {
                 $challengesList    = $contestService->listChallengesWithSuccess($contest);
