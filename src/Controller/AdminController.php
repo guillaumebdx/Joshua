@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Model\CampusManager;
 use App\Model\ChallengeManager;
+use App\Model\ContestHasChallengeManager;
 use App\Model\ContestManager;
 use App\Model\DifficultyManager;
 use App\Model\SpecialtyManager;
@@ -203,6 +204,9 @@ class AdminController extends AbstractController
         $contest      = new ContestManager();
         $contestEdit  = $contest->selectOneById($id);
 
+        $challengesInContest      = new ContestHasChallengeManager();
+        $challengesInContestEdit  = $challengesInContest->selectChallengesByContestId($id);
+
         if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['saveContest'])) {
             $contest = new ContestFormControl($_POST);
             $errors  = $contest->getErrors();
@@ -210,6 +214,7 @@ class AdminController extends AbstractController
             if (count($errors) === 0) {
                 $contestManager = new ContestManager();
                 $contestManager->editContest($contest, $id);
+
                 Dispatch::toUrl('/admin/managecontest');
             }
         }
@@ -224,6 +229,7 @@ class AdminController extends AbstractController
             'campuses'   => $campusesList,
             'challenges' => $challengesList,
             'contest'    => $contestEdit,
+            'challengesInContest' => $challengesInContestEdit,
         ]);
     }
 
