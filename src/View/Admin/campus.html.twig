@@ -26,8 +26,13 @@
                     <input value="{{ campus.city }}" type="text" class="form-control" name="city" aria-label="City"
                            aria-describedby="basic-addon1">
                 </div>
+                <div class=" {% if(campus_exist == 0) %} hide {% endif %} text-red">
+                    This campus already exist</div>
+                </div>
                 <p class="text-white">{{ errors.error_city }}</p>
-                <button class="btn btn-campus text-white" type="submit" class="btn btn-primary">Add Campus</button>
+            <div class="text-right">
+                <button class="btn btn-campus text-white " type="submit">Add Campus</button>
+            </div>
             </div>
         </form>
 

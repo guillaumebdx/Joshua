@@ -206,22 +206,27 @@ class AdminController extends AbstractController
     {
         $campusManager   = new CampusManager();
         $errors          = [];
-        $campus          = ('');
-        $campus          = ucfirst(strtolower($campus));
+        $campus          = null;
+        $campusExist     = false;
         $campuses        = $campusManager->getAllCampusOrderBy('country', 'ASC', 'city', 'ASC');
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $campus = new CampusFormControl($_POST);
             $errors = $campus->getErrors();
             if (count($errors) === 0) {
-                $campusManager->insertCampus($campus);
-                header('Location: /admin/addCampus');
+                if (!$campusManager->campusExists($campus)) {
+                    $campusManager->insertCampus($campus);
+                    $campuses  = $campusManager->selectAll();
+                } else {
+                    $campusExist = true;
+                }
             }
         }
         $result=[
             'errors'=>$errors,
             'campus'=>$campus,
             'campuses'=>$campuses,
+            'campus_exist'=>$campusExist,
         ];
         return $this->twig->render('Admin/campus.html.twig', $result);
     }
@@ -260,7 +265,7 @@ class AdminController extends AbstractController
         $errors      = [];
         $type        = null;
         $types       = $typeManager->selectAll();
-        $typeExist  = 0;
+        $typeExist  = false;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $type   = new TypeFormControl($_POST);
@@ -270,7 +275,7 @@ class AdminController extends AbstractController
                     $typeManager->insertType($type);
                     $types       = $typeManager->selectAll();
                 } else {
-                    $typeExist = 1;
+                    $typeExist = true;
                 }
             }
         }
