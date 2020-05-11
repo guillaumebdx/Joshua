@@ -92,11 +92,12 @@ class ContestController extends AbstractController
         $theContest = $contestManager->selectOneById($contest);
         if ($theContest && !is_null($theContest['started_on'])) {
             $endDate = ContestDate::getContestEndDate($theContest['started_on'], $theContest['duration']);
-
+            $ranking = Ranking::formatRankingContest($contest);
             return $this->twig->render('Contests/results.html.twig', [
-                'contest' => $theContest,
-                'ended' => ContestDate::isEnded($endDate),
+                'contest'  => $theContest,
+                'ended'    => ContestDate::isEnded($endDate),
                 'end_date' => $endDate,
+                'ranking'  => $ranking,
             ]);
         } else {
             Dispatch::toUrl('/joshua/page404');

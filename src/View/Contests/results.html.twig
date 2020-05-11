@@ -2,25 +2,96 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-12 col-md-6 offset-md-3 text-center">
+        <div class="col-12 col-md-8 offset-md-2 text-center">
             <h1>{{contest.name}}</h1>
+            <p class="text-white">- {{contest.started_on | date('Y-m-d')}} -</p>
         </div>
     </div>
 
     {% if ended %}
-        <div class="row text-center">
-            <div class="col-12 col-md-6 offset-md-3 text-center">
-                <p class="text-white ">On affiche le classement</p>
+        <div class="row">
+
+            <div class="col-12 col-md-8 offset-md-2 text-center">
+                <h2 class="text-white text-center">And the winner is</h2>
+            </div>
+
+            <div class="col-12 col-md-8 offset-md-2 text-center text-white podium">
+
+                <div class="row podium-list">
+
+                    {%  for player in ranking | slice(1,1) %}
+                        <div class="col-12 col-md-4 ranking-second ">
+                            <img src="/assets/images/medals/silver-medal.svg"><br>
+                            <span class="rank-number">2nd</span><br>
+                            <span class="rank-winner">{{ player.pseudo }}</span>
+                            <p class="text-white player-resume">
+                                Get
+                                {% if player.flags_succeed == player.nbChallenges %}All{% else %}{{ player.flags_succeed }}{% endif %}
+                                challenges <br>
+                                in {{ player.total_time }}
+                            </p>
+                        </div>
+                    {% endfor %}
+
+                    {%  for player in ranking | slice(0,1) %}
+                        <div class="col-12 col-md-4 ranking-first">
+                            <img src="/assets/images/medals/gold-medal.svg"><br>
+                            <span class="rank-number">1st</span><br>
+                            <span class="rank-winner">{{ player.pseudo }}</span>
+                            <p class="text-white player-resume">
+                                Get
+                                {% if player.flags_succeed == player.nbChallenges %}All{% else %}{{ player.flags_succeed }}{% endif %}
+                                challenges <br>
+                                in {{ player.total_time }}
+                            </p>
+                        </div>
+                    {% endfor %}
+
+                    {%  for player in ranking | slice(2,1) %}
+                        <div class="col-12 col-md-4 ranking-third">
+                            <img src="/assets/images/medals/bronze-medal.svg"><br>
+                            <span class="rank-number">3rd</span><br>
+                            <span class="rank-winner">{{ player.pseudo }}</span>
+                            <p class="text-white player-resume">
+                                Get
+                                {% if player.flags_succeed == player.nbChallenges %}All{% else %}{{ player.flags_succeed }}{% endif %}
+                                challenges <br>
+                                in {{ player.total_time }}
+                            </p>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 text-white players-ranking">
+                {% for player in ranking | slice(3,ranking.length) %}
+                    <div class="player-ranking">
+                        <span class="player-place">
+                            {{ loop.index + 3 }}
+                        </span>
+                        <span class="player-pseudo">
+                            - {{ player.pseudo }}
+                        </span>
+                        <span class="player-result float-right">
+                            {% if player.flags_succeed == player.nbChallenges %}All{% else %}{{ player.flags_succeed }}{% endif %}
+                            challenges in {{ player.total_time }}
+                        </span>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     {% else %}
         <div class="row text-center">
+
             <div class="col-12 col-md-6 offset-md-3 text-center">
                 <small class="text-red">Time left before contest end </small><br>
                 <div id="contest-timer" class="timer"></div>
                 <p class="text-white mgt-20">You'll see the results after<br>contest will be ended</p>
-
             </div>
+
         </div>
     {% endif %}
 </div>
