@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Service\ContestService;
 use App\Service\Dispatch;
+use Exception;
 use FormControl\ChallengeFormControl;
 
 class ChallengeManager extends AbstractManager
@@ -100,7 +101,7 @@ class ChallengeManager extends AbstractManager
      * <p>Recover the user's current challenge.</p>
      * @param int $contest
      * @return array|null
-     * TODO -> VERIFY DATA
+     * @throws Exception
      */
     public function challengeOnTheWayByUser($contest)
     {

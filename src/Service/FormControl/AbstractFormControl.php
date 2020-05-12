@@ -11,7 +11,7 @@ abstract class AbstractFormControl
     const MIN_CHARACTERS_PASSWORD   = 8;
     const MAX_CHARACTERS_PASSWORD   = 45;
     const MIN_CHARACTERS_DESC       = 30;
-    const MAX_CHARACTERS_DESC       = 500;
+    const MAX_CHARACTERS_DESC       = 200;
     const MAX_CHARACTERS_URL        = 2083;
 
     /**
@@ -203,13 +203,11 @@ abstract class AbstractFormControl
     {
         // Set the property in object.
         $this->$propertyName = trim(htmlspecialchars($value));
-
         /**
          * Check if the input value is empty.
          * Check if the number of characters in the input is greater than 8 and lower than 45.
          * Check if the input is composed of one lower case, one upper case, one number and one special character.
          */
-
         $regex = '/^(?=.*[0-9])(?=.*[!@#$%^&*{}_])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*{}_]{8,}$/';
         if (empty($value)) {
             $this->errors['error_' . $propertyName] = 'Please enter a  password, thank you.';
@@ -242,7 +240,7 @@ abstract class AbstractFormControl
          * Check if the email is in a valid format.
          */
         if (empty($value)) {
-            $this->errors['error_' . $propertyName] = 'Please enter a description. (Max: 500 characters)';
+            $this->errors['error_' . $propertyName] = 'Please enter a description. (Max: 200 characters)';
         } elseif (strlen($value) < self::MIN_CHARACTERS_DESC || strlen($value) > self::MAX_CHARACTERS_DESC) {
             $errorMessage = 'Your description must be between 30 characters and 500 characters. Current: ';
             $this->errors['error_' . $propertyName] = $errorMessage . strlen($value);
