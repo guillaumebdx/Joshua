@@ -159,6 +159,11 @@
     color: var(--josh-grey);
 }
 
+.btn-success:hover {
+    background-color: var(--josh-red);
+    border-color: var(--josh-red);
+}
+
 /* END CONTEST */
 
 /* RESULTS */

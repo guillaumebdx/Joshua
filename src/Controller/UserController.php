@@ -133,51 +133,31 @@ class UserController extends AbstractController
      */
     public function edit()
     {
-        $user            = new UserManager();
-        $userInfos       = $user->selectOneById($_SESSION['user_id']);
+        $userManager     = new UserManager();
+        $userInfos       = $userManager->selectOneById($_SESSION['user_id']);
         $campuses        = new CampusManager();
         $campusesList    = $campuses->selectAll();
         $specialties     = new SpecialtyManager();
         $specialtiesList = $specialties->selectAll();
+        $errors          = [];
+
+        if (count($_POST) > 0 && isset($_POST['updateUser'])) {
+            $user = new UserEditFormControl($_POST);
+            $errors = $user->getErrors();
+
+            if (count($errors) === 0) {
+                $userManager->updateUser($user);
+                UserService::openConnection($_SESSION['user_id']);
+                Dispatch::toUrl('/user/profile/' . $_SESSION['user_id']);
+            }
+        }
 
         return $this->twig->render('User/user_edit.html.twig', [
+            'errors'      => $errors,
             'user'        => $userInfos,
             'campuses'    => $campusesList,
             'specialties' => $specialtiesList,
         ]);
-    }
-
-    /**
-     * @return string
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
-     */
-    public function editUser()
-    {
-        if (count($_POST) > 0 && isset($_POST['updateUser'])) {
-            $user = new UserEditFormControl($_POST);
-
-            if (count($user->getErrors()) === 0) {
-                $userManager = new UserManager();
-                $userManager->updateUser($user);
-                UserService::openConnection($_SESSION['user_id']);
-                Dispatch::toUrl('/user/profile/' . $_SESSION['user_id']);
-            } else {
-                $campuses        = new CampusManager();
-                $campusesList    = $campuses->selectAll();
-                $specialties     = new SpecialtyManager();
-                $specialtiesList = $specialties->selectAll();
-
-                return $this->twig->render('User/user_edit.html.twig', [
-                    'errors'      => $user->getErrors(),
-                    'campuses'    => $campusesList,
-                    'specialties' => $specialtiesList,
-                ]);
-            }
-        } else {
-            Dispatch::toUrl('/');
-        }
     }
 
     public static function logOut()

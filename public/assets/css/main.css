@@ -39,7 +39,7 @@
 }
 
 main {
-    min-height: calc(100vh - 77px - 148px - 16px);
+    min-height: calc(100vh - 77px - 148px);
 }
 
 body {
@@ -58,6 +58,10 @@ h2 {
     font-family: var(--josh-major-font);
     color: var(--josh-green);
     font-size: 1.2rem;
+}
+
+h3 {
+    color: white;
 }
 
 .error {
@@ -154,10 +158,46 @@ nav .nav-link {
     background-color: var(--josh-grey);
 }
 
-.page-footer img {
+.icon {
+    border-radius: 50%;
     width: 50px;
-    height: auto;
-    color: #e0013f;
+    height: 50px;
+    margin: 0 5px;
+    border: 1px solid var(--josh-green);
+    background-color: var(--josh-green);
+}
+
+.icon:hover {
+    background-color: var(--josh-red);
+    border: 1px solid var(--josh-red);
+}
+
+.icon-facebook {
+    background-image: url(/assets/images/button/facebook.svg);
+}
+
+.icon-twitter {
+    background-image: url(/assets/images/button/twitter.svg);
+}
+
+.icon-linkedin {
+    background-image: url(/assets/images/button/linkedin.svg);
+}
+
+.icon-youtube {
+    background-image: url(/assets/images/button/youtube.svg);
+}
+
+.icon-github {
+    background-image: url(/assets/images/button/github.svg);
+}
+
+.link-footer {
+    color: var(--josh-green);
+}
+
+.link-footer:hover {
+    color: var(--josh-red);
 }
 
 /*END FOOTER */

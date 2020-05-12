@@ -2,6 +2,7 @@
 {% block content %}
     <div class="container">
         <h1 class="text-center">Available contest</h1>
+        {% if contests|length == 0 %}<h3 class="text-center">No contest available yet, coming soon...</h3> {% endif %}
         <div class="row row-cols-1 row-cols-lg-3 justify-content-center">
             {% for contest in contests %}
                 <div class="col mb-3">
@@ -17,7 +18,7 @@
                             {% if contest.is_active == true %}
                                 <p class="float-left margin-duration" id="contest-timer{{ contest.id }}"></p>
                                 <a href="/contest/play/{{ contest.id }}">
-                                    <button class="btn btn-dark float-right">Let's Go !</button>
+                                    <button class="btn btn-success float-right">Let's Go !</button>
                                 </a>
                             {% else %}
                                 <p class="float-left margin-duration">Duration : {{ contest.formatted_duration.hours }}h {% if contest.formatted_duration.minutes != 0 %}{{ contest.formatted_duration.minutes }}m{% endif %}</p>
@@ -29,7 +30,7 @@
             {% endfor %}
         </div>
         <div class="text-center mt-4">
-            <a href="/joshua/oldcontests" class="btn btn-success">See old contests</a>
+            <a href="/joshua/oldcontests" class="btn btn-dark">See old contests</a>
         </div>
     </div>
 {% endblock %}

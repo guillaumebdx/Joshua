@@ -44,7 +44,7 @@ class ChallengeManager extends AbstractManager
     public function editChallenge(ChallengeFormControl $challenge, int $id): void
     {
         $query = 'UPDATE ' . self::TABLE . ' SET name = :name, description = :description,' .
-            ' difficulty_id = :difficulty_id, type_id = :type_id, url = :url, flag = :flag' .
+            ' difficulty_id = :difficulty_id, type_id = :type_id, url = :url, flag = :flag, updated_on = now()' .
             ' WHERE id = :id';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':id', $id, \PDO::PARAM_INT);
