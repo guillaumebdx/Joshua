@@ -21,7 +21,7 @@ for (let i=0; i<adders.length; i++) {
         let fieldForOrder = document.getElementById('order-of-challenges')
         fieldForOrder.value = JSON.stringify(order)
         console.log(JSON.stringify(order))
-        let challenge = new DragAndDrop ();
+        let challenge = new DragAndDrop();
         challenge.init({
             instance           : 'challenge',
             draggableClassName : 'draggable',
