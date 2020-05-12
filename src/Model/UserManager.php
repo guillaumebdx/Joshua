@@ -3,7 +3,6 @@
 namespace App\Model;
 
 use App\Service\UserPaginator;
-use App\Service\UserService;
 use Exception;
 use FormControl\UserEditFormControl;
 use FormControl\UserFormControl;
@@ -62,7 +61,7 @@ class UserManager extends AbstractManager
         $statement->bindValue(':pseudo', $data->getProperty('pseudo'), \PDO::PARAM_STR);
         $statement->bindValue(':github', $data->getProperty('pseudoGithub'), \PDO::PARAM_STR);
         $statement->bindValue(':email', $data->getProperty('email'), \PDO::PARAM_STR);
-        $password = UserService::hashPassword($data->getProperty('password'));
+        $password = password_hash($data->getProperty('password'), PASSWORD_BCRYPT);
         $statement->bindValue(':password', $password, \PDO::PARAM_STR);
         $statement->bindValue(':specialty', $data->getProperty('specialty'), \PDO::PARAM_INT);
         $statement->bindValue(':campus', $data->getProperty('campus'), \PDO::PARAM_INT);
@@ -95,7 +94,7 @@ class UserManager extends AbstractManager
         $statement->bindValue(':github', $data->getProperty('pseudoGithub'), \PDO::PARAM_STR);
         $statement->bindValue(':email', $data->getProperty('email'), \PDO::PARAM_STR);
         if ($data->getProperty('password') != null) {
-            $password = UserService::hashPassword($data->getProperty('password'));
+            $password = password_hash($data->getProperty('password'), PASSWORD_BCRYPT);
             $statement->bindValue(':password', $password, \PDO::PARAM_STR);
         }
         $statement->bindValue(':specialty', $data->getProperty('specialty'), \PDO::PARAM_INT);

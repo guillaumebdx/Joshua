@@ -76,7 +76,7 @@ abstract class AbstractFormControl
     protected function verifyName(string $value, string $propertyName, string $key): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = $value;
+        $this->$propertyName = ucwords(strtolower(trim(htmlentities($value))));
         // Replace underscore by whitespace.
         $word = str_replace('_', ' ', $key);
         /**
@@ -88,7 +88,7 @@ abstract class AbstractFormControl
             $this->errors['error_' . $key] = 'Please enter a ' . $word . ', thank you.';
         } elseif (strlen($value) > self::MAX_CHARACTERS_NAME) {
             $this->errors['error_' . $key] = 'Must be a maximum of 45 characters. Current : ' . strlen($value);
-        } elseif (preg_match('/[^A-Za-zàâïçéèêôÀÂÏÇÉÈÔ\s]/', $value)) {
+        } elseif (preg_match('/[^-\'A-Za-zàâïçéèêôÀÂÏÇÉÈÔ\s]/', $value)) {
             $this->errors['error_' . $key] = 'Special characters are prohibited.';
         }
 
@@ -111,7 +111,7 @@ abstract class AbstractFormControl
     protected function verifyPseudo(string $value, string $propertyName, string $key): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = $value;
+        $this->$propertyName = trim(htmlentities($value));
         // Replace underscore by whitespace.
         $word = str_replace('_', ' ', $key);
         /**
@@ -123,7 +123,7 @@ abstract class AbstractFormControl
             $this->errors['error_' . $key] = 'Please enter a ' . $word . ', thank you.';
         } elseif (strlen($value) > self::MAX_CHARACTERS_PSEUDO) {
             $this->errors['error_' . $key] = 'Must be a maximum of 26 characters. Current : ' . strlen($value);
-        } elseif (!preg_match('/^([a-zA-Z0-9-_]{2,26})$/', $value)) {
+        } elseif (!preg_match('/^([a-zA-ZàâïçéèêôÀÂÏÇÉÈÔ0-9-_]{2,26})$/', $value)) {
             $this->errors['error_' . $key] = 'Special characters are prohibited.';
         }
 
@@ -146,7 +146,7 @@ abstract class AbstractFormControl
     protected function verifyOtherName(string $value, string $propertyName, string $key): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = $value;
+        $this->$propertyName = trim(htmlentities($value));
         // Replace underscore by whitespace.
         $word = str_replace('_', ' ', $key);
         /**
@@ -158,8 +158,6 @@ abstract class AbstractFormControl
             $this->errors['error_' . $key] = 'Please enter a ' . $word . ', thank you.';
         } elseif (strlen($value) > self::MAX_CHARACTERS_OTHER_NAME) {
             $this->errors['error_' . $key] = 'Must be a maximum of 35 characters. Current : ' . strlen($value);
-        } elseif (preg_match('/[^-_A-Za-z0-9àâïçéèêôÀÂÏÇÉÈÔ\s]/', $value)) {
-            $this->errors['error_' . $key] = 'Special characters are prohibited.';
         }
 
         return $this;
@@ -176,7 +174,7 @@ abstract class AbstractFormControl
     protected function verifyEmail(string $value, string $propertyName = 'email'): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = $value;
+        $this->$propertyName = strtolower(trim(htmlentities($value)));
         /**
          * Check if the input value is empty.
          * Check if the number of characters in the input is greater than 80.
@@ -204,7 +202,7 @@ abstract class AbstractFormControl
     protected function verifyPassword(string $value, string $propertyName = 'password'): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = $value;
+        $this->$propertyName = trim(htmlentities($value));
 
         /**
          * Check if the input value is empty.
@@ -237,7 +235,7 @@ abstract class AbstractFormControl
     protected function verifyDescription(string $value, string $propertyName = 'description'): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = $value;
+        $this->$propertyName = trim(htmlentities($value));
         /**
          * Check if the input value is empty.
          * Check if the number of characters in the input is between 30 and 500 characters.
@@ -304,7 +302,7 @@ abstract class AbstractFormControl
     protected function verifyUrl(string $value, string $propertyName = 'url'): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = $value;
+        $this->$propertyName = trim(htmlentities($value));
         /**
          * Check if the input value is empty.
          * Check if the number of characters in the input is greater than 2083 characters
@@ -330,7 +328,7 @@ abstract class AbstractFormControl
     protected function verifyFlag(string $value, string $propertyName = 'flag'): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = $value;
+        $this->$propertyName = trim(htmlentities($value));
         /**
          * Check if the input value is empty.
          * Check if the number of characters in the input is greater than 2083 characters

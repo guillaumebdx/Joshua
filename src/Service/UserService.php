@@ -25,9 +25,4 @@ class UserService extends AbstractController
             $_SESSION[$key] = $value;
         }
     }
-
-    public static function hashPassword(string $password): string
-    {
-        return password_hash($password, PASSWORD_DEFAULT);
-    }
 }

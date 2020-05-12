@@ -6,6 +6,7 @@ use App\Model\ContestManager;
 use App\Model\UserManager;
 use App\Service\ContestDate;
 use App\Service\Dispatch;
+use App\Service\TextProcessing;
 use App\Service\UserService;
 use FormControl\IndexFormControl;
 use Twig\Error\LoaderError;
@@ -61,6 +62,7 @@ class JoshuaController extends AbstractController
      */
     public function home()
     {
+
         $contestManager = new ContestManager();
         $visibleContests = $contestManager->selectAll(ContestManager::NOT_ENDED, ContestManager::ONLY_VISIBLE);
 
