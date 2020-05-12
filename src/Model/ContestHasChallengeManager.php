@@ -56,4 +56,40 @@ class ContestHasChallengeManager extends AbstractManager
             throw new Exception('Impossible to get the number of challenges in this contest');
         }
     }
+
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function selectChallengesByContestId(int $id): array
+    {
+        $query = 'SELECT c.name AS name, c.id AS id, c.difficulty_id AS difficulty, chc.order_challenge' .
+            ' FROM ' . $this->table . ' AS chc' .
+            ' JOIN challenge AS c ON c.id = chc.challenge_id' .
+            ' WHERE contest_id = :id' .
+            ' ORDER BY chc.order_challenge';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
+    public function deleteChallengesInContest(int $id): void
+    {
+        $query = 'DELETE FROM ' . self::TABLE . ' WHERE contest_id = ' . $id;
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+    }
+
+    public function addChallengesInContest(array $challenges, int $contestId)
+    {
+        foreach ($challenges as $order => $challengeId) {
+            $order++;
+            $query = 'INSERT INTO ' . self::TABLE . ' (contest_id, challenge_id, order_challenge) VALUES ';
+            $query .= '(:contest, ' . $challengeId . ', ' . $order . ')';
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(':contest', $contestId, \PDO::PARAM_INT);
+            $statement->execute();
+        }
+    }
 }

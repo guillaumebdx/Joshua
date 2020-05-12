@@ -68,6 +68,17 @@ class ChallengeManager extends AbstractManager
         $statement->execute();
     }
 
+    public function selectChallengesNotInContest(int $contestId): array
+    {
+        $query = 'SELECT * FROM ' . $this->table .
+            ' WHERE id NOT IN' .
+            ' (SELECT challenge_id FROM contest_has_challenge AS chc WHERE chc.contest_id = :contestId)';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':contestId', $contestId, \PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
     /**
      * <p>Get all challenges in a contest.</p>
      * @param int $contest

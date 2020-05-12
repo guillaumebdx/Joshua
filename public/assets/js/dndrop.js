@@ -89,6 +89,7 @@ class DragAndDrop {
         }
         this.removeSpacer();
         this.getList();
+        console.log(this.getList())
         this.addNumbers();
     }
 
