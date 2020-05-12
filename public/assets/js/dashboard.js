@@ -7,10 +7,11 @@ const consoleOpeners = document.getElementsByClassName('console-opener');
 for (let i=0; i<consoleOpeners.length; i++) {
     consoleOpeners[i].addEventListener('click', (e)=>{
         e.preventDefault();
-        let contest = e.target.dataset.contest;
-        let EndDate = e.target.dataset.end;
-        storyteller.setUrl(contest);
-        storyteller.show(EndDate);
+        const target = e.target.dataset.target;
+        const contest = e.target.dataset.contest;
+        const EndDate = e.target.dataset.end;
+        const storyteller = new StoryTeller(delayToRefresh, contest, EndDate);
+        storyteller.show();
     })
 }
 

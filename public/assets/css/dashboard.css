@@ -75,7 +75,7 @@
     width:100%;
 }
 
-#console-closer {
+.console-closer {
     position:absolute;
     top:7px;
     right:7px;

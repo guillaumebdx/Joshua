@@ -1,24 +1,24 @@
 class StoryTeller {
 
-    constructor(refresh) {
-        this.container    = document.getElementById('console');
+    constructor(refresh, contestId, endDate) {
+        this.container = document.getElementById('console' + contestId);
         this.intervalTime = refresh;
-        this.url          = null;
-        this.storyZone    = document.getElementById('story');
-        this.urlRanking   = null;
-        this.rankingZone  = document.getElementById('ranking');
-        this.timerId      = 'timer';
+        this.urlRanking = '/contest/getRankingInContest/' + contestId;
+        this.url = '/contest/getHistoryOfContest/' + contestId;
+        this.storyZone = document.getElementById('story');
+        this.rankingZone = document.getElementById('ranking');
+        this.timerId = 'timer' + contestId;
+        this.closer = document.getElementById('console-closer-' + contestId);
+        this.closer.addEventListener('click', ()=> {
+            this.hide();
+        });
+        this.endDate = endDate;
     }
 
-    setUrl(contest) {
-        this.urlRanking = '/contest/getRankingInContest/' + contest;
-        this.url        = '/contest/getHistoryOfContest/' + contest;
-    }
-
-    show(endDate) {
+    show() {
         this.initContent(this.url, this.storyZone);
         this.startConsole(this.url, this.storyZone, this.intervalTime);
-        this.timer(endDate, this.timerId);
+        this.timer(this.endDate, this.timerId);
         this.initContent(this.urlRanking, this.rankingZone);
         this.startRanker(this.urlRanking, this.rankingZone, this.intervalTime);
         this.container.classList.remove('hide');
