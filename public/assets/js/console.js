@@ -1,19 +1,18 @@
 class StoryTeller {
 
-
     constructor(refresh) {
-        this.container = document.getElementById('console');
+        this.container    = document.getElementById('console');
         this.intervalTime = refresh;
-        this.url = null;
-        this.storyZone = document.getElementById('story');
-        this.urlRanking = null;
-        this.rankingZone = document.getElementById('ranking');
-        this.timerId = 'timer';
+        this.url          = null;
+        this.storyZone    = document.getElementById('story');
+        this.urlRanking   = null;
+        this.rankingZone  = document.getElementById('ranking');
+        this.timerId      = 'timer';
     }
 
     setUrl(contest) {
         this.urlRanking = '/contest/getRankingInContest/' + contest;
-        this.url = '/contest/getHistoryOfContest/' + contest;
+        this.url        = '/contest/getHistoryOfContest/' + contest;
     }
 
     show(endDate) {

@@ -28,29 +28,29 @@ class joshuaAjax {
         let target = document.getElementById(targetId);
         document.getElementById(actionnerId).addEventListener(even, (e) => {
             fetch(url, {
-                method: "POST",
-                mode: "same-origin",
-                credentials: "same-origin",
+                method      : "POST",
+                mode        : "same-origin",
+                credentials : "same-origin",
             }).then(function (response) {
                 return response.text();
             }).then(function (html) {
-                var parser = new DOMParser();
-                var result = parser.parseFromString(html, "text/html");
+                var parser       = new DOMParser();
+                var result       = parser.parseFromString(html, "text/html");
                 target.innerHTML = result.body.innerHTML;
             });
         });
     }
 
     joshuaAjaxSwitchAction (url, actionnerId, targetId, even) {
-        let target = document.getElementById(targetId);
+        let target       = document.getElementById(targetId);
         document.getElementById(actionnerId).addEventListener(even, (e) => {
-            let user = e.target.dataset.user;
+            let user     = e.target.dataset.user;
             let username = e.target.dataset.username;
             console.log(user);
             let data = {
-                'user_id' : user,
+                'user_id'  : user,
                 'username' : username,
-                'status' : e.target.checked
+                'status'   : e.target.checked
             };
 
             const request = new Request(url, {
@@ -64,8 +64,8 @@ class joshuaAjax {
             fetch(request).then(function (response) {
                 return response.text();
             }).then(function (html) {
-                var parser = new DOMParser();
-                var result = parser.parseFromString(html, "text/html");
+                var parser       = new DOMParser();
+                var result       = parser.parseFromString(html, "text/html");
                 target.innerHTML = result.body.innerHTML;
                 $('#user-toast-'+user).toast('show');
             });
@@ -80,17 +80,17 @@ class joshuaAjax {
      */
 
     joshuaAjaxTimer (url, targetId, time) {
-        let target = document.getElementById(targetId);
+        let target    = document.getElementById(targetId);
         this.interval = setInterval(() => {
             fetch(url, {
-                method: "POST",
-                mode: "same-origin",
-                credentials: "same-origin",
+                method      : "POST",
+                mode        : "same-origin",
+                credentials : "same-origin",
             }).then(function (response) {
                 return response.text();
             }).then(function (html) {
-                var parser = new DOMParser();
-                var result = parser.parseFromString(html, "text/html");
+                var parser       = new DOMParser();
+                var result       = parser.parseFromString(html, "text/html");
                 target.innerHTML = result.body.innerHTML;
             });
         }, time);
@@ -99,6 +99,4 @@ class joshuaAjax {
     joshuaClearTimer () {
         clearInterval(this.interval);
     }
-
 }
-

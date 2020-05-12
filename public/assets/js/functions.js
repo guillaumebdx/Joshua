@@ -6,10 +6,10 @@
  */
 
 function showPassword(id) {
-    let target = document.getElementById(id);
-    target.type='text';
+    let target  = document.getElementById(id);
+    target.type = 'text';
 }
 function hidePassword(id) {
-    let target = document.getElementById(id);
-    target.type='password';
+    let target  = document.getElementById(id);
+    target.type = 'password';
 }

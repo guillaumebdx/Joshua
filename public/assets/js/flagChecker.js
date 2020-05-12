@@ -19,10 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
             spinner.classList.remove('hide');
 
         let params = {
-            'challenge_id' : challenge_id,
+            'challenge_id'    : challenge_id,
             'challenge_order' : challenge_order,
-            'contest_id' : contest_id,
-            'flagSolution' : flagSolution
+            'contest_id'      : contest_id,
+            'flagSolution'    : flagSolution
         };
 
         let url ='/contest/sendSolution';
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const request = new Request(url, {
             method: 'POST',
             headers: {
-                'Accept' : 'application/json',
+                'Accept'      : 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(params),
@@ -56,6 +56,5 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             spinner.classList.add('hide');
         });
-
     });
 });

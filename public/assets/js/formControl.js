@@ -162,5 +162,4 @@ class formControl {
             this.target.classList.add(this.error_class);
         }
     }
-
 }
