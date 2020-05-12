@@ -18,35 +18,12 @@ class UserEditFormControl extends AbstractFormControl
         $this->verifyName($data['lastname'], 'lastname', 'lastname')
             ->verifyName($data['firstname'], 'firstname', 'firstname')
             ->verifyEmail($data['email'], 'email')
-            ->verifyPseudo($data['joshuapseudo'], 'joshuapseudo', 'joshuapseudo')
-            ->verifyPseudo($github, 'github', 'github')
+            ->verifyPseudo($data['pseudo'], 'pseudo', 'pseudo')
+            ->verifyPseudo($github, 'pseudoGithub', 'pseudo_github')
             ->verifySelected($data['campus'], 'campus')
             ->verifySelected($data['specialty'], 'specialty');
-        if ($data['password'] != '') {
+        if ($data['password'] != null) {
             $this->verifyPassword($data['password'], 'password');
         }
-    }
-
-    public function getData() : array
-    {
-        $allData = $this->data;
-
-        $data = [];
-        $data['errors'] = $this->getErrors();
-        $data['user']= [
-            'firstname' => $this->getProperty('firstname'),
-            'lastname' => $this->getProperty('lastname'),
-            'email' => $this->getProperty('email'),
-            'joshuapseudo' => $this->getProperty('joshuapseudo'),
-            'github' => $this->getProperty('github'),
-            'campus_id' => $this->getProperty('campus'),
-            'specialty_id' => $this->getProperty('specialty')
-        ];
-
-        if ($allData['password'] != '') {
-            $data['user']['password'] = $this->getProperty('password');
-        }
-
-        return $data;
     }
 }

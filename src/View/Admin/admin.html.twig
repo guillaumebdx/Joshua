@@ -54,11 +54,15 @@
                         <span class="text-red">Contests on fire</span>
                         {% endif %}
                         <p>
-                        {% for active_contest in active_contests %}
-                            <a class="btn btn-dark console-opener" href="#" id="console-contest-{{active_contest.id}}" data-contest="{{active_contest.id}}" data-end="{{active_contest.end_date}}">
-                                <i class="fas fa-circle flash"></i> {{active_contest.name}}</a>
-                            <br>
-                        {% endfor %}
+                            {% for active_contest in active_contests %}
+                                <a class="btn btn-dark console-opener" href="#" id="console-contest-{{active_contest.id}}"
+                                   data-contest="{{active_contest.id}}"
+                                   data-end="{{active_contest.end_date}}"
+                                   data-target="{{ active_contest.id }}"
+                                >
+                                    <i class="fas fa-circle flash"></i> {{active_contest.name}}</a>
+                                <br>
+                            {% endfor %}
                         </p>
                     </div>
                 </div>
@@ -95,27 +99,28 @@
             </div>
         </div>
     </div>
-
-    <div class="console d-flex flex-row hide" id="console">
-        <a  href="#" class="close-console" aria-label="Close" id="console-closer">
-            <i class="fas fa-window-close"></i>
-        </a>
-        <div class="story" >
-            <h2>Follow what's happening ... </h2>
-            <div id="story">
-                {% include 'Components/_console.html.twig' %}
+    {% for active_contest in active_contests %}
+        <div class="console d-flex flex-row hide" id="console{{ active_contest.id }}">
+            <a  href="#" class="close-console console-closer" aria-label="Close" id="console-closer-{{ active_contest.id }}">
+                <i class="fas fa-window-close"></i>
+            </a>
+            <div class="story" >
+                <h2>Follow what's happening ... </h2>
+                <div id="story">
+                    {% include 'Components/_console.html.twig' %}
+                </div>
+            </div>
+            <div class="timer-column">
+                <div id="timer{{ active_contest.id }}"></div>
+            </div>
+            <div class="ranking-console">
+                <img src="/assets/images/podium.svg" width="30"><br> <b>Ranking on fire</b>
+                <div id="ranking">
+                    {% include 'Components/_ranking.html.twig' %}
+                </div>
             </div>
         </div>
-        <div class="timer-column">
-            <div id="timer"></div>
-        </div>
-        <div class="ranking-console">
-            <img src="/assets/images/podium.svg" width="30"><br> <b>Ranking on fire</b>
-            <div id="ranking">
-                {% include 'Components/_ranking.html.twig' %}
-            </div>
-        </div>
-    </div>
+    {% endfor %}
 
 {% endblock %}
 {% block javascript %}
