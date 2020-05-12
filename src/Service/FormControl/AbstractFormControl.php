@@ -4,14 +4,15 @@ namespace FormControl;
 
 abstract class AbstractFormControl
 {
-    const MAX_CHARACTERS_NAME = 45;
-    const MAX_CHARACTERS_PSEUDO = 26;
-    const MAX_CHARACTERS_EMAIL = 80;
-    const MIN_CHARACTERS_PASSWORD = 8;
-    const MAX_CHARACTERS_PASSWORD = 45;
-    const MIN_CHARACTERS_DESC = 30;
-    const MAX_CHARACTERS_DESC = 500;
-    const MAX_CHARACTERS_URL = 2083;
+    const MAX_CHARACTERS_NAME       = 45;
+    const MAX_CHARACTERS_PSEUDO     = 26;
+    const MAX_CHARACTERS_OTHER_NAME = 35;
+    const MAX_CHARACTERS_EMAIL      = 80;
+    const MIN_CHARACTERS_PASSWORD   = 8;
+    const MAX_CHARACTERS_PASSWORD   = 45;
+    const MIN_CHARACTERS_DESC       = 30;
+    const MAX_CHARACTERS_DESC       = 500;
+    const MAX_CHARACTERS_URL        = 2083;
 
     /**
      * <p>Store errors.</p>
@@ -43,9 +44,17 @@ abstract class AbstractFormControl
      */
     public function getProperty(string $propertyName)
     {
-        return $this->$propertyName;
+        $result = null;
+        if (isset($this->$propertyName)) {
+            $result = $this->$propertyName;
+        }
+        return $result;
     }
 
+    /**
+     * <p>Return all properties of a object.</p>
+     * @return array
+     */
     public function getAllProperty(): array
     {
         return get_object_vars($this);
@@ -67,7 +76,7 @@ abstract class AbstractFormControl
     protected function verifyName(string $value, string $propertyName, string $key): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = ucfirst(strtolower($value));
+        $this->$propertyName = $value;
         // Replace underscore by whitespace.
         $word = str_replace('_', ' ', $key);
         /**
@@ -102,7 +111,7 @@ abstract class AbstractFormControl
     protected function verifyPseudo(string $value, string $propertyName, string $key): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = ucfirst(strtolower($value));
+        $this->$propertyName = $value;
         // Replace underscore by whitespace.
         $word = str_replace('_', ' ', $key);
         /**
@@ -137,7 +146,7 @@ abstract class AbstractFormControl
     protected function verifyOtherName(string $value, string $propertyName, string $key): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = ucfirst(strtolower($value));
+        $this->$propertyName = $value;
         // Replace underscore by whitespace.
         $word = str_replace('_', ' ', $key);
         /**
@@ -147,8 +156,8 @@ abstract class AbstractFormControl
          */
         if (empty($value)) {
             $this->errors['error_' . $key] = 'Please enter a ' . $word . ', thank you.';
-        } elseif (strlen($value) > self::MAX_CHARACTERS_PSEUDO) {
-            $this->errors['error_' . $key] = 'Must be a maximum of 26 characters. Current : ' . strlen($value);
+        } elseif (strlen($value) > self::MAX_CHARACTERS_OTHER_NAME) {
+            $this->errors['error_' . $key] = 'Must be a maximum of 35 characters. Current : ' . strlen($value);
         } elseif (preg_match('/[^-_A-Za-z0-9àâïçéèêôÀÂÏÇÉÈÔ\s]/', $value)) {
             $this->errors['error_' . $key] = 'Special characters are prohibited.';
         }

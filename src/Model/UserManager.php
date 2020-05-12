@@ -3,7 +3,10 @@
 namespace App\Model;
 
 use App\Service\UserPaginator;
+use App\Service\UserService;
 use Exception;
+use FormControl\UserEditFormControl;
+use FormControl\UserFormControl;
 
 class UserManager extends AbstractManager
 {
@@ -43,25 +46,26 @@ class UserManager extends AbstractManager
 
     /**
      * <p>Insert a new user.</p>
-     * @param array $data
+     * @param UserFormControl $data
      * @return int
      * @throws Exception
      */
-    public function addUser(array $data): int
+    public function addUser(UserFormControl $data): int
     {
         $query  = 'INSERT INTO ' . self::TABLE .
             ' (lastname, firstname, pseudo, github, email, password, specialty_id, campus_id)' .
             ' VALUES (:lastname, :firstname, :pseudo, :github, :email, :password, :specialty, :campus)';
 
         $statement = $this->pdo->prepare($query);
-        $statement->bindValue(':lastname', $data['lastname'], \PDO::PARAM_STR);
-        $statement->bindValue(':firstname', $data['firstname'], \PDO::PARAM_STR);
-        $statement->bindValue(':pseudo', $data['joshuapseudo'], \PDO::PARAM_STR);
-        $statement->bindValue(':github', $data['github'], \PDO::PARAM_STR);
-        $statement->bindValue(':email', $data['email'], \PDO::PARAM_STR);
-        $statement->bindValue(':password', $data['password'], \PDO::PARAM_STR);
-        $statement->bindValue(':specialty', $data['specialty'], \PDO::PARAM_INT);
-        $statement->bindValue(':campus', $data['campus'], \PDO::PARAM_INT);
+        $statement->bindValue(':lastname', $data->getProperty('lastname'), \PDO::PARAM_STR);
+        $statement->bindValue(':firstname', $data->getProperty('firstname'), \PDO::PARAM_STR);
+        $statement->bindValue(':pseudo', $data->getProperty('pseudo'), \PDO::PARAM_STR);
+        $statement->bindValue(':github', $data->getProperty('pseudoGithub'), \PDO::PARAM_STR);
+        $statement->bindValue(':email', $data->getProperty('email'), \PDO::PARAM_STR);
+        $password = UserService::hashPassword($data->getProperty('password'));
+        $statement->bindValue(':password', $password, \PDO::PARAM_STR);
+        $statement->bindValue(':specialty', $data->getProperty('specialty'), \PDO::PARAM_INT);
+        $statement->bindValue(':campus', $data->getProperty('campus'), \PDO::PARAM_INT);
 
         if ($statement->execute()) {
             return (int)$this->pdo->lastInsertId();
@@ -72,29 +76,30 @@ class UserManager extends AbstractManager
 
     /**
      * <p>Edit a existing user.</p>
-     * @param array $data
+     * @param UserEditFormControl $data
      */
-    public function updateUser(array $data): void
+    public function updateUser(UserEditFormControl $data): void
     {
         $query  = 'UPDATE ' . self::TABLE .
             ' set lastname = :lastname, firstname = :firstname, pseudo = :pseudo, github = :github, email = :email,';
-        if ($data['password']!='') {
+        if ($data->getProperty('password') != null) {
             $query .= ' password = :password, ';
         }
-        $query .= ' specialty_id = :specialty, campus_id = :campus' .
+        $query .= ' specialty_id = :specialty, campus_id = :campus, updated_on = now()' .
             ' WHERE id = ' . $_SESSION['user_id'];
 
         $statement = $this->pdo->prepare($query);
-        $statement->bindValue(':lastname', $data['lastname'], \PDO::PARAM_STR);
-        $statement->bindValue(':firstname', $data['firstname'], \PDO::PARAM_STR);
-        $statement->bindValue(':pseudo', $data['joshuapseudo'], \PDO::PARAM_STR);
-        $statement->bindValue(':github', $data['github'], \PDO::PARAM_STR);
-        $statement->bindValue(':email', $data['email'], \PDO::PARAM_STR);
-        if ($data['password'] != '') {
-            $statement->bindValue(':password', $data['password'], \PDO::PARAM_STR);
+        $statement->bindValue(':lastname', $data->getProperty('lastname'), \PDO::PARAM_STR);
+        $statement->bindValue(':firstname', $data->getProperty('firstname'), \PDO::PARAM_STR);
+        $statement->bindValue(':pseudo', $data->getProperty('pseudo'), \PDO::PARAM_STR);
+        $statement->bindValue(':github', $data->getProperty('pseudoGithub'), \PDO::PARAM_STR);
+        $statement->bindValue(':email', $data->getProperty('email'), \PDO::PARAM_STR);
+        if ($data->getProperty('password') != null) {
+            $password = UserService::hashPassword($data->getProperty('password'));
+            $statement->bindValue(':password', $password, \PDO::PARAM_STR);
         }
-        $statement->bindValue(':specialty', $data['specialty'], \PDO::PARAM_INT);
-        $statement->bindValue(':campus', $data['campus'], \PDO::PARAM_INT);
+        $statement->bindValue(':specialty', $data->getProperty('specialty'), \PDO::PARAM_INT);
+        $statement->bindValue(':campus', $data->getProperty('campus'), \PDO::PARAM_INT);
         $statement->execute();
     }
 
