@@ -64,3 +64,24 @@
 }
 
 /* END HOME */
+
+/* ABOUT */
+
+.team-member {
+    max-height: 280px;
+    margin-left: -60px;
+}
+
+.team-member img {
+    max-width: 250px;
+    max-height: 250px;
+}
+
+figure {
+    max-width: 400px;
+    border: 1px solid var(--josh-green);
+}
+
+figure img {
+    width: 398px;
+}

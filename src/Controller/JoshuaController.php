@@ -6,8 +6,8 @@ use App\Model\ContestManager;
 use App\Model\UserManager;
 use App\Service\ContestDate;
 use App\Service\Dispatch;
-use App\Service\TextProcessing;
 use App\Service\UserService;
+use Exception;
 use FormControl\IndexFormControl;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -59,6 +59,7 @@ class JoshuaController extends AbstractController
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
+     * @throws Exception
      */
     public function home()
     {
@@ -100,6 +101,17 @@ class JoshuaController extends AbstractController
         }
 
         return $this->twig->render('Home/old_contests.html.twig', ['contests' => $oldContests]);
+    }
+
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function about()
+    {
+        return $this->twig->render('Home/about.html.twig');
     }
 
     /**

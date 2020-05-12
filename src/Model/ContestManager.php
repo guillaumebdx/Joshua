@@ -201,7 +201,7 @@ class ContestManager extends AbstractManager
     public function setContestActive(string $contestId): void
     {
         $query = 'UPDATE ' . self::TABLE .
-            ' SET is_active = 1, started_on = now()' .
+            ' SET is_active = 1, is_visible = 1, started_on = now()' .
             ' WHERE id = :id';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':id', $contestId, \PDO::PARAM_INT);

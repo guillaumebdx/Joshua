@@ -11,7 +11,7 @@ class SpecialtyFormControl extends AbstractFormControl
      */
     public function __construct(array $data)
     {
-        $this->verifyName($data['specialty'], 'title', 'title')
-            ->verifyName($data['specialty'], 'identifier', 'identifier');
+        $this->verifyOtherName($data['specialty'], 'title', 'title')
+            ->verifyOtherName($data['specialty'], 'identifier', 'identifier');
     }
 }

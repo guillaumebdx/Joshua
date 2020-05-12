@@ -11,7 +11,7 @@ class TypeFormControl extends AbstractFormControl
      */
     public function __construct(array $data)
     {
-        $this->verifyName($data['type'], 'title', 'title')
-            ->verifyName($data['type'], 'identifier', 'identifier');
+        $this->verifyOtherName($data['type'], 'title', 'title')
+            ->verifyOtherName($data['type'], 'identifier', 'identifier');
     }
 }
