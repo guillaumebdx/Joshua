@@ -268,9 +268,9 @@ class AdminController extends AbstractController
         $isVisible      = $object->visible;
         $contestManager = new ContestManager();
 
-        if ($isVisible === 0) {
+        if ($isVisible === '0') {
             $contestManager->displayOnForContest($contestId);
-        } elseif ($isVisible === 1) {
+        } elseif ($isVisible === '1') {
             $contestManager->displayOffForContest($contestId);
         }
     }
