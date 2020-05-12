@@ -6,9 +6,9 @@ namespace App\Service;
 use App\Controller\AbstractController;
 use App\Model\UserManager;
 
-class UserConnection extends AbstractController
+class UserService extends AbstractController
 {
-    public static function openConnection($idUser): void
+    public static function openConnection(int $idUser): void
     {
         $user = new UserManager();
 

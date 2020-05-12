@@ -10,7 +10,7 @@ use App\Model\SpecialtyManager;
 use App\Model\UserManager;
 use App\Service\Dispatch;
 use App\Service\Ranking;
-use App\Service\UserConnection;
+use App\Service\UserService;
 use Exception;
 use FormControl\UserEditFormControl;
 use FormControl\UserFormControl;
@@ -44,19 +44,17 @@ class UserController extends AbstractController
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
+     * @throws Exception
      */
     public function insertUser()
     {
         if (count($_POST) > 0 && isset($_POST['registerUser'])) {
-            $check    = new UserFormControl($_POST);
-            $formData = $check->getData();
+            $user = new UserFormControl($_POST);
 
-            if (count($formData['errors']) === 0) {
-                $newUser           = new UserManager();
-                $_POST['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
-                // TODO SEND OBJECT FORM CONTROL
-                $idUser            = $newUser->addUser($_POST);
-                UserConnection::openConnection($idUser);
+            if (count($user->getErrors()) === 0) {
+                $newUser = new UserManager();
+                $idUser  = $newUser->addUser($user);
+                UserService::openConnection($idUser);
                 Dispatch::toUrl('/user/confirmuser/' . $idUser);
             } else {
                 $campuses        = new CampusManager();
@@ -65,8 +63,8 @@ class UserController extends AbstractController
                 $specialtiesList = $specialties->selectAll();
 
                 return $this->twig->render('User/register.html.twig', [
-                    'errors'      => $formData['errors'],
-                    'user'        => $formData['user'],
+                    'errors'      => $user->getErrors(),
+                    'user'        => $user->getAllProperty(),
                     'campuses'    => $campusesList,
                     'specialties' => $specialtiesList,
                 ]);
@@ -158,16 +156,12 @@ class UserController extends AbstractController
     public function editUser()
     {
         if (count($_POST) > 0 && isset($_POST['updateUser'])) {
-            $check    = new UserEditFormControl($_POST);
-            $formData = $check->getData();
+            $user = new UserEditFormControl($_POST);
 
-            if (count($formData['errors']) === 0) {
+            if (count($user->getErrors()) === 0) {
                 $userManager = new UserManager();
-                if ($_POST['password'] != '') {
-                    $_POST['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
-                }
-                $userManager->updateUser($_POST);
-                UserConnection::openConnection($_SESSION['user_id']);
+                $userManager->updateUser($user);
+                UserService::openConnection($_SESSION['user_id']);
                 Dispatch::toUrl('/user/profile/' . $_SESSION['user_id']);
             } else {
                 $campuses        = new CampusManager();
@@ -176,7 +170,7 @@ class UserController extends AbstractController
                 $specialtiesList = $specialties->selectAll();
 
                 return $this->twig->render('User/user_edit.html.twig', [
-                    'errors'      => $formData['errors'],
+                    'errors'      => $user->getErrors(),
                     'campuses'    => $campusesList,
                     'specialties' => $specialtiesList,
                 ]);

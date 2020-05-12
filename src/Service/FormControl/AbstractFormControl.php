@@ -4,31 +4,31 @@ namespace FormControl;
 
 abstract class AbstractFormControl
 {
-    const MAX_CHARACTERS_NAME = 45;
-    const MAX_CHARACTERS_PSEUDO = 26;
-    const MAX_CHARACTERS_EMAIL = 80;
-    const MIN_CHARACTERS_PASSWORD = 8;
-    const MAX_CHARACTERS_PASSWORD = 45;
-    const MIN_CHARACTERS_DESC = 30;
-    const MAX_CHARACTERS_DESC = 500;
-    const MAX_CHARACTERS_URL = 2083;
+    const MAX_CHARACTERS_NAME       = 45;
+    const MAX_CHARACTERS_PSEUDO     = 26;
+    const MAX_CHARACTERS_OTHER_NAME = 35;
+    const MAX_CHARACTERS_EMAIL      = 80;
+    const MIN_CHARACTERS_PASSWORD   = 8;
+    const MAX_CHARACTERS_PASSWORD   = 45;
+    const MIN_CHARACTERS_DESC       = 30;
+    const MAX_CHARACTERS_DESC       = 500;
+    const MAX_CHARACTERS_URL        = 2083;
 
     /**
-     * Store errors.
+     * <p>Store errors.</p>
      * @var array
      */
     protected $errors = [];
 
     /**
-     * AbstractFormControl constructor.
-     *
-     * $data generally correspond to $_POST.
+     * <p>AbstractFormControl constructor.</p>
      * @param array $data
+     * <p>Take in entry <b>$_POST</b>.</p>
      */
     abstract public function __construct(array $data);
 
     /**
-     * Return all errors in the property $errors of the actual class.
+     * <p>Return all errors in the property $errors of the actual class.</p>
      * @return array
      */
     public function getErrors(): array
@@ -37,32 +37,46 @@ abstract class AbstractFormControl
     }
 
     /**
-     * Return the requested property
+     * <p>Return the requested property</p>
      * @param string $propertyName
+     * <p>Name of the property</p>
      * @return mixed
      */
     public function getProperty(string $propertyName)
     {
-        return $this->$propertyName;
+        $result = null;
+        if (isset($this->$propertyName)) {
+            $result = $this->$propertyName;
+        }
+        return $result;
     }
 
     /**
-     * Verify last name, first name, city, country.
-     *
-     * $value is a string retrieved from $data['key']
+     * <p>Return all properties of a object.</p>
+     * @return array
+     */
+    public function getAllProperty(): array
+    {
+        return get_object_vars($this);
+    }
+
+    /**
+     * <p>Verify last name, first name, city, country.</p>
      * @param string $value
-     * $propertyName is the name of the property of type 'name' created in the child class.
+     * <p>$value is a string retrieved from $data['key']</p>
      * @param string $propertyName
-     * $key is the complement of the error key if it is multiple words used a _ . example : city, contest_name.
-     * Also used to complete the error message for empty values, _ replaced with whitespace.
+     * <p>$propertyName is the name of the property of type 'name' created in the child class. <b>In camelCase</b></p>
      * @param string $key
-     *
+     * <p>$key is the complement of the error key if is several words used a <b>underscore</b> as separator,
+     * in <b>snake_case</b>.<br>
+     * Example : city, last_name.<br>
+     * Also used to complete the error message for empty values, underscore is replaced with whitespace.</p>
      * @return AbstractFormControl
      */
-    public function verifyName(string $value, string $propertyName, string $key): AbstractFormControl
+    protected function verifyName(string $value, string $propertyName, string $key): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = ucfirst(strtolower($value));
+        $this->$propertyName = ucwords(strtolower(trim(htmlentities($value))));
         // Replace underscore by whitespace.
         $word = str_replace('_', ' ', $key);
         /**
@@ -74,7 +88,7 @@ abstract class AbstractFormControl
             $this->errors['error_' . $key] = 'Please enter a ' . $word . ', thank you.';
         } elseif (strlen($value) > self::MAX_CHARACTERS_NAME) {
             $this->errors['error_' . $key] = 'Must be a maximum of 45 characters. Current : ' . strlen($value);
-        } elseif (preg_match('/[^A-Za-zàâïçéèêôÀÂÏÇÉÈÔ\s]/', $value)) {
+        } elseif (preg_match('/[^-\'A-Za-zàâïçéèêôÀÂÏÇÉÈÔ\s]/', $value)) {
             $this->errors['error_' . $key] = 'Special characters are prohibited.';
         }
 
@@ -82,22 +96,22 @@ abstract class AbstractFormControl
     }
 
     /**
-     * Verify pseudo, pseudo github.
-     *
-     * $value is a string retrieved from $data['key']
+     * <p>Verify pseudo, pseudo github.</p>
      * @param string $value
-     * $propertyName is the name of the property of type 'pseudo' created in the child class.
+     * <p>$value is a string retrieved from $data['key']</p>
      * @param string $propertyName
-     * $key is the complement of the error key if it is multiple words used a _ . example : city, contest_name.
-     * Also used to complete the error message for empty values, _ replaced with whitespace.
+     * <p>$propertyName is the name of the property of type 'name' created in the child class. <b>In camelCase</b></p>
      * @param string $key
-     *
+     * <p>$key is the complement of the error key if is several words used a <b>underscore</b> as separator,
+     * in <b>snake_case</b>.<br>
+     * Example : pseudo, pseudo_github.<br>
+     * Also used to complete the error message for empty values, underscore is replaced with whitespace.</p>
      * @return AbstractFormControl
      */
-    public function verifyPseudo(string $value, string $propertyName, string $key): AbstractFormControl
+    protected function verifyPseudo(string $value, string $propertyName, string $key): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = ucfirst(strtolower($value));
+        $this->$propertyName = trim(htmlentities($value));
         // Replace underscore by whitespace.
         $word = str_replace('_', ' ', $key);
         /**
@@ -109,7 +123,7 @@ abstract class AbstractFormControl
             $this->errors['error_' . $key] = 'Please enter a ' . $word . ', thank you.';
         } elseif (strlen($value) > self::MAX_CHARACTERS_PSEUDO) {
             $this->errors['error_' . $key] = 'Must be a maximum of 26 characters. Current : ' . strlen($value);
-        } elseif (!preg_match('/^([a-zA-Z0-9-_]{2,26})$/', $value)) {
+        } elseif (!preg_match('/^([a-zA-ZàâïçéèêôÀÂÏÇÉÈÔ0-9-_]{2,26})$/', $value)) {
             $this->errors['error_' . $key] = 'Special characters are prohibited.';
         }
 
@@ -117,22 +131,22 @@ abstract class AbstractFormControl
     }
 
     /**
-     * Verify type, contest name, challenge name.
-     *
-     * $value is a string retrieved from $data['key']
+     * <p>Verify type, contest name, challenge name.</p>
      * @param string $value
-     * $propertyName is the name of the property of type 'pseudo' created in the child class.
+     * <p>$value is a string retrieved from $data['key']</p>
      * @param string $propertyName
-     * $key is the complement of the error key if it is multiple words used a _ . example : city, contest_name.
-     * Also used to complete the error message for empty values, _ replaced with whitespace.
+     * <p>$propertyName is the name of the property of type 'name' created in the child class. <b>In camelCase</b></p>
      * @param string $key
-     *
+     * <p>$key is the complement of the error key if is several words used a <b>underscore</b> as separator,
+     * in <b>snake_case</b>.<br>
+     * Example : type, challenge_name, contest_name.<br>
+     * Also used to complete the error message for empty values, underscore is replaced with whitespace.</p>
      * @return AbstractFormControl
      */
-    public function verifyOtherName(string $value, string $propertyName, string $key): AbstractFormControl
+    protected function verifyOtherName(string $value, string $propertyName, string $key): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = ucfirst(strtolower($value));
+        $this->$propertyName = trim(htmlentities($value));
         // Replace underscore by whitespace.
         $word = str_replace('_', ' ', $key);
         /**
@@ -142,29 +156,25 @@ abstract class AbstractFormControl
          */
         if (empty($value)) {
             $this->errors['error_' . $key] = 'Please enter a ' . $word . ', thank you.';
-        } elseif (strlen($value) > self::MAX_CHARACTERS_PSEUDO) {
-            $this->errors['error_' . $key] = 'Must be a maximum of 26 characters. Current : ' . strlen($value);
-        } elseif (preg_match('/[^-_A-Za-z0-9àâïçéèêôÀÂÏÇÉÈÔ\s]/', $value)) {
-            $this->errors['error_' . $key] = 'Special characters are prohibited.';
+        } elseif (strlen($value) > self::MAX_CHARACTERS_OTHER_NAME) {
+            $this->errors['error_' . $key] = 'Must be a maximum of 35 characters. Current : ' . strlen($value);
         }
 
         return $this;
     }
 
     /**
-     * Verify email.
-     *
-     * $value is a string retrieved from $data['key']
+     * <p>Verify email.</p>
      * @param string $value
-     * $propertyName is the name of the property of type 'email' created in the child class. Default : email.
-     * @param string $propertyName
-     *
+     * <p>$value is a string retrieved from $data['key']</p>
+     * @param string $propertyName <p>[optional] <b>Default : email</b>.<br>
+     * <p>$propertyName is the name of the property of type 'email' created in the child class.</p>
      * @return AbstractFormControl
      */
-    public function verifyEmail(string $value, string $propertyName = 'email'): AbstractFormControl
+    protected function verifyEmail(string $value, string $propertyName = 'email'): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = $value;
+        $this->$propertyName = strtolower(trim(htmlentities($value)));
         /**
          * Check if the input value is empty.
          * Check if the number of characters in the input is greater than 80.
@@ -182,19 +192,17 @@ abstract class AbstractFormControl
     }
 
     /**
-     * Verify password.
-     *
-     * $value is a string retrieved from $data['key']
+     * <p>Verify password.</p>
      * @param string $value
-     * $propertyName is the name of the property of type 'password' created in the child class. Default : password.
-     * @param string $propertyName
-     *
+     * <p>$value is a string retrieved from $data['key']</p>
+     * @param string $propertyName <p>[optional] <b>Default : password</b>.<br>
+     * <p>$propertyName is the name of the property of type 'password' created in the child class.</p>
      * @return AbstractFormControl
      */
-    public function verifyPassword(string $value, string $propertyName = 'password'): AbstractFormControl
+    protected function verifyPassword(string $value, string $propertyName = 'password'): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = $value;
+        $this->$propertyName = trim(htmlentities($value));
 
         /**
          * Check if the input value is empty.
@@ -217,19 +225,17 @@ abstract class AbstractFormControl
     }
 
     /**
-     * Verify Description.
-     *
-     * $value is a string retrieved from $data['key']
+     * <p>Verify Description.</p>
      * @param string $value
-     * $propertyName is the name of the property of type 'text' created in the child class. Default : description.
-     * @param string $propertyName
-     *
+     * <p>$value is a string retrieved from $data['key']</p>
+     * @param string $propertyName <p>[optional] <b>Default : description</b>.<br>
+     * <p>$propertyName is the name of the property of type 'text' created in the child class.</p>
      * @return AbstractFormControl
      */
-    public function verifyDescription(string $value, string $propertyName = 'description'): AbstractFormControl
+    protected function verifyDescription(string $value, string $propertyName = 'description'): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = $value;
+        $this->$propertyName = trim(htmlentities($value));
         /**
          * Check if the input value is empty.
          * Check if the number of characters in the input is between 30 and 500 characters.
@@ -246,16 +252,14 @@ abstract class AbstractFormControl
     }
 
     /**
-     * Verify select or input type radio.
-     *
-     * $value is a string retrieved from $data['key']
-     * @param integer $value
-     * $propertyName is the name of the property of type 'integer' created in the child class.
+     * <p>Verify select or input type radio.</p>
+     * @param int $value
+     * <p>$value is a string retrieved from $data['key']</p>
      * @param string $propertyName
-     *
+     * <p>$propertyName is the name of the property of type 'integer' created in the child class.</p>
      * @return AbstractFormControl
      */
-    public function verifySelected(int $value, string $propertyName): AbstractFormControl
+    protected function verifySelected(int $value, string $propertyName): AbstractFormControl
     {
         // Set the property in object.
         $this->$propertyName = $value;
@@ -268,19 +272,37 @@ abstract class AbstractFormControl
     }
 
     /**
-     * Verify url.
-     *
-     * $value is a string retrieved from $data['key']
-     * @param string $value
-     * $propertyName is the name of the property of type 'url' created in the child class. Default : url.
+     * <p>Verify select or input type radio.</p>
+     * @param int $value
+     * <p>$value is a string retrieved from $data['key']</p>
      * @param string $propertyName
-     *
+     * <p>$propertyName is the name of the property of type 'integer' created in the child class.</p>
      * @return AbstractFormControl
      */
-    public function verifyUrl(string $value, string $propertyName = 'url'): AbstractFormControl
+    protected function verifyInteger(int $value, string $propertyName): AbstractFormControl
     {
         // Set the property in object.
         $this->$propertyName = $value;
+        // Check if the input value is empty and if the input is not a integer
+        if (empty($value) || !is_int($value)) {
+            $this->errors['error_' . $propertyName] = 'Please enter a valid number.';
+        }
+
+        return $this;
+    }
+
+    /**
+     * <p>Verify url.</p>
+     * @param string $value
+     * <p>$value is a string retrieved from $data['key']</p>
+     * @param string $propertyName <p>[optional] <b>Default : url</b>.<br>
+     * <p>$propertyName is the name of the property of type 'text' created in the child class.</p>
+     * @return AbstractFormControl
+     */
+    protected function verifyUrl(string $value, string $propertyName = 'url'): AbstractFormControl
+    {
+        // Set the property in object.
+        $this->$propertyName = trim(htmlentities($value));
         /**
          * Check if the input value is empty.
          * Check if the number of characters in the input is greater than 2083 characters
@@ -296,19 +318,17 @@ abstract class AbstractFormControl
     }
 
     /**
-     * Verify flag.
-     *
-     * $value is a string retrieved from $data['key']
+     * <p>Verify flag.</p>
      * @param string $value
-     * $propertyName is the name of the property of type 'string' or 'url' created in the child class. Default : flag.
-     * @param string $propertyName
-     *
+     * <p>$value is a string retrieved from $data['key']</p>
+     * @param string $propertyName <p>[optional] <b>Default : flag</b>.<br>
+     * <p>$propertyName is the name of the property of type 'text' created in the child class.</p>
      * @return AbstractFormControl
      */
-    public function verifyFlag(string $value, string $propertyName = 'flag'): AbstractFormControl
+    protected function verifyFlag(string $value, string $propertyName = 'flag'): AbstractFormControl
     {
         // Set the property in object.
-        $this->$propertyName = $value;
+        $this->$propertyName = trim(htmlentities($value));
         /**
          * Check if the input value is empty.
          * Check if the number of characters in the input is greater than 2083 characters
