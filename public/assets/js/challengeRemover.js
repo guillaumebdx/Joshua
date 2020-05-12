@@ -14,6 +14,7 @@ class challengeRemover {
             this.initAdders()
             let fieldForOrder = document.getElementById('order-of-challenges')
             fieldForOrder.value = this.challengesOrder()
+
         })
     }
 
@@ -47,6 +48,7 @@ class challengeRemover {
             const lineId = adders[i].dataset.target
             const adder = new challengeAdder(id, lineId, 'list-ordered-flags', 'list-toadd-flags');
         }
+        this.addNumbers()
 
         let challenge = new DragAndDrop();
         challenge.init({
@@ -65,6 +67,25 @@ class challengeRemover {
             order.push(orderedElements[i].dataset.challenge)
         }
         return JSON.stringify(order);
+    }
+
+    addNumbers() {
+        let newContainer = document.getElementById('list-ordered-flags')
+        let orderedElements = newContainer.getElementsByClassName('list-group-item')
+        for (let i=0; i<orderedElements.length; i++) {
+                let num = i + 1;
+                let htmlForNumber = '<span class="list-order-number">' + num + '</span> ';
+                let html = orderedElements[i].innerHTML;
+                let htmlToKeep = html.split('<i ');
+                orderedElements[i].innerHTML = htmlForNumber + '<i ' + htmlToKeep[1];
+
+        }
+        const removers = document.getElementsByClassName('remover');
+        for (let i=0; i<removers.length; i++) {
+            const id = removers[i].getAttribute('id')
+            const lineId = removers[i].dataset.target
+            const remover = new challengeRemover(id, lineId, 'list-to-add-flags', 'list-ordered-flags');
+        }
     }
 }
 
