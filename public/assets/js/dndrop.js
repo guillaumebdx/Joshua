@@ -88,9 +88,19 @@ class DragAndDrop {
             this.originOfElement.insertBefore(this.dragAbleElement, this.originOfElement.childNodes[this.nextElement]);
         }
         this.removeSpacer();
-        this.getList();
-        console.log(this.getList())
+        let fieldForOrder = document.getElementById('order-of-challenges')
+        fieldForOrder.value = this.getList()
         this.addNumbers();
+        this.reinitRemovers();
+    }
+
+    reinitRemovers() {
+        const removers = document.getElementsByClassName('remover');
+        for (let i=0; i<removers.length; i++) {
+            const id = removers[i].getAttribute('id')
+            const lineId = removers[i].dataset.target
+            const remover = new challengeRemover(id, lineId, 'list-to-add-flags', 'list-ordered-flags');
+        }
     }
 
     getIdInNodesList (e) {
@@ -126,13 +136,13 @@ class DragAndDrop {
     }
 
     getList() {
-        let listOrderedItems = [];
-        this.originOfElement.childNodes.forEach((e) =>{
-            if (e.dataset != null) {
-                listOrderedItems.push(e.dataset.challenge);
-            }
-        });
-        return listOrderedItems;
+        let newContainer = document.getElementById('list-ordered-flags')
+        let order = [];
+        let orderedElements = newContainer.getElementsByClassName('list-group-item')
+        for (let i=0; i<orderedElements.length; i++) {
+            order.push(orderedElements[i].dataset.challenge)
+        }
+        return JSON.stringify(order);
     }
 
     addNumbers() {

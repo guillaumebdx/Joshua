@@ -3,17 +3,17 @@
 {% block title %}Contest editor{% endblock %}
 
 {% block content %}
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-12 text-center">
                 <h1>Contest editor</h1>
             </div>
         </div>
         <div class="row">
-            <div class="col-4">
+            <div class="col-12 col-md-6">
                 <div class="col-12">
                     <form action="" method="post">
-                        <div class="pb-3 text-center">
+                        <div class="pb-3 text-left">
                             <h2>Modify your contest</h2>
                         </div>
                         <div class="row d-flex justify-content-center">
@@ -90,33 +90,34 @@
                     </form>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-md-3">
                 <div class="col-12">
-                    <div class="pb-3 text-center">
-                        <h2>Challenges to add</h2>
+                    <div class="pb-3 text-left">
+                        <h2>Add challenges</h2>
                     </div>
                     <div class="row list-container overflow-auto">
-                        <ul class="list-group col-12 p-0" id="challenges-list">
+                        <ul class="list-group col-12 p-0" id="list-to-add-flags">
                             {% for challenge in challenges|reverse %}
-                                <li id="toadd-{{ challenge.id }}" class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2" data-name="{{ challenge.name }}">
-                                    <i class="fa fa-flag"></i> {{ challenge.name }}
-                                    <button type="button" data-target="toadd-{{ challenge.id }}" data-challenge="{{ challenge.id }}" class="btn btn-dark text-white rounded-sm p-0 pl-1 pr-1 challenge-adder float-right">Add</button>
+                                <li id="toadd-{{ challenge.id }}" class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2" data-difficulty="{{ challenge.difficulty_id }}" data-name="{{ challenge.name }}" data-challenge="{{ challenge.id }}" >
+                                    <i class="fa fa-flag mgr-7"></i> {{ challenge.name }} ({{ challenge.difficulty_id }}/5)
+                                    <button id="adderBtn{{ challenge.id }}" type="button" data-target="toadd-{{ challenge.id }}" class="btn btn-dark text-white rounded-sm p-0 pl-1 pr-1 challenge-adder float-right">Add</button>
                                 </li>
                             {% endfor %}
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-md-3">
                 <div class="col-12">
-                    <div class="pb-3 text-center">
-                        <h2>Challenges in contest</h2>
+                    <div class="pb-3 text-left">
+                        <h2>Order challenges</h2>
                     </div>
                     <div class="row list-container overflow-auto">
-                        <ul class="list-group col-12 p-0" id="challenge-list">
+                        <ul class="list-group col-12 p-0" id="list-ordered-flags">
                             {% for challengeInContest in challengesInContest %}
-                                <li id="challenge-id{{ challengeInContest.id }}" data-challenge="{{ challengeInContest.id }}" class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2 draggable">
-                                    <span class="list-order-number">{{ loop.index }}</span> <i class="fa fa-flag"></i> {{ challengeInContest.name }}
+                                <li id="challenge-id{{ challengeInContest.id }}" data-difficulty="{{ challengeInContest.difficulty }}"  data-name="{{ challengeInContest.name }}" data-challenge="{{ challengeInContest.id }}" class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2 draggable">
+                                    <span class="list-order-number mgr-7">{{ loop.index }}</span> <i class="fa fa-flag"></i> {{ challengeInContest.name }} ({{challengeInContest.difficulty}}/5)
+                                    <a href="#" class="remover float-right" id="remover{{ challengeInContest.id }}" data-target="challenge-id{{ challengeInContest.id }}"><img src="/assets/images/close.svg"></a>
                                 </li>
                             {% endfor %}
                         </ul>
@@ -134,9 +135,11 @@
     challenge.init({
         instance           : 'challenge',
         draggableClassName : 'draggable',
-        origin             : document.getElementById('challenge-list'),
-        dropZone           : document.getElementById('challenge-list'),
+        origin             : document.getElementById('list-ordered-flags'),
+        dropZone           : document.getElementById('list-ordered-flags'),
     });
 </script>
-<script src="/assets/js/challengeManager.js"></script>
+<script src="/assets/js/challengeAdder.js"></script>
+<script src="/assets/js/challengeRemover.js"></script>
+
 {% endblock %}

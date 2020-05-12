@@ -220,7 +220,6 @@ class AdminController extends AbstractController
             $contest = new ContestFormControl($_POST);
             $errors  = $contest->getErrors();
             $challengeOrder = json_decode($_POST['orderOfChallenges'], true);
-
             if (count($errors) === 0) {
                 $contestManager = new ContestManager();
                 $contestManager->editContest($contest, $id);
