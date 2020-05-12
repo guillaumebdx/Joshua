@@ -122,6 +122,9 @@ class AdminController extends AbstractController
         $challenge      = new ChallengeManager();
         $challengeEdit  = $challenge->selectOneById($id);
 
+        $onContest      = new ContestHasChallengeManager();
+        $onContestCheck = $onContest->selectChallengeInContestById($id);
+
         if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['saveChallenge'])) {
             $challenge = new ChallengeFormControl($_POST);
             $errors    = $challenge->getErrors();
@@ -143,6 +146,7 @@ class AdminController extends AbstractController
             'challenge'    => $challengeEdit,
             'difficulties' => $difficultiesList,
             'types'        => $typesList,
+            'onContest'    => $onContestCheck
         ]);
     }
 

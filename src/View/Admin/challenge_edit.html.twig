@@ -76,7 +76,9 @@
                     <div class="row d-flex justify-content-center">
                         <div class="form-group">
                             <button type="submit" name="saveChallenge" class="align-self-center btn btn-dark text-white">Save your challenge <i class="fa fa-save"></i></button>
-                            <button type="button" name="deleteChallenge" class="align-self-center btn btn-danger text-white" data-toggle="modal" data-target="#confirmDeletion">Delete <i class="fa fa-trash"></i></button>
+                            {% if not onContest.challenge_id %}
+                                <button type="button" name="deleteChallenge" class="align-self-center btn btn-danger text-white" data-toggle="modal" data-target="#confirmDeletion">Delete <i class="fa fa-trash"></i></button>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="modal fade" id="confirmDeletion" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
