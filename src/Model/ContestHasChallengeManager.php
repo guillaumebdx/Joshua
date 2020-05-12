@@ -36,6 +36,14 @@ class ContestHasChallengeManager extends AbstractManager
         return $return;
     }
 
+    public function selectChallengeInContestById(int $id)
+    {
+        $query = 'SELECT * FROM ' . $this->table . ' WHERE challenge_id = :id';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetch();
+    }
 
     /**
      * <p>The number of challenges in a contest.</p>
