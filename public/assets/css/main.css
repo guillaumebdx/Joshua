@@ -163,13 +163,13 @@ nav .nav-link {
     width: 50px;
     height: 50px;
     margin: 0 5px;
-    border: 1px solid var(--josh-green);
-    background-color: var(--josh-green);
+    border: 1px solid gray;
+    background-color: gray;
 }
 
 .icon:hover {
-    background-color: var(--josh-red);
-    border: 1px solid var(--josh-red);
+    background-color: var(--josh-green);
+    border: 1px solid var(--josh-green);
 }
 
 .icon-facebook {
