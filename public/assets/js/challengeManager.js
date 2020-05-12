@@ -1,3 +1,6 @@
+
+
+
 const adders = document.getElementsByClassName('challenge-adder')
 for (let i=0; i<adders.length; i++) {
     adders[i].addEventListener('click', (e) => {
@@ -14,10 +17,7 @@ for (let i=0; i<adders.length; i++) {
         container.remove()
         let newContainer = document.getElementById('challenge-list')
         let order = []
-        let orderedElements = newContainer.getElementsByClassName('list-group-item')
-        for (let i=0; i<orderedElements.length; i++) {
-            order.push(orderedElements[i].dataset.challenge)
-        }
+
         let fieldForOrder = document.getElementById('order-of-challenges')
         fieldForOrder.value = JSON.stringify(order)
         console.log(JSON.stringify(order))
