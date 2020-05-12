@@ -4,10 +4,10 @@
  * Get the github avatar from user and showing it
  */
 if (document.getElementById('github')) {
-    let pseudo = document.getElementById('github');
+    let pseudo         = document.getElementById('github');
     pseudo.addEventListener('change', function () {
         let pseudoUser = this.value;
-        let avatar = document.getElementById('avatar');
+        let avatar     = document.getElementById('avatar');
 
         if (pseudoUser === "") {
             avatar.src = 'https://avatars.githubusercontent.com/github';
@@ -21,7 +21,7 @@ if (document.getElementById('github')) {
  *
  */
 
-let showHide     = document.getElementsByClassName('show-hide-pass');
+const showHide     = document.getElementsByClassName('show-hide-pass');
 //onmousedown="showPassword('passwordcopy')" onmouseup="hidePassword('passwordcopy')"
 for (let i=0; i<showHide.length; i++) {
     let this_target = showHide[i].dataset.target;
@@ -34,13 +34,7 @@ for (let i=0; i<showHide.length; i++) {
 
 }
 
-
-/**
-
- */
-
 document.addEventListener("DOMContentLoaded", () => {
-
     /**
      * Adjust labels sizes to make them equals
      */

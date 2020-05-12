@@ -1,19 +1,12 @@
-let addPic;
-
 class DragAndDrop {
-    constructor(){
-        this.dragAble           = null;
-        this.counter            = 0;
-        this.draggedElements    = null;
+    constructor() {
         this.originOfElement    = null;
         this.dragableElements   = null;
         this.nameOfInstance     = null;
-        // Paramaters initialized in init() function
         this.dragAbleElement    = null;
         this.dropZone           = null;
         this.origin             = null;
         this.draggableClassName = null;
-        this.hoverElement       = null;
         this.list               = null;
         this.listIndex          = null;
         this.nextElement        = null;
@@ -22,7 +15,6 @@ class DragAndDrop {
         this.direction          = null;
         this.spacer             = document.createElement("li");
         this.initSpacer();
-
     }
 
     initSpacer() {
@@ -60,8 +52,6 @@ class DragAndDrop {
         }
     }
 
-
-// Dragging functions
     onDragStart(e) {
         this.dragAbleElement = e.target;
         this.originOfElement = this.dragAbleElement.parentElement;
@@ -128,6 +118,7 @@ class DragAndDrop {
             this.originOfElement.insertBefore(this.spacer, this.originOfElement.childNodes[this.nextElement]);
         }
     }
+
     removeSpacer() {
             this.spacer.remove();
             this.dragAbleElement.style.opacity = 1;
@@ -155,5 +146,4 @@ class DragAndDrop {
                 }
             });
     }
-
 }
