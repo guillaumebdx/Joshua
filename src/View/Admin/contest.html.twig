@@ -27,7 +27,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Are you sure ? This will be permanent.</p>
+                                    <p>Are you sure ? This will be permanent. Make sure that display is on before going further.</p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -39,15 +39,19 @@
                     <li class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2">
                         <p class="mb-0 existing_challenge pb-1"><i class="fa fa-flag-checkered"></i> {{ contest.name }} <span class="float-right mr-1">{{ contest.campus }} <i class="fa fa-map-marker-alt"></i></span></p>
                         <div class="row col-9 d-flex justify-content-between align-items-center p-0 ml-0">
-                            <a class="btn btn-dark text-white rounded-sm mt-1 p-0 pl-1 pr-1" href="/admin/editcontest/{{ contest.id }}">Edit</a>
+                            {% if (contest.is_active == '0') %}
+                                <a class="btn btn-dark text-white rounded-sm mt-1 p-0 pl-1 pr-1" href="/admin/editcontest/{{ contest.id }}">Edit</a>
+                            {% endif %}
                             <div>
                                 <button class="btn btn-success rounded-sm mt-1 text-center p-0 pl-1 pr-1 activated-buttons" data-toggle="modal" data-target="#activateContest{{ contest.id }}" {% if (contest.is_active == '1') %} hidden {% endif %}>Activate</button>
                                 <p class="mb-0 mt-1 text-center rounded-sm text-white activated activated-buttons" {% if (contest.is_active == '0') %} hidden {% endif %}>Activated</p>
                             </div>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input manage-contest-display" id="display-{{ contest.id }}" data-visible="{{ contest.is_visible }}" data-id="{{ contest.id }}" {% if (contest.is_visible == '1') %} checked {% endif %}>
-                                <label class="custom-control-label display-switch mt-1" for="display-{{ contest.id }}">Display</label>
-                            </div>
+                            {% if (contest.is_active == '0') %}
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input manage-contest-display" id="display-{{ contest.id }}" data-visible="{{ contest.is_visible }}" data-id="{{ contest.id }}" {% if (contest.is_visible == '1') %} checked {% endif %}>
+                                    <label class="custom-control-label display-switch mt-1" for="display-{{ contest.id }}">Display</label>
+                                </div>
+                            {% endif %}
                         </div>
                     </li>
                     {% endfor %}
