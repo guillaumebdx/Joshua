@@ -3,46 +3,51 @@
 
 {% block content %}
     <div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="text-center">CREATE CAMPUS</h1>
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center">CREATE CAMPUS</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4 offset-md-4">
+                <form method="post">
+                    <div class="row-campus">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Country</span>
+                            </div>
+                            <input value="{{ campus.country }}" type="text" class="form-control" name="country"
+                                   aria-label="Country" aria-describedby="basic-addon1">
+                        </div>
+                        <p class="text-white">{{ errors.error_country }}</p>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">City</span>
+                            </div>
+                            <input value="{{ campus.city }}" type="text" class="form-control" name="city" aria-label="City"
+                                   aria-describedby="basic-addon1">
+                        </div>
+                        <div class=" {% if(campus_exist == 0) %} hide {% endif %} text-red">
+                            This campus already exist
+                        </div>
+                    </div>
+                    <p class="text-white">{{ errors.error_city }}</p>
+                    <div class="text-right">
+                        <button class="btn btn-campus text-white " type="submit">Add Campus</button>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
-    <div class="container-campus">
-        <form method="post">
-            <div class="row-campus">
-                <div class="input-group campus mb-3 col-6">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">Country</span>
-                    </div>
-                    <input value="{{ campus.country }}" type="text" class="form-control" name="country"
-                           aria-label="Country" aria-describedby="basic-addon1">
-                </div>
-                <p class="text-white">{{ errors.error_country }}</p>
-                <div class="input-group mb-3 col-6">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">City</span>
-                    </div>
-                    <input value="{{ campus.city }}" type="text" class="form-control" name="city" aria-label="City"
-                           aria-describedby="basic-addon1">
-                </div>
-                <div class=" {% if(campus_exist == 0) %} hide {% endif %} text-red">
-                    This campus already exist</div>
-                </div>
-                <p class="text-white">{{ errors.error_city }}</p>
-            <div class="text-right">
-                <button class="btn btn-campus text-white " type="submit">Add Campus</button>
-            </div>
-            </div>
-        </form>
-
-        <div class="row-campus-flag text-white">
-            {% for campus in campuses %}
+<div class="container">
+    <div class="row-campus-flag text-white">
+        {% for campus in campuses %}
             <img src="/assets/images/flags/{{ campus.flag }}" width="30" alt="flag picture">
             {{ campus.city }}
             <br>
-            {% endfor %}
-        </div>
+        {% endfor %}
+    </div>
     </div>
     </div>
 {% endblock %}

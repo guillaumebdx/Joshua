@@ -128,13 +128,13 @@ ul {
 .btn-campus {
     border-radius: 1px;
     border-color: grey;
-    margin-right: 24rem;
 }
 .row-campus {
-    margin-left: 23rem;
     margin-top: 2rem;
 }
-
+.btn-campus:hover {
+    background:var(--josh-red) ;
+}
 .row-campus-flag {
     margin-top: 4rem;
     -webkit-column-count: 5;
