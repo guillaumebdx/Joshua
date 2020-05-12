@@ -6,7 +6,8 @@ use App\Model\ContestManager;
 use App\Model\UserManager;
 use App\Service\ContestDate;
 use App\Service\Dispatch;
-use App\Service\UserConnection;
+use App\Service\TextProcessing;
+use App\Service\UserService;
 use FormControl\IndexFormControl;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -36,7 +37,7 @@ class JoshuaController extends AbstractController
 
                 if ($user && $login === $user['pseudo']) {
                     if (password_verify($password, $user['password'])) {
-                        UserConnection::openConnection($user['id']);
+                        UserService::openConnection($user['id']);
                         Dispatch::toUrl('/joshua/home');
                     } else {
                         $error = 'Invalid password !';
@@ -61,6 +62,7 @@ class JoshuaController extends AbstractController
      */
     public function home()
     {
+
         $contestManager = new ContestManager();
         $visibleContests = $contestManager->selectAll(ContestManager::NOT_ENDED, ContestManager::ONLY_VISIBLE);
 

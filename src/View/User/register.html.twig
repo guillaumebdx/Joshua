@@ -44,7 +44,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-pseudo">Pseudo *</span>
                         </div>
-                        <input type="text"  placeholder="Only letters or numbers without space." class="form-control" id="joshuapseudo" name="joshuapseudo" value="{{ user.joshuapseudo }}">
+                        <input type="text"  placeholder="Only letters or numbers without space." class="form-control" id="pseudo" name="pseudo" value="{{ user.pseudo }}">
                     </div>
                 </div>
             </div>
@@ -98,9 +98,9 @@
                         <div class="col-12">
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text {% if (errors.error_github) %} error {% endif %} " id="inputGroup-github" >Your github pseudo</span>
+                                    <span class="input-group-text {% if (errors.error_pseudo_github) %} error {% endif %} " id="inputGroup-github" >Your github pseudo</span>
                                 </div>
-                                <input type="text" class="form-control" id="github" name="github"  value="{{ user.github }}" placeholder="We just use it to get your avatar">
+                                <input type="text" class="form-control" id="github" name="github"  value="{{ user.pseudoGithub }}" placeholder="We just use it to get your avatar">
                             </div>
                         </div>
                     </div>
