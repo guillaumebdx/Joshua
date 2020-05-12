@@ -8,10 +8,12 @@ class StoryTeller {
         this.storyZone = document.getElementById('story');
         this.rankingZone = document.getElementById('ranking');
         this.timerId = 'timer' + contestId;
-        this.closer = document.getElementById('console-closer-' + contestId);
-        this.closer.addEventListener('click', ()=> {
-            this.hide();
-        });
+        if (document.getElementById('console-closer-' + contestId)) {
+            this.closer = document.getElementById('console-closer-' + contestId);
+            this.closer.addEventListener('click', () => {
+                this.hide();
+            });
+        }
         this.endDate = endDate;
     }
 
