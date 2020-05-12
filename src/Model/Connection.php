@@ -15,7 +15,7 @@ use \PDO;
 
 /**
  *
- * This class only make a PDO object instanciation. Use it as below :
+ * This class only make a PDO object instantiation. Use it as below :
  *
  * <pre>
  *  $db = new Connection();

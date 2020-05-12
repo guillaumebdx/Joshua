@@ -1,0 +1,88 @@
+.dashboard-card .btn {
+    padding:2px 7px;
+    margin-top:5px;
+}
+
+.number {
+    font-size:1.6rem;
+}
+
+.dashboard-card .form-group {
+    padding:5px 0 5px 0;
+    margin-top:5px;
+}
+
+.dashboard-card h5 {
+    font-family: var(--josh-major-font);
+    color:var(--josh-red);
+}
+.dashboard-card .btn-dark {
+   text-align:left;
+}
+.dashboard-card .btn-dark:hover {
+    background: var(--josh-red);
+    border-color:var(--josh-red);
+}
+
+
+.console {
+    position:absolute;
+    left:10vw;
+    top:10vh;
+    width:80vw;
+    height:80vh;
+    background:rgba(0,0,0,0.95);
+    color:#eee;
+    padding:10px;
+    border:7px solid #fff;
+}
+
+.console .story {
+    width:50%;
+    overflow:hidden;
+    font-size:0.9rem;
+    padding:20px 40px;
+}
+
+.console .timer-column {
+    width:20%;
+    text-align:left;
+    font-size:1.3rem;
+}
+
+.console .timer-column #timer {
+    display:inline-block;
+    height:auto;
+    text-align:center;
+    margin-top:-15px;
+    padding:5px 9px;
+    border:2px solid #fff;
+}
+
+.console .ranking-console {
+    width:30%;
+    float:right;
+    margin-right:10px;
+    padding-left:5%;
+}
+#story {
+    margin-top:30px;
+    overflow-y:scroll;
+    max-height: 100%;
+}
+
+#ranking {
+    width:100%;
+}
+
+#console-closer {
+    position:absolute;
+    top:7px;
+    right:7px;
+    font-size:1.5rem;
+    color:var(--josh-red);
+}
+
+.flash {
+    animation: flashing-red-white 1s infinite;
+}

@@ -17,14 +17,15 @@
                         <div class="form-group row">
                             <label for="email" class="col-lg-6 col-form-label text-white text-nowrap">Joshua@User ›
                                 Login :</label>
-                            <input type="text" class="form-control col-lg-6" name="email" id="email"
-                                   placeholder="email@example.com" value="{{ login }}">
+                            <input type="text" class="form-control col-lg-6" name="pseudo" id="pseudo"
+                                   placeholder="Enter your pseudo" value="{{ login }}" pattern="^[A-Za-z1-9-_]{3,26}" required>
                         </div>
                         <div class="form-group row">
                             <label for="password" class="col-lg-6 col-form-label text-white text-nowrap">Joshua@User ›
                                 Password :</label>
                             <div class="input-group col-lg-6 input-pass-index">
-                                <input type="password" class="form-control" name="password" id="password">
+                                <input type="password" class="form-control" name="password" id="password"
+                                       pattern="^(?=.*[0-9])(?=.*[!@#$%^&*{}_])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*{}_]{8,45}" required>
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary show-pass show-hide-pass"  data-target="password"
                                             type="button" id="button-password">

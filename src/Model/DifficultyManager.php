@@ -7,7 +7,7 @@ class DifficultyManager extends AbstractManager
     const TABLE = 'difficulty';
 
     /**
-     * DifficultyManager constructor.
+     * <p>DifficultyManager constructor</p>.
      */
     public function __construct()
     {

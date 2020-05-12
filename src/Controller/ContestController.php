@@ -4,117 +4,166 @@
 namespace App\Controller;
 
 use App\Model\ChallengeManager;
+use App\Model\ContestHasChallengeManager;
 use App\Model\ContestManager;
-use App\Model\UserManager;
+use App\Model\StoryManager;
+use App\Model\UserHasContestManager;
 use App\Service\ContestDate;
 use App\Service\ContestService;
+use App\Service\Dispatch;
+use App\Service\Ranking;
+use Exception;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class ContestController extends AbstractController
 {
+    /**
+     * @param int $contest
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws Exception
+     */
     public function play(int $contest)
     {
-        // TODO AJOUTER SI CONTEST EXIST et si contest Contest is active et si pas terminé
-
         if (isset($_SESSION['user_id']) && $_SESSION['user_id']!='') {
-            $contestService=new ContestService();
-            $contestManager = new ContestManager();
-            $userManager = new UserManager();
+            $contestService   = new ContestService();
+            $contestManager   = new ContestManager();
             $challengeManager = new ChallengeManager();
 
-            // TEST SOLUTION IF POST
-            if (isset($_POST['solution']) && !empty($_POST['solution'])) {
-                $contestService->testChallengeSolution(
-                    $challengeManager->challengeOnTheWayByUser($contest),
-                    $_POST['solution']
-                );
-            }
-
-            //CONTEST
             $theContest = $contestManager->selectOneById($contest);
-            if ($theContest) {
-                $contestDate = new ContestDate();
-                $endDate = $contestDate->getContestEndDate($theContest['started_on'], $theContest['duration']);
-
-                // USER //
-                $user = $userManager->selectOneById($_SESSION['user_id']);
-                $github = $user['github'];
-
-                //CHALLENGES
-                $challengesList = $contestService->listChallengesWithSuccess($contest);
-                $challengeOnTheWay = $challengeManager->challengeOnTheWayByUser($contest);
-
-                if ($challengeOnTheWay && !ContestDate::isEnded($endDate)) {
-                    $difficulty = $contestService->difficulties($challengeOnTheWay['difficulty']);
-
-                    //RENDER
-                    return $this->twig->render('Contests/play.html.twig', [
-                        'contest' => $theContest,
-                        'github' => $github,
-                        'challenges' => $challengesList,
-                        'challengeOnTheWay' => $challengeOnTheWay,
-                        'difficulty' => $difficulty,
-                        'ended' => false,
-                        'open' => true,
-                        'end_date' => $endDate,
-                    ]);
-                } else {
-                    return $this->twig->render('Contests/play.html.twig', [
-                        'contest' => $theContest,
-                        'github' => $github,
-                        'challenges' => $challengesList,
-                        'ended' => true,
-                        'end_date' => $endDate,
-                    ]);
-                }
-            } else {
-                header('Location:/joshua/page404');
-                die;
-            }
-        } else {
-            header('Location:/');
-            die;
-        }
-    }
-
-    public function results(int $contest)
-    {
-        $contestManager=new ContestManager();
-        $theContest = $contestManager->selectOneById($contest);
-        if ($theContest) {
             $endDate = ContestDate::getContestEndDate($theContest['started_on'], $theContest['duration']);
 
-            return $this->twig->render('Contests/results.html.twig', [
-                'contest' => $theContest,
-                'ended' => ContestDate::isEnded($endDate),
-                'end_date' => $endDate,
-            ]);
+            if ($theContest && !empty($endDate)) {
+                $challengesList    = $contestService->listChallengesWithSuccess($contest);
+                $challengeOnTheWay = $challengeManager->challengeOnTheWayByUser($contest);
+
+                if (!$challengeOnTheWay && !ContestDate::isEnded($endDate)) {
+                    $challengeOnTheWay = $contestService->startFirstChallenge($contest);
+                }
+
+                return $this->twig->render('Contests/play.html.twig', [
+                    'contest'           => $theContest,
+                    'github'            => $_SESSION['github'],
+                    'challenges'        => $challengesList,
+                    'challengeOnTheWay' => $challengeOnTheWay,
+                    'difficulty'        => $contestService->difficulties($challengeOnTheWay['difficulty']),
+                    'ended'             => false,
+                    'open'              => true,
+                    'end_date'          => $endDate,
+                    'rank_users'        => Ranking::formatRankingContest($contest),
+                ]);
+            } else {
+                Dispatch::toUrl('/');
+            }
         } else {
-            header('Location:/joshua/page404');
-            die;
+            Dispatch::toUrl('/');
         }
     }
 
+    /**
+     * @param int $contest
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws Exception
+     */
+    public function results(int $contest)
+    {
+        $contestManager = new ContestManager();
+        $theContest     = $contestManager->selectOneById($contest);
+
+        if ($theContest && !is_null($theContest['started_on'])) {
+            $endDate = ContestDate::getContestEndDate($theContest['started_on'], $theContest['duration']);
+            $ranking = Ranking::formatRankingContest($contest);
+            return $this->twig->render('Contests/results.html.twig', [
+                'contest'  => $theContest,
+                'ended'    => ContestDate::isEnded($endDate),
+                'end_date' => $endDate,
+                'ranking'  => $ranking,
+            ]);
+        } else {
+            Dispatch::toUrl('/joshua/page404');
+        }
+    }
+
+    /**
+     * @return false|string
+     * @throws Exception
+     */
     public function sendSolution()
     {
-        $challengeManager=new ChallengeManager();
         $data = file_get_contents('php://input');
         $json = json_decode($data);
-        $solutionUsed = $json->flagSolution;
-        $challengeSolution = $challengeManager->getChallengeSolution($json->challenge_id);
-        $return=[];
-        if ($solutionUsed === $challengeSolution) {
-            $challengeManager->registerChallengeSuccess($json->challenge_id, $json->contest_id);
-            $nextFlagOrder = $json->challenge_id + 1;
-            $nextChallenge = $challengeManager->getNextChallengeToPlay($nextFlagOrder, $json->contest_id);
-            if ($nextChallenge) {
-                $challengeManager->startNextChallenge($nextChallenge, $json->contest_id);
-                $return['message'] = 'success';
+
+        if (ContestService::isSolutionPossible($json->contest_id)) {
+            $challengeManager  = new ChallengeManager();
+            $solutionUsed      = $json->flagSolution;
+            $challengeSolution = $challengeManager->getChallengeSolution($json->challenge_id);
+            $return            = [];
+            $storyManager      = new StoryManager();
+
+            if ($solutionUsed === $challengeSolution) {
+                $playerManager = new UserHasContestManager();
+                $playerManager->registerChallengeSuccess($json->challenge_id, $json->contest_id);
+                $nextFlagOrder = $json->challenge_id + 1;
+                $challengesInContest = new ContestHasChallengeManager();
+                $nextChallenge = $challengesInContest->getNextChallengeToPlay($nextFlagOrder, $json->contest_id);
+
+                if ($nextChallenge) {
+                    $playerManager->startNextChallenge($nextChallenge, $json->contest_id);
+                    $return['message'] = 'success';
+                } else {
+                    $return['message'] = 'end';
+                }
+                $storyManager->setHistory($_SESSION['user_id'], $json->contest_id, $json->challenge_id, 1);
             } else {
-                $return['message'] = 'end';
+                $return['message'] = 'error';
+                $storyManager->setHistory($_SESSION['user_id'], $json->contest_id, $json->challenge_id, 0);
             }
+            return json_encode($return);
         } else {
-            $return['message'] = 'error';
+            Dispatch::toUrl('/');
         }
-        return json_encode($return);
+    }
+
+    /**
+     * @param int $contestId
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function getRankingInContest(int $contestId)
+    {
+        $contestManager = new ContestManager();
+        $contest        = $contestManager->selectOneById($contestId);
+
+        if ($contest) {
+            return $this->twig->render('Components/_ranking.html.twig', [
+                'rank_users' => Ranking::formatRankingContest($contestId),
+            ]);
+        }
+    }
+
+    /**
+     * @param int $contestId
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function getHistoryOfContest(int $contestId)
+    {
+        $contestId    = intval($contestId);
+        $storyManager = new StoryManager();
+        $postSolution = $storyManager->getHistory($contestId);
+        return $this->twig->render('Components/_console.html.twig', [
+            'solutions' => $postSolution,
+        ]);
     }
 }

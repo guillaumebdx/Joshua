@@ -1,13 +1,7 @@
-{% extends 'layout.html.twig' %}
-
-{% block header %}{% endblock %}
-
-{% block content %}
-<ol>
+<ul class="ranking">
         {% for rank_user in rank_users|slice(0, 10) %}
-            <li class="text-white">{{ rank_user.pseudo }}<span class="float-right">{{ rank_user.flags_succeed }} flags in {{ rank_user.total_time }}</span></li>
+            <li class="text-white{% if loop.index < 4 %} podium{% endif %}{% if loop.index == 1 %} first{% elseif loop.index == 2 %} second{% elseif loop.index == 3 %} third{% endif %}">
+                {{ rank_user.pseudo }}<span class="float-right">{{ rank_user.flags_succeed }}/{{ rank_user.nbChallenges }} - {{ rank_user.total_time }}</span>
+            </li>
         {% endfor %}
-</ol>
-{% endblock %}
-
-{% block footer %}{% endblock %}
+</ul>

@@ -2,16 +2,22 @@
 
 namespace App\Model;
 
+use FormControl\CampusFormControl;
+
 class CampusManager extends AbstractManager
 {
     const TABLE = 'campus';
 
+    /**
+     * <p>CampusManager constructor.</p>
+     */
     public function __construct()
     {
         parent::__construct(self::TABLE);
     }
 
     /**
+     * <p>Select All campuses without tuple id = 0 -> 'all campus'</p>
      * @return array
      */
     public function selectAll(): array
@@ -19,9 +25,12 @@ class CampusManager extends AbstractManager
         return $this->pdo->query('SELECT * FROM ' . self::TABLE . ' WHERE id != 0')->fetchAll();
     }
 
-    public function insertCampus(object $campus)
+    /**
+     * <p>Insert a new campus</p>
+     * @param CampusFormControl $campus
+     */
+    public function insertCampus(CampusFormControl $campus)
     {
-        // prepared request
         $query = 'INSERT INTO ' . self::TABLE . ' (city, country, flag) VALUES (:city, :country, :flag)';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':country', $campus->getProperty('country'), \PDO::PARAM_STR);
@@ -29,11 +38,17 @@ class CampusManager extends AbstractManager
         $flag = strtolower($campus->getProperty('country') . '.svg');
         $statement->bindValue(':flag', $flag, \PDO::PARAM_STR);
 
-        if ($statement->execute()) {
-            return (int)$this->pdo->lastInsertId();
-        }
+        $statement->execute();
     }
 
+    /**
+     * <p>Get all campus by order.</p>
+     * @param string $order1
+     * @param string $sort1
+     * @param string $order2 [optional]
+     * @param string $sort2 [optional]
+     * @return array
+     */
     public function getAllCampusOrderBy(string $order1, string $sort1 = 'ASC', string $order2 = '', string $sort2 = 'ASC'): array
     {
         $query = 'SELECT * FROM ' . self::TABLE . ' WHERE id != 0 ORDER BY ' . $order1 . ' ' . $sort1;
@@ -43,10 +58,11 @@ class CampusManager extends AbstractManager
         $statement = $this->pdo->query($query);
         return $statement->fetchAll();
     }
+
     public function campusExists(object $campus): bool
     {
         $campus = trim($campus->getProperty('city'));
-        $query  = 'SELECT campus.city FROM ' . self::TABLE . ' WHERE city = :city';
+        $query = 'SELECT campus.city FROM ' . self::TABLE . ' WHERE city = :city';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':city', $campus, \PDO::PARAM_STR);
         $statement->execute();
@@ -55,5 +71,18 @@ class CampusManager extends AbstractManager
         } else {
             return false;
         }
+    }
+
+    /**
+     * <p>Get the number of campus.</p>
+     * @return int
+     */
+    public function getTotalNumberOfCampus(): int
+    {
+        $query = 'SELECT count(*) AS total FROM ' . self::TABLE;
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+        $result = $statement->fetch();
+        return $result['total'];
     }
 }

@@ -1,5 +1,6 @@
 @import "joshua.css";
 @import "admin.css";
+@import "dashboard.css";
 @import "user.css";
 @import "contest.css";
 @import "error404.css";
@@ -126,6 +127,11 @@ h2 {
     background-color: var(--josh-grey);
 }
 
+nav.nav-item {
+    display:inline-block;
+    vertical-align: middle;
+}
+
 nav .nav-link:hover {
     color: var(--josh-green) !important;
     font-size: 1.2rem;
@@ -135,6 +141,8 @@ nav .nav-link:hover {
 nav .nav-link {
     font-size: 1.1rem;
     font-variant-caps: small-caps;
+    padding: 0 20px !important;
+
 }
 
 /* END HEADER */

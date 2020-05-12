@@ -14,11 +14,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 ajaxSender.joshuaAjaxSwitchAction('/admin/setuseradmin', switchId, 'body-toast-'+user, 'click');
         }
 
-        const switchesActif = document.getElementsByClassName('is-actif-manager');
-        for (let i = 0; i < switchesActif.length; i++) {
-                let switchId = switchesActif[i].id;
-                let user = switchesActif[i].dataset.user;
-                ajaxSender.joshuaAjaxSwitchAction('/admin/setuseractif', switchId, 'body-toast-'+user, 'click');
+        const switchesActive = document.getElementsByClassName('is-actif-manager');
+        for (let i = 0; i < switchesActive.length; i++) {
+                let switchId = switchesActive[i].id;
+                let user = switchesActive[i].dataset.user;
+                ajaxSender.joshuaAjaxSwitchAction('/admin/setuseractive', switchId, 'body-toast-'+user, 'click');
         }
 
 });

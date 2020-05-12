@@ -23,7 +23,8 @@
     "require": {
         "php": ">=7.2",
         "ext-pdo": "*",
-        "twig/twig": "^2.4"
+        "twig/twig": "^2.4",
+        "ext-json": "*"
     },
     "require-dev": {
         "phpmd/phpmd": "^2.7",
@@ -34,7 +35,8 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/",
+            "FormControl\\": "src/Service/FormControl/"
         }
     }
 }

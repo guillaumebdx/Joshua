@@ -11,6 +11,21 @@
         opacity: 0;
     }
 }
+@keyframes flashing-red-white {
+    0% {
+        color: white;
+    }
+    49% {
+        color: white;
+    }
+    50% {
+        color:var(--josh-red);
+    }
+
+    100% {
+        color:var(--josh-red);
+    }
+}
 
 /* MAIN ADMIN PAGE */
 
@@ -63,8 +78,35 @@ table.adminusers tr td {
 
 /* CONTEST */
 
+.draggable:hover {
+    cursor : move;
+}
+.list-group-item {
+    transition: all 0.2s ease-in-out;
+}
+.list-group-item.spacer {
+    border:none;
+    opacity:0;
+    border-radius:5px;
+    margin-bottom:5px;
+    height:40px;
+    animation:flashing-item 0.5s ease-in-out;
+}
+.list-order-number {
+    color:var( --josh-red);
+    margin-right:3px;
+}
+
 .existing_challenge {
     font-family: var(--josh-major-font);
+    font-size: 0.8rem;
+}
+
+.existing_challenge span {
+    font-size: 0.6rem;
+}
+
+.list-group-item-dark .btn {
     font-size: 0.8rem;
 }
 
@@ -78,12 +120,20 @@ table.adminusers tr td {
 }
 
 .activated {
+    font-family: var(--josh-major-font);
+    font-size: 0.8rem;
     animation: activated 2s infinite;
     background-color: var(--josh-red);
+    border: 1px solid transparent;
 }
 
 .activated-buttons {
     width: 6.5rem;
+}
+
+.display-switch {
+    font-family: var(--josh-major-font);
+    font-size: 0.8rem;
 }
 
 /* END CONTEST */

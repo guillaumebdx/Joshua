@@ -1,0 +1,105 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Challenge editor{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1>Challenge editor</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 offset-4">
+                <form action="" method="post">
+                    <div class="row d-flex justify-content-center">
+                        <div class="text-center pb-3">
+                            <h2>Modify your challenge</h2>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Title</span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Max 30 characters" maxlength="30" aria-describedby="basic-addon1" name="name" value="{{ challenge.name }}" required>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Description</span>
+                            </div>
+                            <textarea class="form-control" aria-label="Description" minlength="30" maxlength="200" placeholder="Between 30 and 200 characters" name="description" required>{{ challenge.description }}</textarea>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="difficulty" id="inputGroup-difficulty">Difficulty</label>
+                            </div>
+                            <select class="custom-select" id="difficulty" name="difficulty" required>
+                                {% for difficulty in difficulties %}
+                                    <option value="{{ difficulty.id }}" {% if challenge.difficulty_id == difficulty.id %} selected {% endif %}>{{ difficulty.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="type" id="inputGroup-type">Type</label>
+                            </div>
+                            <select class="custom-select" id="type" name="type" required>
+                                {% for type in types %}
+                                    <option value="{{ type.id }}" {% if challenge.type_id == type.id %} selected {% endif %}>{{ type.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">URL</span>
+                            </div>
+                            <input type="url" class="form-control" placeholder="Paste the link to the challenge" aria-describedby="basic-addon1" name="url" value="{{ challenge.url }}">
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Flag</span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="The challenge's answer" aria-describedby="basic-addon1" name="flag" value="{{ challenge.flag }}">
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="form-group">
+                            <button type="submit" name="saveChallenge" class="align-self-center btn btn-dark text-white">Save your challenge <i class="fa fa-save"></i></button>
+                            <button type="button" name="deleteChallenge" class="align-self-center btn btn-danger text-white" data-toggle="modal" data-target="#confirmDeletion">Delete <i class="fa fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="confirmDeletion" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content modal-contest">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Delete the challenge</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you really sure ?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-danger" name="deleteChallenge">Yes <i class="fa fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

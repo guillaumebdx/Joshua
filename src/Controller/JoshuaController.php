@@ -5,12 +5,12 @@ namespace App\Controller;
 use App\Model\ContestManager;
 use App\Model\UserManager;
 use App\Service\ContestDate;
-use App\Service\IndexFormControl;
-use App\Service\Ranking;
+use App\Service\Dispatch;
+use App\Service\UserConnection;
+use FormControl\IndexFormControl;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use App\Service\UserConnection;
 
 class JoshuaController extends AbstractController
 {
@@ -27,22 +27,22 @@ class JoshuaController extends AbstractController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $connectUser = new IndexFormControl($_POST);
-            $login = $connectUser->getProperty('email');
-            $password = $connectUser->getProperty('password');
+            $login       = $connectUser->getProperty('pseudo');
+            $password    = $connectUser->getProperty('password');
+
             if (count($connectUser->getErrors()) === 0) {
                 $userManager = new UserManager();
-                $user = $userManager->selectOneByEmail($login);
-                if ($user) {
-                    if ($login === $user['email']) {
-                        if (password_verify($password, $user['password'])) {
-                            UserConnection::openConnection($user['id']);
-                            header('Location: joshua/home');
-                        } else {
-                            $error = 'Invalid password !';
-                        }
+                $user        = $userManager->selectOneByPseudo($login);
+
+                if ($user && $login === $user['pseudo']) {
+                    if (password_verify($password, $user['password'])) {
+                        UserConnection::openConnection($user['id']);
+                        Dispatch::toUrl('/joshua/home');
+                    } else {
+                        $error = 'Invalid password !';
                     }
                 } else {
-                    $error = 'This email doesn\'t exist !';
+                    $error = 'This pseudo doesn\'t exist !';
                 }
             }
         }
@@ -62,32 +62,39 @@ class JoshuaController extends AbstractController
     public function home()
     {
         $contestManager = new ContestManager();
-        $visibleContests = $contestManager->getVisibleContests();
-
+        $visibleContests = $contestManager->selectAll(ContestManager::NOT_ENDED, ContestManager::ONLY_VISIBLE);
 
         $nbContests = count($visibleContests);
         for ($i = 0; $i < $nbContests; $i++) {
-            $visibleContests[$i]['active'] = (bool)$visibleContests[$i]['active'];
+            $visibleContests[$i]['is_active'] = (bool)$visibleContests[$i]['is_active'];
 
-            $beginning = $visibleContests[$i]['beginning'];
-            $duration = $visibleContests[$i]['duration'];
+            $beginning = $visibleContests[$i]['started_on'];
+            $duration  = $visibleContests[$i]['duration'];
 
-            $visibleContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration, 1);
+            $formattedDuration = ContestDate::getDurationInHoursAndMinutes($duration, ContestDate::ARRAY);
+            $visibleContests[$i]['formatted_duration'] = $formattedDuration;
             $visibleContests[$i]['end_date'] = ContestDate::getContestEndDate($beginning, $duration);
         }
 
         return $this->twig->render('Home/home.html.twig', ['contests' => $visibleContests]);
     }
 
+    /**
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function oldContests()
     {
         $contestManager = new ContestManager();
-        $oldContests = $contestManager->selectAll(2);
+        $oldContests    = $contestManager->selectAll(ContestManager::ENDED);
+        $nbContests     = count($oldContests);
 
-        $nbContests = count($oldContests);
         for ($i = 0; $i < $nbContests; $i++) {
-            $duration = $oldContests[$i]['duration'];
-            $oldContests[$i]['formatted_duration'] = ContestDate::getDurationInHoursAndMinutes($duration, 1);
+            $duration          = $oldContests[$i]['duration'];
+            $formattedDuration = ContestDate::getDurationInHoursAndMinutes($duration, ContestDate::ARRAY);
+            $oldContests[$i]['formatted_duration'] = $formattedDuration;
         }
 
         return $this->twig->render('Home/old_contests.html.twig', ['contests' => $oldContests]);

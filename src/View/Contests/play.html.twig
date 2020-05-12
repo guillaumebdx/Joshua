@@ -13,16 +13,9 @@
             {% if ended == false %}
             <div class="col-12 col-md-3 text-red text-left">
                 <img src="/assets/images/podium.svg" width="30"><br> <b>Ranking on fire</b>
-                <ul class="text-white ranking">
-                    <li class="podium first">Green-onions <span class="score">4/12</span></li>
-                    <li class="podium second">SlimCrack  <span class="score">4/12</span></li>
-                    <li class="podium third">Caro-anna  <span class="score">3/12</span></li>
-                    <li>Frvaillant  <span class="score">3/12</span></li>
-                    <li>Lolita  <span class="score">2/12</span></li>
-                    <li>fmMaster  <span class="score">1/12</span></li>
-                    <li>sqlDev  <span class="score">1/12</span></li>
-                    <li>javaJsAngular  <span class="score">0/12</span></li>
-                </ul>
+                <div id="users-rank">
+                    {% include 'Components/_ranking.html.twig' %}
+                </div>
             </div>
             <div class="col-12 col-md-6 flag-playground">
                 <h1>> {{ challengeOnTheWay.name }}</h1>
@@ -30,8 +23,10 @@
 
                 <div class="row mgb-15">
                     <div class="col-6 col-md-4 text-white text-center">
-                        <small class="info-challenge-title">Type of challenge</small><br>
-                        {{ challengeOnTheWay.type }}</small>
+                        <small class="info-challenge-title">
+                            Type of challenge<br>
+                        {{ challengeOnTheWay.type }}
+                        </small>
                     </div>
 
                     <div class="col-6 col-md-4 difficulty text-center" id="challenge-difficulty">
@@ -65,7 +60,7 @@
                 <div id="contest-timer" class="timer"></div>
                 <div class="steper">
                     {% for challenge in challenges %}
-                        <div class="step  {{ challenge.status }}">
+                        <div class="step {{ challenge.status }}">
                             <span class="step-order">
                                 {{ challenge.order }}
                             </span>
@@ -132,6 +127,7 @@
 {% endblock %}
 
 {% block javascript %}
+<script src="/assets/js/joshuaAjax.js"></script>
 <script src="/assets/js/flagChecker.js"></script>
 <script src="/assets/js/contestTimer.js"></script>
 <script>
@@ -142,5 +138,8 @@
             let solutionPoster = document.getElementById('solution-poster');
             solutionPoster.classList.add('hide');
         });
+        const timeToRefreshRanking = 30000;
+        let ranker = new joshuaAjax();
+        ranker.joshuaAjaxTimer('/contest/getRankingInContest/{{ contest.id }}', 'users-rank', timeToRefreshRanking);
 </script>
 {% endblock %}

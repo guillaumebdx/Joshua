@@ -3,12 +3,20 @@
 namespace App\Service;
 
 use DateTime;
-use DateTimeZone;
+use Exception;
 
 class ContestDate
 {
     const HOURS_IN_DAY = 24;
+    const STRING = 0;
+    const ARRAY = 1;
 
+    /**
+     * @param string|null $startedOn
+     * @param string $duration
+     * @return string|null
+     * @throws Exception
+     */
     public static function getContestEndDate(?string $startedOn, string $duration): ?string
     {
         if (isset($startedOn)) {
@@ -22,12 +30,25 @@ class ContestDate
     }
 
     /**
+     * @param array $contests
+     * @return array
+     * @throws Exception
+     */
+    public static function getContestsEndDateInArray(array $contests): array
+    {
+        foreach ($contests as $key => $contest) {
+            $contests[$key]['end_date'] = self::getContestEndDate($contest['started_on'], $contest['duration']);
+        }
+        return $contests;
+    }
+
+    /**
      * @param int $minutes
-     * Default string, if you want a array put 1;
      * @param int $format
+     * Default string, if you want a array put ContestDate::ARRAY.
      * @return mixed
      */
-    public static function getDurationInHoursAndMinutes(int $minutes, int $format = 0)
+    public static function getDurationInHoursAndMinutes(int $minutes, int $format = self::STRING)
     {
         $date1 = new DateTime('00:00:00');
         $date2 = new DateTime('00:00:00');
@@ -37,13 +58,17 @@ class ContestDate
         $duration['hours'] = $contestDuration->days * self::HOURS_IN_DAY + $contestDuration->h;
         $duration['minutes'] = $contestDuration->i;
 
+        if (strlen((string)$duration['minutes']) === 1) {
+            $duration['minutes'] = 0 . $duration['minutes'];
+        }
+
         if ($duration['hours'] === 0) {
-            $result = $duration['minutes'] . 'm';
+            $result = $duration['minutes'] . 'min';
         } else {
             $result = $duration['hours'] . 'h' . $duration['minutes'] . 'm';
         }
 
-        if ($format === 1) {
+        if ($format === self::ARRAY) {
             $result = $duration;
         }
 
@@ -53,15 +78,12 @@ class ContestDate
     /**
      * @param string $endDate
      * @return bool
+     * @throws Exception
      */
     public static function isEnded(string $endDate): bool
     {
         $now = new DateTime(date('Y-m-d H:i:s'));
         $endDate = new DateTime($endDate);
-        if ($endDate <= $now) {
-            return true;
-        } else {
-            return false;
-        }
+        return $endDate <= $now;
     }
 }

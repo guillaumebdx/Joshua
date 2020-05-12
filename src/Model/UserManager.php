@@ -2,18 +2,19 @@
 
 namespace App\Model;
 
-use \Exception;
+use App\Service\UserPaginator;
+use Exception;
 
 class UserManager extends AbstractManager
 {
-    /**
-     * @const table name
-     */
     const TABLE = 'user';
-    const LIMIT_LIST_USERS = 5;
+    const NOT_ADMIN = false;
+    const ADMIN = true;
+    const NOT_ACTIVE = false;
+    const ACTIVE = true;
 
     /**
-     * UserManager constructor.
+     * <p>UserManager constructor.</p>
      */
     public function __construct()
     {
@@ -21,6 +22,27 @@ class UserManager extends AbstractManager
     }
 
     /**
+     * <p>Select one user by a id, add campus and specialty.</p>
+     * @param int $id
+     * @return array
+     */
+    public function selectOneById(int $id): array
+    {
+        $query = 'SELECT u.id, is_admin, is_active, u.lastname, u.firstname, u.pseudo, u.github, u.email, u.password,'
+            . ' u.specialty_id, s.title AS specialty, u.campus_id, c.city AS campus, u.created_on, u.updated_on'
+            . ' FROM ' . self::TABLE . ' u'
+            . ' JOIN ' . SpecialtyManager::TABLE . ' s ON s.id = u.specialty_id'
+            . ' JOIN ' . CampusManager::TABLE . ' c ON c.id = u.campus_id'
+            . ' WHERE u.id = :id';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':id', $id, \PDO::PARAM_STR);
+        $statement->execute();
+
+        return $statement->fetch();
+    }
+
+    /**
+     * <p>Insert a new user.</p>
      * @param array $data
      * @return int
      * @throws Exception
@@ -49,6 +71,7 @@ class UserManager extends AbstractManager
     }
 
     /**
+     * <p>Edit a existing user.</p>
      * @param array $data
      */
     public function updateUser(array $data): void
@@ -72,26 +95,27 @@ class UserManager extends AbstractManager
         }
         $statement->bindValue(':specialty', $data['specialty'], \PDO::PARAM_INT);
         $statement->bindValue(':campus', $data['campus'], \PDO::PARAM_INT);
-
         $statement->execute();
     }
 
     /**
-     * @param string $email
-     * @return array
+     * <p>Select a user compared to a pseudo.</p>
+     * @param string $pseudo
+     * @return mixed
      */
-    public function selectOneByEmail(string $email): array
+    public function selectOneByPseudo(string $pseudo)
     {
-        $query     = 'SELECT * FROM ' . self::TABLE . ' WHERE email=:email';
+        $query     = 'SELECT * FROM ' . self::TABLE . ' WHERE pseudo=:pseudo';
         $statement = $this->pdo->prepare($query);
-        $statement->bindValue(':email', $email, \PDO::PARAM_STR);
-        $statement->execute();
-
-        return $statement->fetch();
+        $statement->bindValue(':pseudo', $pseudo, \PDO::PARAM_STR);
+        if ($statement->execute()) {
+            return $statement->fetch();
+        }
     }
 
     /**
-     * Total number of users
+     * <p>Get the number of user.</p>
+     * @param int $excluded [optional]<br>
      * @return int
      */
     public function getTotalUsers($excluded = 0): int
@@ -102,52 +126,43 @@ class UserManager extends AbstractManager
         }
         $statement = $this->pdo->prepare($query);
         $statement->execute();
-        $results   = $statement->fetch();
-        return $results['total'];
+        $results   = $statement->fetchAll();
+        return $results[0]['total'];
     }
 
     /**
-     * @return int
-     */
-    public function numberOfPages(): int
-    {
-        $nbPagesPre = $this->getTotalUsers($_SESSION['user_id']) / self::LIMIT_LIST_USERS;
-        $nbPages = ceil($nbPagesPre);
-        if (!is_integer($nbPagesPre)) {
-            $nbPages++;
-        }
-        return $nbPages;
-    }
-
-    /**
-     * Field to sort on
      * @param string $orderBy
-     * Sort order : ASC or DESC
+     * <p>Field to sort on</p>
      * @param string $sortOrder
-     * @param int $page
+     * <p>Sort order : ASC or DESC</p>
+     * @param int $page [optional]<br>
+     * @param int $excluded [optional]<br>
      * @return array
      */
     public function selectAllOrderBy(string $orderBy, string $sortOrder, int $page = 1, $excluded = 0): array
     {
-        $offset = ($page-1) * self::LIMIT_LIST_USERS;
+        $offset = ($page-1) * UserPaginator::LIMIT_LIST_USERS;
         $query  = 'SELECT * FROM ' . self::TABLE ;
         if ($excluded != 0) {
             $query .= ' WHERE id != ' . $excluded;
         }
         $query .=   ' ORDER BY ' . $orderBy . ' ' . $sortOrder .
-            ' LIMIT ' . self::LIMIT_LIST_USERS . ' OFFSET ' . $offset;
+            ' LIMIT ' . UserPaginator::LIMIT_LIST_USERS . ' OFFSET ' . $offset;
         $statement = $this->pdo->prepare($query);
         $statement->execute();
         return $statement->fetchAll();
     }
 
     /**
-     * Status of user : Admin = 1 / no-admin = 0
-     * @param int $status
-     * The user ID
+     * <p>Set a user admin or not.</p>
+     * @param bool $status
+     * <p>Status of user :</p>
+     * <ul><li>Set user admin : <b>UserManager::ADMIN</b></li>
+     * <li>Set user not admin : <b>UserManager::NOT_ADMIN</b></li></ul>
      * @param int $user
+     * <p>The user ID</p>
      */
-    public function userSetAdmin(int $status, int $user): void
+    public function userSetAdmin(bool $status, int $user): void
     {
         $query = 'UPDATE ' . self::TABLE . ' SET is_admin = :status WHERE id = :user';
         $statement = $this->pdo->prepare($query);
@@ -157,10 +172,14 @@ class UserManager extends AbstractManager
     }
 
     /**
-     * @param int $status
+     * <p>Set a user active or not.</p>
+     * @param bool $status
+     * <p>Status of user :</p>
+     * <ul><li>Set user active : <b>UserManager::ACTIVE</b></li>
+     * <li>Set user not active : <b>UserManager::NOT_ACTIVE</b></li></ul>
      * @param int $user
      */
-    public function userSetActive(int $status, int $user): void
+    public function userSetActive(bool $status, int $user): void
     {
         $query = 'UPDATE ' . self::TABLE . ' SET is_active = :status WHERE id = :user';
         $statement = $this->pdo->prepare($query);
