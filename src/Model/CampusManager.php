@@ -63,6 +63,20 @@ class CampusManager extends AbstractManager
         return $statement->fetchAll();
     }
 
+    public function campusExists(object $campus): bool
+    {
+        $campus = trim($campus->getProperty('city'));
+        $query = 'SELECT campus.city FROM ' . self::TABLE . ' WHERE city = :city';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':city', $campus, \PDO::PARAM_STR);
+        $statement->execute();
+        if ($statement->fetch()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * <p>Get the number of campus.</p>
      * @return int
