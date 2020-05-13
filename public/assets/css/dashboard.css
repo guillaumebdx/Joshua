@@ -93,6 +93,9 @@
     animation: flashing-red-white 1s infinite;
 }
 
+.players-number {
+    padding-top : 20px;
+}
 
 @media screen and (max-width: 800px) {
     .console {
