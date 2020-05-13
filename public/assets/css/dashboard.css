@@ -51,7 +51,7 @@
     font-size:1.3rem;
 }
 
-.console .timer-column #timer {
+.console .timer-column .timer {
     display:inline-block;
     height:auto;
     text-align:center;
@@ -82,6 +82,11 @@
     right:7px;
     font-size:1.5rem;
     color:var(--josh-red);
+    z-index:99999;
+}
+
+.console-closer:hover {
+    color:#fff;
 }
 
 .flash {
