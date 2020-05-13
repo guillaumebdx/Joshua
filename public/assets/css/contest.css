@@ -85,6 +85,11 @@
     margin-bottom:3px;
 }
 
+.type-of-challenge {
+    font-weight: bold;
+    color: var(--josh-red);
+}
+
 .difficulty {
     display:block;
     margin-bottom: 20px;
