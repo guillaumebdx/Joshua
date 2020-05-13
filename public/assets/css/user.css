@@ -16,6 +16,9 @@
 .header-palmares {
     background-color: #111111;
 }
+.header-palmares h2 {
+    font-size:1.5rem;
+}
 
 .title-collapse {
     color:var(--josh-red);
