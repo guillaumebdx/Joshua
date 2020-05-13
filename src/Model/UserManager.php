@@ -14,6 +14,7 @@ class UserManager extends AbstractManager
     const ADMIN = true;
     const NOT_ACTIVE = false;
     const ACTIVE = true;
+    const NB_OF_LAST_REGISTER_USER = 5;
 
     /**
      * <p>UserManager constructor.</p>
@@ -109,12 +110,24 @@ class UserManager extends AbstractManager
      */
     public function selectOneByPseudo(string $pseudo)
     {
-        $query     = 'SELECT * FROM ' . self::TABLE . ' WHERE pseudo=:pseudo';
+        $query     = 'SELECT * FROM ' . self::TABLE . ' WHERE pseudo = :pseudo';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':pseudo', $pseudo, \PDO::PARAM_STR);
         if ($statement->execute()) {
             return $statement->fetch();
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getLastRegisterUsers(): array
+    {
+        $query = 'SELECT id, pseudo, created_on FROM ' . self::TABLE .
+            ' ORDER BY created_on DESC LIMIT ' . self::NB_OF_LAST_REGISTER_USER;
+        $statement = $this->pdo->query($query);
+        $statement->execute();
+        return $statement->fetchAll();
     }
 
     /**

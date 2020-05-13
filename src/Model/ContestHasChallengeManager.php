@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Service\TextProcessing;
 use Exception;
 
 class ContestHasChallengeManager extends AbstractManager
@@ -38,7 +39,7 @@ class ContestHasChallengeManager extends AbstractManager
 
     public function selectChallengeInContestById(int $id)
     {
-        $query = 'SELECT * FROM ' . $this->table . ' WHERE challenge_id = :id';
+        $query = 'SELECT * FROM ' . self::TABLE . ' WHERE challenge_id = :id';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':id', $id, \PDO::PARAM_INT);
         $statement->execute();
@@ -79,7 +80,7 @@ class ContestHasChallengeManager extends AbstractManager
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':id', $id, \PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetchAll();
+        return TextProcessing::decodeSpecialCharsInArray($statement->fetchAll());
     }
 
     public function deleteChallengesInContest(int $id): void

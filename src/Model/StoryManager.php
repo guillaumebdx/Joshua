@@ -3,6 +3,8 @@
 
 namespace App\Model;
 
+use App\Service\TextProcessing;
+
 class StoryManager extends AbstractManager
 {
     const TABLE = 'story';
@@ -31,7 +33,7 @@ class StoryManager extends AbstractManager
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':contest', $contestId, \PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetchAll();
+        return TextProcessing::decodeSpecialCharsInArray($statement->fetchAll(), true);
     }
 
     /**

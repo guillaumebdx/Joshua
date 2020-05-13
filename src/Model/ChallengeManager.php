@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Service\ContestService;
 use App\Service\Dispatch;
+use App\Service\TextProcessing;
 use Exception;
 use FormControl\ChallengeFormControl;
 
@@ -77,7 +78,7 @@ class ChallengeManager extends AbstractManager
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':contestId', $contestId, \PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetchAll();
+        return TextProcessing::decodeSpecialCharsInArray($statement->fetchAll(), true);
     }
 
     /**
@@ -94,7 +95,7 @@ class ChallengeManager extends AbstractManager
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':contest', $contest, \PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetchAll();
+        return TextProcessing::decodeSpecialCharsInArray($statement->fetchAll(), true);
     }
 
     /**
@@ -119,7 +120,7 @@ class ChallengeManager extends AbstractManager
         $statement->execute();
         $results = $statement->fetchAll();
         if (!empty($results[0])) {
-            return $results[0];
+            return TextProcessing::decodeSpecialCharsInArray($results[0]);
         } else {
             if (!ContestService::isSolutionPossible($contest)) {
                 Dispatch::toUrl('/contest/results/' . $contest);
