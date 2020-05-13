@@ -5,13 +5,6 @@
 @import "contest.css";
 @import "error404.css";
 
-@font-face {
-    font-family: 'pixelmix';
-    src: url('../fonts/pixelmix.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
 @keyframes clignote {
     0% {
         opacity: 0.8;
@@ -30,7 +23,7 @@
 /* GENERAL */
 
 * {
-    --josh-major-font: 'pixelmix';
+    --josh-major-font: 'VT323', monospace;
     --josh-text-font: 'Overpass Mono', monospace;
     --josh-green : #adce86;
     --josh-grey : #1a1a1a;
@@ -118,9 +111,9 @@ h3 {
 }
 
 .btn {
-    border-radius:0;
+    border-radius: 0;
     font-family: var(--josh-major-font);
-    font-size:0.9rem;
+    font-size: 0.9rem;
 }
 
 /* END GENERAL */

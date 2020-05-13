@@ -17,6 +17,7 @@ class ContestService
      * </p>Start contest with the first challenge.</p>
      * @param int $contest
      * @return array
+     * @throws Exception
      */
     public function startFirstChallenge(int $contest): array
     {

@@ -9,6 +9,7 @@
 namespace App\Model;
 
 use App\Model\Connection;
+use PDO;
 
 /**
  * Abstract class handling default manager.
@@ -16,7 +17,7 @@ use App\Model\Connection;
 abstract class AbstractManager
 {
     /**
-     * @var \PDO
+     * @var PDO
      */
     protected $pdo; //variable de connexion
 
@@ -64,7 +65,7 @@ abstract class AbstractManager
         // prepared request
         $query = 'SELECT * FROM ' . $this->table . ' WHERE id = :id';
         $statement = $this->pdo->prepare($query);
-        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->bindValue(':id', $id, PDO::PARAM_INT);
         $statement->execute();
         return $statement->fetch();
     }

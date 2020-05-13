@@ -10,8 +10,9 @@ class ContestManager extends AbstractManager
 {
     const TABLE        = 'contest';
     const NOT_ENDED    = 1;
-    const STARTED      = 2;
-    const ENDED        = 3;
+    const NOT_STARTED  = 2;
+    const STARTED      = 3;
+    const ENDED        = 4;
     const ONLY_VISIBLE = true;
 
     /**
@@ -45,6 +46,8 @@ class ContestManager extends AbstractManager
             if ($isVisible === true) {
                 $query .= ' AND c.is_visible = 1';
             }
+        } elseif ($status === self::NOT_STARTED) {
+            $query .= ' WHERE started_on IS NULL';
         } elseif ($status === self::STARTED) {
             $query .= ' WHERE started_on IS NOT NULL AND NOW() < DATE_ADD(c.started_on,interval c.duration minute)';
         } elseif ($status === self::ENDED) {
