@@ -17,19 +17,14 @@ class SpecialtyManager extends AbstractManager
     /**
      * <p>Insert a new specialty.</p>
      * @param object $specialty
-     * @return int
+     * @return void
      */
-    public function insertSpecialty(object $specialty): int
+    public function insertSpecialty(object $specialty): void
     {
-
         $query = 'INSERT INTO ' . self::TABLE . ' (title) VALUES (:title)';
-
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':title', $specialty->getProperty('title'), \PDO::PARAM_STR);
-
-        if ($statement->execute()) {
-            return (int)$this->pdo->lastInsertId();
-        }
+        $statement->execute();
     }
 
     /**
@@ -43,5 +38,15 @@ class SpecialtyManager extends AbstractManager
         $statement->execute();
         $result = $statement->fetch();
         return $result['total'];
+    }
+    public function specialtyExists(object $specialty): bool
+    {
+        $specialty = trim($specialty->getProperty('title'));
+        $query     = 'SELECT * FROM ' . self::TABLE . ' WHERE title = :title';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':title', $specialty, \PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll();
+        return !empty($results);
     }
 }

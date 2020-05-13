@@ -412,25 +412,34 @@ class AdminController extends AbstractController
     public function addSpecialty()
     {
         $specialtyManager = new SpecialtyManager();
-        $errors           = [];
-        $specialty        = null;
-        $specialties      = $specialtyManager->selectAll();
+        $errors = [];
+        $specialty = null;
+        $specialties = $specialtyManager->selectAll();
+        $specialtyExist = false;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $specialty = new SpecialtyFormControl($_POST);
-            $errors    = $specialty->getErrors();
+            $errors = $specialty->getErrors();
             if (count($errors) === 0) {
-                $specialtyManager->insertSpecialty($specialty);
-                Dispatch::toUrl('/admin/addSpecialty');
+                if (!$specialtyManager->specialtyExists($specialty)) {
+                    $specialtyManager->insertSpecialty($specialty);
+                    $specialties = $specialtyManager->selectAll();
+                } else {
+                    $specialtyExist = true;
+                }
             }
-        }
-        $result=[
-            'errors'      => $errors,
-            'specialty'   => $specialty,
-            'specialties' => $specialties,
+            $result = [
+                'errors' => $errors,
+                'specialty' => $specialty,
+                'specialties' => $specialties,
+                'specialty_exist' => $specialtyExist,
 
-        ];
-        return $this->twig->render('Admin/specialty.html.twig', $result);
+            ];
+            return $this->twig->render('Admin/specialty.html.twig', $result);
+
+            $specialtyManager->insertSpecialty($specialty);
+            Dispatch::toUrl('/admin/addSpecialty');
+        }
     }
 
     // TYPES
