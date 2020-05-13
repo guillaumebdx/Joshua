@@ -44,7 +44,7 @@ class JoshuaController extends AbstractController
                     }
                 } else {
                     if ($user && !$user['is_active']) {
-                        $error = 'This account is inactive';
+                        $error = 'This account is inactive !';
                     } else {
                         $error = 'This pseudo doesn\'t exist !';
                     }
