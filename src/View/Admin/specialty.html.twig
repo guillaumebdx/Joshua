@@ -8,9 +8,9 @@
           </div>
       </div>
       <div class="container">
-          <div class="col-12 col-md-4 offset-md-4"
+          <div class="col-12 col-md-4 offset-md-4">
               <form class="" method="post">
-                  <div class="row-specialty">
+                  <div class="row">
                       <div class="input-group specialty mb-3">
                           <div class="input-group-prepend">
                               <span class="input-group-text" id="basic-addon1">Specialty</span>
@@ -20,27 +20,27 @@
                       </div>
                       <p class="text-white">{{ errors.error_title }}</p>
                   </div>
-
-                  <div class="{% if(specialty_exist == 0) %} hide {% endif %} text-red">This specialty already exist</div>
-                  <p class="text-white">{{ errors.error_title }}</p>
+                  <div class="{% if(specialty_exist == 0) %} hide {% endif %} text-red">This specialty already exist
+                      <p class="text-white">{{ errors.error_title }}</p>
+                  </div>
+                  <div class="row">
+                    <button class="btn specialty text-white " type="submit" class="btn btn-primary">Add Specialty</button>
+                  </div>
+              </form>
+          </div>
+          <div class="col-12 col-md-4 offset-md-4 mgt-20">
+              <div class="row">
+                  <div class="form-group col-12 pl-0 pr-0">
+                      <label class="text-white"> All Specialties</label>
+                      <ul class="form-control list-specialty" id="exampleFormControlSelect2">
+                        {% for specialty in specialties %}
+                        <li>{{ specialty.title }}</li>
+                        {% endfor %}
+                      </ul>
+                  </div>
               </div>
-              <button class="btn specialty text-white " type="submit" class="btn btn-primary">Add Specialty</button>
-          </form>
-
-
-        <div class="mgt-20">
-            <div class="form-group">
-                <label class="text-white"> All Specialties</label>
-                <ul multiple class="form-control list-specialty" id="exampleFormControlSelect2">
-                    {% for specialty in specialties %}
-                    <li>{{ specialty.title }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-
-
-    </div>
-</div>
+          </div>
+      </div>
+  </div>
     {% endblock %}
 
