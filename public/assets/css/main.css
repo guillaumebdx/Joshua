@@ -38,6 +38,7 @@ main {
 body {
     background-color: var(--josh-grey);
     font-family: var(--josh-text-font);
+    overflow-x:hidden;
 }
 
 h1 {

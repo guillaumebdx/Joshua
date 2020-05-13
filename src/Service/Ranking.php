@@ -29,14 +29,16 @@ class Ranking
     {
         $playerManager = new UserHasContestManager();
         $ranking       = $playerManager->getContestRanking($contest);
-        $suffix        = ['', 'st', 'nd', 'rd'];
-        $userRank      = array_search($_SESSION['user_id'], array_keys($ranking)) + 1;
-        $rank          = ($userRank <= 3) ? $userRank . $suffix[$userRank] : $userRank . 'th';
-        $medals        = ['', 'gold', 'silver', 'bronze'];
-        return [
-            'rank'          => $rank,
-            'medal'         => (isset($medals[$userRank]) ? $medals[$userRank] : ''),
-            'flags_succeed' => $ranking[$_SESSION['user_id']]['flags_succeed'],
-        ];
+        $flagsSucceed  = (isset($ranking[$_SESSION['user_id']]['flags_succeed'])) ?
+            $ranking[$_SESSION['user_id']]['flags_succeed'] : 0;
+            $suffix = ['', 'st', 'nd', 'rd'];
+            $userRank = array_search($_SESSION['user_id'], array_keys($ranking)) + 1;
+            $rank = ($userRank <= 3) ? $userRank . $suffix[$userRank] : $userRank . 'th';
+            $medals = ['', 'gold', 'silver', 'bronze'];
+            return [
+                'rank' => $rank,
+                'medal' => (isset($medals[$userRank]) ? $medals[$userRank] : ''),
+                'flags_succeed' => $flagsSucceed,
+            ];
     }
 }
