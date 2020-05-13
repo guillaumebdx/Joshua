@@ -34,9 +34,6 @@
     font-size:0.7rem;
 }
 
-.input-group-append, .input-group-prepend {
-    display:initial;
-}
 .input-group-append button {
     max-height:38px;
     border:none;
