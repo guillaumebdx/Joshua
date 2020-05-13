@@ -3,19 +3,19 @@
 {% block title %}Game Master{% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div class="container-admin">
         <div class="row d-flex justify-content-around">
             <h1>Admin dashboard</h1>
         </div>
         <div class="row d-flex justify-content-around card-deck">
-            <div class="card dashboard-card col-12 col-md-4">
+            <div class="card dashboard-card ">
                 <h5 class="card-header">Challenges</h5>
                 <div class="card-body">
                     <p>
                         <span class="number text-red">{{ total_challenges }}</span> challenges.
                     </p>
                     <div class="form-group">
-                        <a class="btn btn-dark" href="/admin/managechallenge"><i class="fas fa-plus"></i> Challenges</a>
+                        <a class="btn btn-dark" href="/admin/managechallenge"><i class="fas fa-flag"></i> Manage challenges</a>
                     </div>
                     <div class="form-group">
                         <select id="challenge-list" class="custom-select">
@@ -27,19 +27,20 @@
                         <a class="btn btn-dark" href="#" id="edit-challenge-btn"><i class="fas fa-edit"></i> Edit</a><br>
                     </div>
                     <div class="form-group">
-                    <a class="btn btn-dark" href="/admin/addType"><i class="fas fa-folder"></i> Types</a>
+                    <a class="btn btn-dark" href="/admin/addType"><i class="fas fa-folder"></i> Manage types</a>
                     </div>
                 </div>
             </div>
 
-            <div class="card dashboard-card  col-12 col-md-4">
+            <div class="card dashboard-card">
                 <h5 class="card-header">Contests</h5>
                 <div class="card-body">
                     <p>
-                        <span class="number text-red">{{ total_contests }}</span> contests.
+                        <span class="number text-red">{{ nb_contests_not_ended }}</span> contests,
+                        <span class="number text-red">{{ nb_contests_ended }}</span> ended.
                     </p>
                     <div class="form-group">
-                        <a class="btn btn-dark" href="/admin/managecontest"><i class="fas fa-plus"></i> contests</a>
+                        <a class="btn btn-dark" href="/admin/managecontest"><i class="fas fa-flag-checkered"></i> Manage contests</a>
                     </div>
                     <div class="form-group">
                         <select id="contest-list" class="custom-select">
@@ -67,19 +68,25 @@
                 </div>
             </div>
 
-            <div class="card dashboard-card  col-12 col-md-4">
+            <div class="card dashboard-card">
                 <h5 class="card-header">Users</h5>
                 <div class="card-body">
                     <p>
                         <span class="number text-red">{{ total_users }}</span> users.
                     </p>
                     <div class="form-group">
-                        <a class="btn btn-dark" href="/admin/manageusers"><i class="fas fa-user-cog"></i> Users</a><br>
+                        <a class="btn btn-dark" href="/admin/manageusers"><i class="fas fa-user-cog"></i> Manage users</a><br>
                     </div>
+                    <p class="text-red bold">Last registered user :</p>
+                    <ul class="pl-0">
+                    {% for last_register in last_registers %}
+                        <li><span class="bold">- {{ last_register.pseudo }}</span><br><small>on {{ last_register.created_on }}</small></li>
+                    {% endfor %}
+                    </ul>
                 </div>
             </div>
 
-            <div class="card dashboard-card  col-12 col-md-4">
+            <div class="card dashboard-card">
                 <h5 class="card-header">Wild Campuses</h5>
                 <div class="card-body">
                     <p>
@@ -89,10 +96,10 @@
                         <span class="number text-red">{{ total_specialties }}</span> specialties.
                     </p>
                     <div class="form-group">
-                        <a class="btn btn-dark" href="/admin/addcampus"><i class="fas fa-graduation-cap"></i> Campuses</a><br>
+                        <a class="btn btn-dark" href="/admin/addcampus"><i class="fas fa-graduation-cap"></i> Manage campuses</a><br>
                     </div>
                     <div class="form-group">
-                        <a class="btn btn-dark" href="/admin/addSpecialty"><i class="fab fa-codepen"></i> Specialties</a><br>
+                        <a class="btn btn-dark" href="/admin/addSpecialty"><i class="fab fa-codepen"></i> Manage specialties</a><br>
                     </div>
 
                 </div>

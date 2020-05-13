@@ -38,14 +38,16 @@ class AdminController extends AbstractController
         $challenges         = $challengeManager->selectAll();
         $numberOfChallenges = count($challenges);
 
-        $contestManager   = new ContestManager();
-        $contests         = $contestManager->selectAll(ContestManager::NOT_STARTED);
-        $numberOfContests = $contestManager->getTotalNumberOfContestNotEnded();
-        $activeContests   = $contestManager->selectAll(ContestManager::STARTED);
-        $activeContests   = ContestDate::getContestsEndDateInArray($activeContests);
+        $contestManager       = new ContestManager();
+        $contests             = $contestManager->selectAll(ContestManager::NOT_STARTED);
+        $nbOfContestsNotEnded = $contestManager->getTotalNumberOfContestNotEnded();
+        $nbOfContestsEnded    = $contestManager->getTotalNumberOfContestEnded();
+        $activeContests       = $contestManager->selectAll(ContestManager::STARTED);
+        $activeContests       = ContestDate::getContestsEndDateInArray($activeContests);
 
-        $userManager = new UserManager();
-        $totalUsers  = $userManager->getTotalUsers();
+        $userManager   = new UserManager();
+        $totalUsers    = $userManager->getTotalUsers();
+        $lastRegisters = $userManager->getLastRegisterUsers();
 
         $campusManager = new CampusManager();
         $totalCampuses = $campusManager->getTotalNumberOfCampus();
@@ -54,14 +56,16 @@ class AdminController extends AbstractController
         $totalSpecialties  = $specialtyManager->getTotalNumberOfSpecialties();
 
         return $this->twig->render('Admin/admin.html.twig', [
-            'total_challenges'    => $numberOfChallenges,
-            'challenges'          => $challenges,
-            'contests'            => $contests,
-            'total_contests'      => $numberOfContests,
-            'active_contests'     => $activeContests,
-            'total_users'         => $totalUsers,
-            'total_campuses'      => $totalCampuses,
-            'total_specialties'   => $totalSpecialties,
+            'total_challenges'      => $numberOfChallenges,
+            'challenges'            => $challenges,
+            'contests'              => $contests,
+            'nb_contests_not_ended' => $nbOfContestsNotEnded,
+            'nb_contests_ended'     => $nbOfContestsEnded,
+            'active_contests'       => $activeContests,
+            'total_users'           => $totalUsers,
+            'last_registers'        => $lastRegisters,
+            'total_campuses'        => $totalCampuses,
+            'total_specialties'     => $totalSpecialties,
         ]);
     }
 

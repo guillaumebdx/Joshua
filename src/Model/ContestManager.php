@@ -50,7 +50,7 @@ class ContestManager extends AbstractManager
      * <p>Put <b>ContestManager::ONLY_VISIBLE</b>, used only for <b>ContestManager::NOT_ENDED</b><br>
      * Allows you to refine the selection to only those visible.</p>
      * @return array
-     * <p>Return an array of contests with correct chars.</p>
+     * <p>Return an array of contests with decoded chars.</p>
      */
     public function selectAll(int $status = null, bool $isVisible = null): array
     {
@@ -75,13 +75,27 @@ class ContestManager extends AbstractManager
     }
 
     /**
-     * <p>Get the number of contest.</p>
+     * <p>Get the number of contest not ended.</p>
      * @return int
      */
     public function getTotalNumberOfContestNotEnded(): int
     {
         $query = 'SELECT count(*) as total FROM ' . self::TABLE .
-            ' WHERE (started_on IS NULL OR NOW() < DATE_ADD(started_on,interval duration minute))';
+            ' WHERE started_on IS NULL OR NOW() < DATE_ADD(started_on,interval duration minute)';
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+        $result = $statement->fetch();
+        return $result['total'];
+    }
+
+    /**
+     * <p>Get the number of contest ended.</p>
+     * @return int
+     */
+    public function getTotalNumberOfContestEnded(): int
+    {
+        $query = 'SELECT count(*) as total FROM ' . self::TABLE .
+            ' WHERE NOW() > DATE_ADD(started_on,interval duration minute)';
         $statement = $this->pdo->prepare($query);
         $statement->execute();
         $result = $statement->fetch();
@@ -186,7 +200,7 @@ class ContestManager extends AbstractManager
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':user', $user, \PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetchAll();
+        return TextProcessing::decodeSpecialCharsInArray($statement->fetchAll(), true);
     }
 
     /**

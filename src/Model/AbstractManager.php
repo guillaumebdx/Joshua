@@ -9,6 +9,7 @@
 namespace App\Model;
 
 use App\Model\Connection;
+use App\Service\TextProcessing;
 use PDO;
 
 /**
@@ -50,7 +51,7 @@ abstract class AbstractManager
     public function selectAll(): array
     {
         $query = 'SELECT * FROM ' . $this->table;
-        return $this->pdo->query($query)->fetchAll();
+        return TextProcessing::decodeSpecialCharsInArray($this->pdo->query($query)->fetchAll(), true);
     }
 
     /**
@@ -67,6 +68,6 @@ abstract class AbstractManager
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':id', $id, PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetch();
+        return TextProcessing::decodeSpecialCharsInArray($statement->fetch());
     }
 }
