@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\Service\ContestDate;
+use App\Service\TextProcessing;
 use Exception;
 use FormControl\ContestFormControl;
 
@@ -24,6 +25,22 @@ class ContestManager extends AbstractManager
     }
 
     /**
+     * <p>Get one contest by his id.</p>
+     * @param int $id
+     * <p>Put the id of the needed contest.</p>
+     * @return array
+     * <p>Return a array with decoded chars.</p>
+     */
+    public function selectOneById(int $id)
+    {
+        $query = 'SELECT * FROM ' . self::TABLE . ' WHERE id = :id';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+        return TextProcessing::decodeSpecialCharsInArray($statement->fetch());
+    }
+
+    /**
      * <p>Get all contests according to the requested parameter.</p>
      * @param int $status [optional]<br>
      * Put <b>ContestManager::NOT_ENDED</b> for all contest minus those finished.<br>
@@ -33,6 +50,7 @@ class ContestManager extends AbstractManager
      * <p>Put <b>ContestManager::ONLY_VISIBLE</b>, used only for <b>ContestManager::NOT_ENDED</b><br>
      * Allows you to refine the selection to only those visible.</p>
      * @return array
+     * <p>Return an array of contests with correct chars.</p>
      */
     public function selectAll(int $status = null, bool $isVisible = null): array
     {
@@ -53,17 +71,17 @@ class ContestManager extends AbstractManager
         } elseif ($status === self::ENDED) {
             $query .= ' WHERE NOW() > DATE_ADD(c.started_on,interval c.duration minute)';
         }
-
-        return $this->pdo->query($query)->fetchAll();
+        return TextProcessing::decodeSpecialCharsInArray($this->pdo->query($query)->fetchAll(), true);
     }
 
     /**
      * <p>Get the number of contest.</p>
      * @return int
      */
-    public function getTotalNumberOfContest(): int
+    public function getTotalNumberOfContestNotEnded(): int
     {
-        $query = 'SELECT count(*) as total FROM ' . self::TABLE;
+        $query = 'SELECT count(*) as total FROM ' . self::TABLE .
+            ' WHERE (started_on IS NULL OR NOW() < DATE_ADD(started_on,interval duration minute))';
         $statement = $this->pdo->prepare($query);
         $statement->execute();
         $result = $statement->fetch();
