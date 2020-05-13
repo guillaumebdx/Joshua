@@ -34,7 +34,7 @@ class challengeRemover {
         const liHtml = '<li id="toadd-' + this.challengeId + '"'
             + 'class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2" '
             + ' data-difficulty="' + this.dificulty + '" data-name="' + this.challengeName + '" data-challenge="' + this.challengeId + '"> '
-            + '<i class="fa fa-flag mgr-7"></i>' + this.challengeName + ' (' + this.dificulty + '/5)'
+            + '<i class="fa fa-flag mgr-7"></i>' + this.challengeName + ' <img src="/assets/images/d' + this.dificulty + '.svg">'
             + '<button id="adderBtn' + this.challengeId + '" type="button" data-target="toadd-' + this.challengeId + '" class="btn btn-dark text-white rounded-sm p-0 pl-1 pr-1 challenge-adder float-right">Add</button>'
             + '</li>';
         console.log(liHtml)

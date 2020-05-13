@@ -31,7 +31,7 @@ class challengeAdder {
         const liHtml = '<li id="challenge-id' + this.challengeId+ '" data-difficulty="' + this.dificulty + '" data-challenge="' + this.challengeId+ '" data-name="' + this.challengeName + '" '
             + 'class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2 draggable">'
             + '<span class="list-order-number mgr-7">' + this.numberOfLines + '</span>'
-            + '<i class="fa fa-flag mgr-7"></i>' + this.challengeName + ' (' + this.dificulty + '/5)'
+            + '<i class="fa fa-flag mgr-7"></i>' + this.challengeName + ' <img src="/assets/images/d' + this.dificulty + '.svg"> '
             + '<a href="#" class="remover float-right" id="remover' + this.challengeId+ '" data-target="challenge-id' + this.challengeId+ '"><img src="/assets/images/close.svg"></a>'
             + '</li>';
         return liHtml;
