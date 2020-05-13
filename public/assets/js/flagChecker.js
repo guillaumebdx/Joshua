@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
             let solutionForm         = document.getElementById('solution-form');
             const errorMessage       = document.getElementById('error-message');
             const spinner            = document.getElementById('spinner-solution');
-            const successMessageText = '<img src="/assets/images/white-right-flag.svg" width="40"> You Won :-) <a class="btn btn-dark text-white" href="/contest/play/' + contest_id + '">> Next step</a>';
-            const errorMessageText   = 'Your solution is wrong :-(';
+            const successMessageText = '<img src="/assets/images/white-right-flag.svg" width="40"> That\'s it. <a class="btn btn-dark text-white" href="/contest/play/' + contest_id + '">> Next step</a>';
+            const errorMessageText   = 'Certainly not.';
 
             spinner.classList.remove('hide');
 
