@@ -53,6 +53,10 @@ table.adminusers tr td {
     padding: 10px 0 ;
 }
 
+span.input-group-text, label.input-group-text {
+    font-size:1rem;
+}
+
 .custom-control-input:checked ~ .custom-control-label::before {
     border-color: var(--josh-red);
     background-color:  var(--josh-red);
@@ -74,6 +78,20 @@ table.adminusers tr td {
     color:white;
 }
 
+.toast {
+    position:absolute;
+    top:68px;
+    right:20px;
+    z-index:9999;
+}
+.toast-body {
+    background:rgba(255,255,255, 1);
+}
+
+.scrollable-content {
+    max-height: 70vh;
+    overflow: scroll;
+}
 /* END ADMIN USERS */
 
 /* CONTEST */
@@ -110,15 +128,15 @@ table.adminusers tr td {
 
 .existing_challenge {
     font-family: var(--josh-major-font);
-    font-size: 0.8rem;
+    font-size: 1.3rem;
 }
 
 .existing_challenge span {
-    font-size: 0.6rem;
+    font-size: 1rem;
 }
 
 .list-group-item-dark .btn {
-    font-size: 0.8rem;
+    font-size: 1.1rem;
 }
 
 .list-container {
@@ -132,19 +150,15 @@ table.adminusers tr td {
 
 .activated {
     font-family: var(--josh-major-font);
-    font-size: 0.8rem;
+    font-size: 1rem;
     animation: activated 2s infinite;
     background-color: var(--josh-red);
     border: 1px solid transparent;
 }
 
-.activated-buttons {
-    width: 6.5rem;
-}
-
 .display-switch {
     font-family: var(--josh-major-font);
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
 /* END CONTEST */
@@ -157,7 +171,6 @@ ul {
 
 .list-specialty {
     height: auto;
-    width:42%;
     line-height: normal;
 }
 
@@ -183,7 +196,6 @@ ul {
 .btn.specialty {
     border-radius: 1px;
     border-color: grey;
-    margin-left: 13rem;
 }
 
 .btn-campus {

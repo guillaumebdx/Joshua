@@ -35,22 +35,7 @@ for (let i=0; i<showHide.length; i++) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    /**
-     * Adjust labels sizes to make them equals
-     */
-    if (document.getElementsByClassName('input-group-text')) {
-        $labels = document.getElementsByClassName('input-group-text');
 
-        let maxSize = 0;
-        for (let i = 0; i < $labels.length; i++) {
-            if ($labels[i].offsetWidth > maxSize) {
-                maxSize = $labels[i].offsetWidth;
-            }
-        }
-        for (let i = 0; i < $labels.length; i++) {
-            $labels[i].style.width = maxSize + 'px';
-        }
-    }
     /**
      *
      * @type {formControl}

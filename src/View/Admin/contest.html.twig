@@ -11,7 +11,7 @@
     </div>
     <div class="row">
         <div class="col-4 offset-1">
-            <div class="text-center pb-3">
+            <div class="text-left pb-3">
                 <h2>Existing contests</h2>
             </div>
             <div class="row list-container overflow-auto">
@@ -38,19 +38,23 @@
                     </div>
                     <li class="list-group-item list-group-item-dark rounded-sm p-1 pl-2 mb-2">
                         <p class="mb-0 existing_challenge pb-1"><i class="fa fa-flag-checkered"></i> {{ contest.name }} <span class="float-right mr-1">{{ contest.campus }} <i class="fa fa-map-marker-alt"></i></span></p>
-                        <div class="row col-9 d-flex justify-content-between align-items-center p-0 ml-0">
+                        <div class="row col-12 d-flex justify-content-between align-items-start p-0 ml-0">
                             {% if (contest.is_active == '0') %}
+                            <div class="text-left col-4">
                                 <a class="btn btn-dark text-white rounded-sm mt-1 p-0 pl-1 pr-1" href="/admin/editcontest/{{ contest.id }}">Edit</a>
+                            </div>
                             {% endif %}
-                            <div>
-                                <button class="btn btn-success rounded-sm mt-1 text-center p-0 pl-1 pr-1 activated-buttons" data-toggle="modal" data-target="#activateContest{{ contest.id }}" {% if (contest.is_active == '1') %} hidden {% endif %}>Activate</button>
-                                <p class="mb-0 mt-1 text-center rounded-sm text-white activated activated-buttons" {% if (contest.is_active == '0') %} hidden {% endif %}>Activated</p>
+                            <div class="text-center col-4" {% if (contest.is_active == '1') %} hidden {% endif %}>
+                                <button class="btn btn-success rounded-sm mt-1 text-center p-0 pl-1 pr-1 activated-buttons contest-activator" data-toggle="modal" data-target="#activateContest{{ contest.id }}">Activate</button>
+                            </div>
+                            <div class="col-4 offset-8" {% if (contest.is_active == '0') %} hidden {% endif %}>
+                                <p class="mb-0 mt-1 text-center rounded-sm text-white activated">Activated</p>
                             </div>
                             {% if (contest.is_active == '0') %}
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input manage-contest-display" id="display-{{ contest.id }}" data-visible="{{ contest.is_visible }}" data-id="{{ contest.id }}" {% if (contest.is_visible == '1') %} checked {% endif %}>
-                                    <label class="custom-control-label display-switch mt-1" for="display-{{ contest.id }}">Display</label>
-                                </div>
+                            <div class="custom-control custom-switch text-right col-4">
+                                <input type="checkbox" class="custom-control-input manage-contest-display" id="display-{{ contest.id }}" data-visible="{{ contest.is_visible }}" data-id="{{ contest.id }}" {% if (contest.is_visible == '1') %} checked {% endif %}>
+                                <label class="custom-control-label display-switch mt-1" for="display-{{ contest.id }}">Display</label>
+                            </div>
                             {% endif %}
                         </div>
                     </li>
@@ -60,8 +64,8 @@
         </div>
         <div class="col-4 offset-2">
             <form action="" method="post">
-                <div class="row d-flex justify-content-center">
-                    <div class="text-center pb-3">
+                <div class="row d-flex justify-content-start">
+                    <div class="text-left pb-3">
                         <h2>Create a contest</h2>
                     </div>
                 </div>
@@ -110,12 +114,12 @@
                         <input type="url" class="form-control" placeholder="Paste here the url of the image" aria-describedby="basic-addon1" name="image" value="{{ contest.image }}">
                     </div>
                 </div>
-                <div class="row d-flex justify-content-center">
+                <div class="row d-flex justify-content-start">
                     <div class="form-group">
                         <button type="submit" name="createFullContest" class="align-self-center btn btn-dark text-white">Next step (add challenges) <i class="fa fa-arrow-right"></i></button>
                     </div>
                 </div>
-                <div class="row d-flex justify-content-center">
+                <div class="row d-flex justify-content-start">
                     <div class="form-group">
                         <button type="submit" name="createBlankContest" class="align-self-center btn btn-dark text-white">Create a blank contest <i class="fa fa-save"></i></button>
                     </div>
