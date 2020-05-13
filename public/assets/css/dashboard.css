@@ -15,6 +15,7 @@
 .dashboard-card h5 {
     font-family: var(--josh-major-font);
     color:var(--josh-red);
+    font-size:1.7rem;
 }
 .dashboard-card .btn-dark {
    text-align:left;
@@ -85,4 +86,11 @@
 
 .flash {
     animation: flashing-red-white 1s infinite;
+}
+
+
+@media screen and (max-width: 800px) {
+    .console {
+       overflow:scroll
+    }
 }

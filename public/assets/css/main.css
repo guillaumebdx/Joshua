@@ -5,13 +5,6 @@
 @import "contest.css";
 @import "error404.css";
 
-@font-face {
-    font-family: 'pixelmix';
-    src: url('../fonts/pixelmix.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
 @keyframes clignote {
     0% {
         opacity: 0.8;
@@ -30,7 +23,7 @@
 /* GENERAL */
 
 * {
-    --josh-major-font: 'pixelmix';
+    --josh-major-font: 'VT323', monospace;
     --josh-text-font: 'Overpass Mono', monospace;
     --josh-green : #adce86;
     --josh-grey : #1a1a1a;
@@ -50,18 +43,19 @@ body {
 h1 {
     font-family: var(--josh-major-font);
     color: var(--josh-green);
-    font-size:2rem;
+    font-size:3rem;
     padding:35px 0;
 }
 
 h2 {
     font-family: var(--josh-major-font);
     color: var(--josh-green);
-    font-size: 1.2rem;
+    /*font-size: 1.5rem;*/
 }
 
 h3 {
     color: white;
+    font-size:1.3rem;
 }
 
 .error {
@@ -72,6 +66,14 @@ h3 {
 .success {
     background-color: var(--josh-green);
     color:var(--josh-grey);
+}
+
+.btn {
+    padding:0px 8px;
+}
+
+.btn i {
+    font-size:0.9rem;
 }
 
 .btn.show-pass i {
@@ -118,15 +120,24 @@ h3 {
 }
 
 .btn {
-    border-radius:0;
+    border-radius: 0;
     font-family: var(--josh-major-font);
-    font-size:0.9rem;
+    font-size: 1.3rem;
 }
 
 /* END GENERAL */
 
 /* HEADER */
-
+#navbarNav {
+    height:60px;
+}
+.navbar-nav {
+    height:60px;
+}
+.navbar-nav li {
+    height:60px;
+    line-height: 60px;
+}
 .navbar {
     background-color: var(--josh-grey);
 }
@@ -138,14 +149,14 @@ nav.nav-item {
 
 nav .nav-link:hover {
     color: var(--josh-green) !important;
-    font-size: 1.2rem;
-    transition: 0.4s;
+    font-size: 1.3rem;
+    transition: 0.3s;
 }
 
 nav .nav-link {
     font-size: 1.1rem;
     font-variant-caps: small-caps;
-    padding: 0 20px !important;
+    padding: 0 15px !important;
 
 }
 
@@ -163,13 +174,13 @@ nav .nav-link {
     width: 50px;
     height: 50px;
     margin: 0 5px;
-    border: 1px solid var(--josh-green);
-    background-color: var(--josh-green);
+    border: 1px solid gray;
+    background-color: gray;
 }
 
 .icon:hover {
-    background-color: var(--josh-red);
-    border: 1px solid var(--josh-red);
+    background-color: var(--josh-green);
+    border: 1px solid var(--josh-green);
 }
 
 .icon-facebook {

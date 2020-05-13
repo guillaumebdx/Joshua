@@ -39,8 +39,8 @@ class AdminController extends AbstractController
         $numberOfChallenges = count($challenges);
 
         $contestManager   = new ContestManager();
-        $contests         = $contestManager->selectAll(ContestManager::NOT_ENDED);
-        $numberOfContests = count($contests);
+        $contests         = $contestManager->selectAll(ContestManager::NOT_STARTED);
+        $numberOfContests = $contestManager->getTotalNumberOfContestNotEnded();
         $activeContests   = $contestManager->selectAll(ContestManager::STARTED);
         $activeContests   = ContestDate::getContestsEndDateInArray($activeContests);
 

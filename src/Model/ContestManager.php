@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\Service\ContestDate;
+use App\Service\TextProcessing;
 use Exception;
 use FormControl\ContestFormControl;
 
@@ -10,8 +11,9 @@ class ContestManager extends AbstractManager
 {
     const TABLE        = 'contest';
     const NOT_ENDED    = 1;
-    const STARTED      = 2;
-    const ENDED        = 3;
+    const NOT_STARTED  = 2;
+    const STARTED      = 3;
+    const ENDED        = 4;
     const ONLY_VISIBLE = true;
 
     /**
@@ -20,6 +22,22 @@ class ContestManager extends AbstractManager
     public function __construct()
     {
         parent::__construct(self::TABLE);
+    }
+
+    /**
+     * <p>Get one contest by his id.</p>
+     * @param int $id
+     * <p>Put the id of the needed contest.</p>
+     * @return array
+     * <p>Return a array with decoded chars.</p>
+     */
+    public function selectOneById(int $id)
+    {
+        $query = 'SELECT * FROM ' . self::TABLE . ' WHERE id = :id';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+        return TextProcessing::decodeSpecialCharsInArray($statement->fetch());
     }
 
     /**
@@ -32,6 +50,7 @@ class ContestManager extends AbstractManager
      * <p>Put <b>ContestManager::ONLY_VISIBLE</b>, used only for <b>ContestManager::NOT_ENDED</b><br>
      * Allows you to refine the selection to only those visible.</p>
      * @return array
+     * <p>Return an array of contests with correct chars.</p>
      */
     public function selectAll(int $status = null, bool $isVisible = null): array
     {
@@ -45,22 +64,24 @@ class ContestManager extends AbstractManager
             if ($isVisible === true) {
                 $query .= ' AND c.is_visible = 1';
             }
+        } elseif ($status === self::NOT_STARTED) {
+            $query .= ' WHERE started_on IS NULL';
         } elseif ($status === self::STARTED) {
             $query .= ' WHERE started_on IS NOT NULL AND NOW() < DATE_ADD(c.started_on,interval c.duration minute)';
         } elseif ($status === self::ENDED) {
             $query .= ' WHERE NOW() > DATE_ADD(c.started_on,interval c.duration minute)';
         }
-
-        return $this->pdo->query($query)->fetchAll();
+        return TextProcessing::decodeSpecialCharsInArray($this->pdo->query($query)->fetchAll(), true);
     }
 
     /**
      * <p>Get the number of contest.</p>
      * @return int
      */
-    public function getTotalNumberOfContest(): int
+    public function getTotalNumberOfContestNotEnded(): int
     {
-        $query = 'SELECT count(*) as total FROM ' . self::TABLE;
+        $query = 'SELECT count(*) as total FROM ' . self::TABLE .
+            ' WHERE (started_on IS NULL OR NOW() < DATE_ADD(started_on,interval duration minute))';
         $statement = $this->pdo->prepare($query);
         $statement->execute();
         $result = $statement->fetch();
