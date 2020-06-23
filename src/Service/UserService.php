@@ -26,10 +26,10 @@ class UserService extends AbstractController
         }
     }
 
-    public static function mailAlreadyExists(string $eMail): bool
+    public static function mailAlreadyExists(string $email): bool
     {
         $userManager = new UserManager();
-        if (!$userManager->selectOneByEmail($eMail)) {
+        if (!$userManager->selectOneByEmail($email) || $_SESSION['email'] === $email) {
             $return = false;
         } else {
             $return = true;
