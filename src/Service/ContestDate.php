@@ -21,7 +21,7 @@ class ContestDate
     public static function getContestEndDate(?string $startedOn, string $duration): ?string
     {
         if (isset($startedOn)) {
-            $endDate = new DateTime($startedOn);
+            $endDate = new DateTime($startedOn, new DateTimeZone('Europe/Paris'));
             $endDate->modify('+' . $duration . ' minutes');
             $result = $endDate->format('Y-m-d H:i:s');
         } else {
@@ -51,8 +51,8 @@ class ContestDate
      */
     public static function getDurationInHoursAndMinutes(int $minutes, int $format = self::STRING)
     {
-        $date1 = new DateTime('00:00:00');
-        $date2 = new DateTime('00:00:00');
+        $date1 = new DateTime('00:00:00', new DateTimeZone('Europe/Paris'));
+        $date2 = new DateTime('00:00:00', new DateTimeZone('Europe/Paris'));
         $date2->modify('+' . $minutes . ' minutes');
         $contestDuration = date_diff($date1, $date2);
 
@@ -84,10 +84,7 @@ class ContestDate
     public static function isEnded(string $endDate): bool
     {
         $now = new DateTime('now', new DateTimeZone('Europe/Paris'));
-        var_dump($now);
         $endDate = new DateTime($endDate, new DateTimeZone('Europe/Paris'));
-        var_dump($endDate);
-        var_dump($endDate <= $now);
         return $endDate <= $now;
     }
 }
