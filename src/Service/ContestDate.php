@@ -83,6 +83,8 @@ class ContestDate
     public static function isEnded(string $endDate): bool
     {
         $now = new DateTime(date('Y-m-d H:i:s'));
+        var_dump($now);
+        die;
         $endDate = new DateTime($endDate);
         return $endDate <= $now;
     }
