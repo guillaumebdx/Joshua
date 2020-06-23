@@ -9,7 +9,7 @@
 /*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
 /*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE = @@TIME_ZONE */;
-/*!40103 SET TIME_ZONE = '+02:00' */;
+/*!40103 SET GLOBAL time_zone = 'Europe/Paris';
 /*!40014 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0 */;
 /*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
@@ -406,7 +406,7 @@ CREATE TABLE story
     contest_id   INT      NOT NULL,
     challenge_id INT      NOT NULL,
     success      TINYINT  NOT NULL,
-    added_on     DATETIME DEFAULT CURRENT_TIMESTAMP,
+    added_on     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     KEY fk_story_user_idx (user_id),
     KEY fk_story_contest_idx (contest_id),
     KEY fk_story_challenge_idx (challenge_id),

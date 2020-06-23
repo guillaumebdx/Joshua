@@ -45,14 +45,13 @@ class StoryManager extends AbstractManager
      */
     public function setHistory(int $userId, int $contestId, int $challengeId, int $success): void
     {
-        $query = 'INSERT INTO ' . self::TABLE . ' (user_id, contest_id, challenge_id, success, added_on)' .
-            ' VALUES (:user, :contest, :challenge, :success, :now)';
+        $query = 'INSERT INTO ' . self::TABLE . ' (user_id, contest_id, challenge_id, success)' .
+            ' VALUES (:user, :contest, :challenge, :success)';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':user', $userId, \PDO::PARAM_INT);
         $statement->bindValue(':contest', $contestId, \PDO::PARAM_INT);
         $statement->bindValue(':challenge', $challengeId, \PDO::PARAM_INT);
         $statement->bindValue(':success', $success, \PDO::PARAM_INT);
-        $statement->bindValue(':now', date('Y-m-d H:i:s'), \PDO::PARAM_STR);
         $statement->execute();
     }
 }
