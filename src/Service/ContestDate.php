@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use DateTime;
+use DateTimeZone;
 use Exception;
 
 class ContestDate
@@ -82,9 +83,7 @@ class ContestDate
      */
     public static function isEnded(string $endDate): bool
     {
-        $now = new DateTime(date('Y-m-d H:i:s'));
-        var_dump($now);
-        die;
+        $now = new DateTime(date('Y-m-d H:i:s'), new DateTimeZone('Europe/Paris'));
         $endDate = new DateTime($endDate);
         return $endDate <= $now;
     }
