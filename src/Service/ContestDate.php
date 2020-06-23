@@ -85,7 +85,7 @@ class ContestDate
     {
         $now = new DateTime('now', new DateTimeZone('Europe/Paris'));
         var_dump($now);
-        $endDate = new DateTime($endDate);
+        $endDate = new DateTime($endDate, new DateTimeZone('Europe/Paris'));
         var_dump($endDate);
         var_dump($endDate <= $now);
         return $endDate <= $now;
